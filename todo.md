@@ -1,0 +1,23 @@
+- unload and aviod going to previous
+- what drop the chest?
+- needs to find an item before opening the maze last door
+- ennemies needs to be put down pressing a button
+- when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
+- after leaving a maze/path, unload!
+- ennemies with hand equipment too
+- open door animation ( clickable door - click to open if key)
+- improve maze (ennemys / keys)
+- multiple perso move?
+- locales
+- level increase for each stuff (stamina, life, weapon use, etc)
+- add baril - explosion - droping object (life? stamina? weapon?)
+- add open/close doors 
+- gui  with graphic heart for life, display current weapon, etc...
+- lady to rescue?
+- toggle doors + doors animation close(open) when pressing a button
+- path = outside, with exterior container + some big/small rocks
+- better path (between mazes)
+- añadir ventanas?
+- add distinct wall mesh for outside walls
+- labyrinthe 3d (etages?)
+- multi player
