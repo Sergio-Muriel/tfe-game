@@ -360,6 +360,7 @@ var Game = function(opt)
             {
                 if(p_parent_item = parent_item.options.parent)
                 {
+                    parent_item.options.parent=null;
                     p_parent_item.unload();
                 }
             }
