@@ -1146,7 +1146,7 @@ var Maze = function(game, options)
         }
 
         var extra = extra_door ? game.opt.door_size*0.4 : 0;
-        var separator = outside_door ? 1 : 0.85;
+        var separator = outside_door ? 0.8 : 0.85;
         var pivot = this.get_pivot(cell, params, i);
 
         draw_line({
@@ -1203,6 +1203,10 @@ var Maze = function(game, options)
                 obstacles.push(item.container_mesh);
             }
         });
+        if(this.entered)
+        {
+            obstacles.push(this.close_mesh);
+        }
         return obstacles;
     };
 
@@ -1342,7 +1346,27 @@ var Maze = function(game, options)
         {
             game.fadeinmusic(this.music);
             console.log('entering maze 2');
+            this.entered=true;
             game.enterType(this);
+
+            var door_collision_mat = new THREE.MeshBasicMaterial( { color:0xffbbbb, wireframe: false, visible:game.opt.debug_level>1, transparent:true, opacity:0.5   } );
+
+            this.close_mesh = new THREE.Mesh( game.assets.dooropen_geo, door_collision_mat);
+            var close_mesh1 = new THREE.Mesh( game.assets.dooropen1_geo, new THREE.MultiMaterial(game.assets.dooropen1_mat));
+
+            this.container.add(this.close_mesh);
+            this.container.add(close_mesh1);
+
+            var cell = this.start_door;
+            this.close_mesh.position.x = cell.position.x;
+            this.close_mesh.position.y = cell.position.y;
+            this.close_mesh.position.z = cell.position.z;
+            this.set_mesh_orientation(this.close_mesh, this.start_i);
+
+            close_mesh1.position.x = cell.position.x;
+            close_mesh1.position.y = cell.position.y;
+            close_mesh1.position.z = cell.position.z;
+            this.set_mesh_orientation(close_mesh1, this.start_i);
         }
         this.buildNext();
     };
