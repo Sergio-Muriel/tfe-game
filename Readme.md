@@ -19,7 +19,7 @@ To enable debug mode on game play, visit the index.html with "?debug" parameter.
 Example: [http://tfeserver.be/tfe-game/index.html?debug](http://tfeserver.be/tfe-game/index.html?debug)
 
 
-# # More information
+## More information
 
 Check out my [youtube channel](https://www.youtube.com/channel/UC9pNrYT5MCecvwBNMQUOJFw), or my [Blog](http://www.tfeserver.fr) for more information.
 
