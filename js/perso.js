@@ -210,7 +210,7 @@ var Perso = function(game, options)
 
     this.update_life = function()
     {
-        this.life_value.innerHTML = this.life;
+        this.life_value.innerText = this.life;
     };
 
     this.attack=function()

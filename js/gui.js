@@ -43,7 +43,7 @@ Game.prototype.gui =
         this.bind();
         var x = (current/total*100).toFixed(2);
         this.loader_progress_container.style.width = (x)+'%';
-        this.loader_text.innerHTML=(x)+'%';
+        this.loader_text.innerText=(x)+'%';
     },
 
     init: function()
@@ -98,7 +98,7 @@ Game.prototype.gui =
 
         var div_hover = document.createElement('div');
         div_hover.setAttribute('class', 'bone_attachment-hover');
-        div_hover.innerHTML = 'Select <span>['+(this.bone_attachments.length+1)+']';
+        div_hover.innerHTML = 'Select <span>['+(this.bone_attachments.length+1)+']</span>';
 
         div.addEventListener('mousedown', this.toggle_weapon.bind(this,div));
 
