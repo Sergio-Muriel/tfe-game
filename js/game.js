@@ -18,7 +18,7 @@ var Game = function(opt)
     if(opt.debug_level>1)
     {
         camera_decal_x = 0;
-        camera_decal_y = 100;
+        camera_decal_y = 500;
         camera_decal_z = 50;
     }
 
@@ -164,17 +164,16 @@ var Game = function(opt)
         this.focus_perso.name='main character';
 
         // Create start city
-        var path = new Path(this, {level: 1, direction: this.direction, x: 0, z: 0});
-        path.build();
+        this.current_item = new Path(this, {level: 1, direction: this.direction, x: 0, z: 0});
+        this.current_item.build();
 
-        var pos = path.get_start_pos();
+        var pos = this.current_item.get_start_pos();
         var angle = Math.radians(30);
         pos.x += Math.cos(angle) * 20;
         pos.z += Math.sin(angle) * 20;
 
 
-        this.current_item = path;
-        path.enter();
+        this.current_item.enter();
 
         // Look at player
         this.resetCamera();

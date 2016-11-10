@@ -1427,6 +1427,7 @@ var Maze = function(game, options)
     };
     this.unload = function()
     {
+        this.next_item.options.parent = null;
         this.all_interraction_items.forEach(function(item)
         {
             item.remove();

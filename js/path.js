@@ -61,7 +61,7 @@ var Path = function(game, options)
         var meshes =  [this.top_mesh, this.bottom_mesh];
         if(this.entered)
         {
-            meshes.push(this.close_mesh);
+            //meshes.push(this.close_mesh);
         }
         return meshes;
     };
@@ -184,6 +184,7 @@ var Path = function(game, options)
     };
     this.unload = function()
     {
+        this.next_item.options.parent = null;
         game.scene.remove(this.container);
     };
 };
