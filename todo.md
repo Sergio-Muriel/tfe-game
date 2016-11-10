@@ -1,3 +1,4 @@
+- better path (between mazes)
 - open door animation ( clickable door - click to open if key)
 - Levels difficulties:
     * 1: no weapons available, need to avoid the ennemies
@@ -8,7 +9,6 @@
 - zoom level depending on maze / path
 - ennemies needs to be put down pressing a button
 - when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
-- after leaving a maze/path, unload!
 - ennemies with hand equipment too
 - multiple perso move?
 - locales
@@ -20,7 +20,6 @@
 - lady to rescue?
 - toggle doors + doors animation close(open) when pressing a button
 - path = outside, with exterior container + some big/small rocks
-- better path (between mazes)
 - añadir ventanas?
 - add distinct wall mesh for outside walls
 - labyrinthe 3d (etages?)
