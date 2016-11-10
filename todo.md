@@ -1,3 +1,8 @@
+- Levels difficulties:
+    * 1: no weapons available, need to avoid the ennemies
+    * 2: still no weapons, Now with closing door. Key in chest
+    * 3: Give the stick. New ennemy type wich cannot be bitten by the stick
+
 - needs to find an item before opening the maze last door
 - zoom level depending on maze / path
 - ennemies needs to be put down pressing a button
