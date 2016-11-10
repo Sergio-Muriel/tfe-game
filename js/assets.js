@@ -47,7 +47,7 @@ var Assets = function()
         this.add_texture('textures/terre_bump.jpg','maze_floor_bump');
 
         // Perso
-        this.add_sound('sounds/step_floor.mp3','step',true, 0.5);
+        this.add_sound('sounds/step_floor.mp3','step',true, 0.8);
         this.add_sound('sounds/miss.mp3','miss', false, 1);
         this.add_sound('sounds/die.mp3','die', false, 1);
         this.add_sound('sounds/hit.mp3','hit', false, 0.5);
@@ -59,6 +59,7 @@ var Assets = function()
         // Items
         this.add_sound('sounds/chest_open.mp3','chest_open', false, 0.3);
         this.add_sound('sounds/door_open.mp3','door_open', false, 0.5);
+        this.add_sound('sounds/door_close.mp3','door_close', false, 1.0);
 
         this.add_sound('sounds/key_drop.mp3','key_drop', false, 1);
         this.add_sound('sounds/key_pick.mp3','key_pick', false, 1);

@@ -1348,6 +1348,8 @@ var Maze = function(game, options)
             console.log('entering maze 2');
             this.entered=true;
             game.enterType(this);
+            game.assets.door_close_sound.play();
+
 
             var door_collision_mat = new THREE.MeshBasicMaterial( { color:0xffbbbb, wireframe: false, visible:game.opt.debug_level>1, transparent:true, opacity:0.5   } );
 
