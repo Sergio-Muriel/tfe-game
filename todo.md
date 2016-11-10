@@ -1,4 +1,5 @@
 - needs to find an item before opening the maze last door
+- zoom level depending on maze / path
 - ennemies needs to be put down pressing a button
 - when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
 - after leaving a maze/path, unload!
