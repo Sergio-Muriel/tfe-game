@@ -1,6 +1,6 @@
-- unload and aviod going to previous
 - what drop the chest?
 - needs to find an item before opening the maze last door
+- Better memory cleanup (use dispose on geometry / materials / textures)
 - ennemies needs to be put down pressing a button
 - when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
 - after leaving a maze/path, unload!
