@@ -4,7 +4,7 @@ var Perso = function(game, options)
     self.id=game.getNewId();
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
-    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.50;
+    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.70;
     self.move_speed= self.run_speed;
 
     self.open_range = 12;
