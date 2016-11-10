@@ -1,3 +1,4 @@
+- open door animation ( clickable door - click to open if key)
 - Levels difficulties:
     * 1: no weapons available, need to avoid the ennemies
     * 2: still no weapons, Now with closing door. Key in chest
@@ -9,8 +10,6 @@
 - when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
 - after leaving a maze/path, unload!
 - ennemies with hand equipment too
-- open door animation ( clickable door - click to open if key)
-- improve maze (ennemys / keys)
 - multiple perso move?
 - locales
 - Better memory cleanup (use dispose on geometry / materials / textures)
