@@ -1,4 +1,5 @@
 - better path (between mazes)
+- add roof (techo) of maze
 - open door animation ( clickable door - click to open if key)
 - Levels difficulties:
     * 1: no weapons available, need to avoid the ennemies
