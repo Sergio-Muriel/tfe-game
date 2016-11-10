@@ -137,12 +137,24 @@ var Chest = function(game, options)
     this.drop = function()
     {
         var drops=[];
-        var drop_weapon = Math.random()>0.5;
+        var drop_weapon = game.gui.weapons.length===1 ? 1 : Math.random()>0.5;
+        var drop_potion = Math.random()>0.5;
 
+        if(drop_potion)
+        {
+            drops.push(
+            {
+                type: 'Potion',
+                params:
+                {
+                    walk_through_callback: function(){},
+                    type:'Potion'
+                }
+            });
+        }
         if(drop_weapon)
         {
             var type = game.getRandomWeaponType(options.level);
-            console.log('typeclass ',type);
             drops.push(
             {
                 type: type,
