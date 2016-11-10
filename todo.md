@@ -1,6 +1,4 @@
-- what drop the chest?
 - needs to find an item before opening the maze last door
-- Better memory cleanup (use dispose on geometry / materials / textures)
 - ennemies needs to be put down pressing a button
 - when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
 - after leaving a maze/path, unload!
@@ -9,6 +7,7 @@
 - improve maze (ennemys / keys)
 - multiple perso move?
 - locales
+- Better memory cleanup (use dispose on geometry / materials / textures)
 - level increase for each stuff (stamina, life, weapon use, etc)
 - add baril - explosion - droping object (life? stamina? weapon?)
 - add open/close doors 
