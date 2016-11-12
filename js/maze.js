@@ -177,6 +177,7 @@ Maze.prototype.build_doors = function()
     var floor_material = new THREE.MeshPhongMaterial({
         bumpScale:0.5,
         color:0xbbbbbb,
+        shininess:1,
         map: maze_floor_texture,
         bumpMap: maze_floor_bump_texture
     });
@@ -204,6 +205,7 @@ Maze.prototype.build_doors = function()
     var wall_material = new THREE.MeshPhongMaterial({
         bumpScale:0.5,
         map: cell_wall_texture,
+        shininess:0,
         transparent: true,
         opacity:0.5,
         bumpMap: cell_wall_bump_texture
@@ -213,6 +215,7 @@ Maze.prototype.build_doors = function()
         bumpScale:0.5,
         map: cell_door_texture,
         transparent: true,
+        shininess:0,
         opacity:1.0,
         bumpMap: cell_door_bump_texture
     });
