@@ -36,8 +36,8 @@ var Maze = function(game, options)
     this.all_interraction_items=[];
 
     // Internal vars
-    var depth;
-    var depth2;
+    this.depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
+    this.depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
     this.current_cellid  = null; 
     this.findPath_cache = {};
 };
@@ -65,8 +65,6 @@ Maze.prototype.loadSaveRandom = function(value)
 Maze.prototype.build_doors = function()
 {
     var self=this;
-    depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
-    depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
 
     this.container = new THREE.Object3D();
     this.floor_geom_refs = {};
@@ -103,8 +101,8 @@ Maze.prototype.build_doors = function()
     this.get_random_start_end();
 
     // Correct position of the maze depending on the start position and direction
-    var move_x = this.start_x*depth2*2;
-    var move_z = this.start_z*depth2*2;
+    var move_x = this.start_x*this.depth2*2;
+    var move_z = this.start_z*this.depth2*2;
 
     this.container.position.x = this.options.x - move_x;
     this.container.position.y = 0;
@@ -672,9 +670,9 @@ Maze.prototype.register_door= function(x, z, i, cell)
 
 Maze.prototype.get_pos = function(params)
 {
-    var pair = params.x%2 ? depth2 : 0;
-    var x =params.x * depth *2;
-    var z =params.z * depth2 *2 + pair;
+    var pair = params.x%2 ? this.depth2 : 0;
+    var x =params.x * this.depth *2;
+    var z =params.z * this.depth2 *2 + pair;
 
     return { x: x, z: z};
 };
@@ -706,7 +704,7 @@ Maze.prototype.create_cell = function(params)
     var cellid = params.real_x=='outside' ? 'outside' : params.real_x*this.num_items_line + params.real_z;
 
     this.fulldepth = game.opt.door_size + game.opt.door_size*2;
-    var pair = params.x%2 ? depth2 : 0;
+    var pair = params.x%2 ? this.depth2 : 0;
     var cell = new THREE.Object3D();
     cell.id=cellid;
     cell.name='pos '+params.x+' / '+params.z;
@@ -722,9 +720,6 @@ Maze.prototype.create_cell = function(params)
     this.cells.push(cell);
     this.container.add(cell);
 
-    spotTarget = new THREE.Object3D();
-    spotTarget.position.set(0, 0, 0);
-
     var key = params.x+'_'+params.z;
     var start_idx = this.floor_geom.vertices.length;
 
@@ -738,7 +733,7 @@ Maze.prototype.create_cell = function(params)
 
     if(!this.floor_geom_refs[key] || !this.floor_geom_refs[key].v1 )
     {
-        var v1 = new THREE.Vector3(cell.position.x - game.opt.door_size/1.8 , 0 , cell.position.z-depth2*1.0 );
+        var v1 = new THREE.Vector3(cell.position.x - game.opt.door_size/1.8 , 0 , cell.position.z-this.depth2*1.0 );
         this.floor_geom.vertices.push(v1);
         v1_idx = start_idx;
         start_idx++;
@@ -762,7 +757,7 @@ Maze.prototype.create_cell = function(params)
 
     if(!this.floor_geom_refs[key] || !this.floor_geom_refs[key].v3)
     {
-        var v3 = new THREE.Vector3(cell.position.x - game.opt.door_size/1.8 , 0 , cell.position.z+depth2*1.0 );
+        var v3 = new THREE.Vector3(cell.position.x - game.opt.door_size/1.8 , 0 , cell.position.z+this.depth2*1.0 );
         this.floor_geom.vertices.push(v3);
         v3_idx = start_idx;
         start_idx++;
@@ -774,7 +769,7 @@ Maze.prototype.create_cell = function(params)
 
     if(!this.floor_geom_refs[key] || !this.floor_geom_refs[key].v4)
     {
-        var v4 = new THREE.Vector3(cell.position.x + game.opt.door_size/1.8 , 0 , cell.position.z+depth2*1.0 );
+        var v4 = new THREE.Vector3(cell.position.x + game.opt.door_size/1.8 , 0 , cell.position.z+this.depth2*1.0 );
         this.floor_geom.vertices.push(v4);
         v4_idx = start_idx;
         start_idx++;
@@ -798,7 +793,7 @@ Maze.prototype.create_cell = function(params)
 
     if(!this.floor_geom_refs[key] || !this.floor_geom_refs[key].v6)
     {
-        var v6 = new THREE.Vector3(cell.position.x + game.opt.door_size/1.8 , 0 , cell.position.z-depth2*1.0 );
+        var v6 = new THREE.Vector3(cell.position.x + game.opt.door_size/1.8 , 0 , cell.position.z-this.depth2*1.0 );
         this.floor_geom.vertices.push(v6);
         v6_idx = start_idx;
         start_idx++;
@@ -917,6 +912,7 @@ Maze.prototype.set_mesh_orientation = function(mesh,i)
     mesh.scale.z= ratio*game.opt.door_size;
     mesh.rotation.y= Math.radians(i*60);
 
+
     switch(i)
     {
         case 0:
@@ -924,22 +920,22 @@ Maze.prototype.set_mesh_orientation = function(mesh,i)
             break;
         case 1: 
             mesh.position.z += game.opt.door_size * 0.50;
-            mesh.position.x += depth;
+            mesh.position.x += this.depth;
             break;
         case 2:
             mesh.position.z -= game.opt.door_size * 0.50;
-            mesh.position.x += depth;
+            mesh.position.x += this.depth;
             break;
         case 3:
             mesh.position.z -= game.opt.door_size;
             break;
         case 4:
             mesh.position.z -= game.opt.door_size * 0.50;
-            mesh.position.x -= depth;
+            mesh.position.x -= this.depth;
             break;
         case 5:
             mesh.position.z += game.opt.door_size * 0.50;
-            mesh.position.x -= depth;
+            mesh.position.x -= this.depth;
             break;
     }
     mesh.updateMatrix();
@@ -1150,8 +1146,8 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
         opacity:game.opt.debug_level>1 ? 1 : 0,
         container: pivot,
         color: 0x777777,
-        origin: { x: depth*( !extra_door ? .65 : .7), y: 1,  z: game.opt.door_size*separator +extra },
-        destination: { x: -depth*(!extra_door ? .65 : .7), y: 1, z: game.opt.door_size*separator +extra }
+        origin: { x: this.depth*( !extra_door ? .65 : .7), y: 1,  z: game.opt.door_size*separator +extra },
+        destination: { x: -this.depth*(!extra_door ? .65 : .7), y: 1, z: game.opt.door_size*separator +extra }
     });
 
 

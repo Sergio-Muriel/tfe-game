@@ -8,7 +8,16 @@ var Path = function(game, options)
     this.width = 2;
     this.height = 2;
     this.id = game.getNewId();
+
+    this.cells=[];
+
+    this.floor_geom_refs = {};
+    this.floor_geom = new THREE.Geometry();
+
+    this.depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
+    this.depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
 };
+
 Path.prototype = Object.create(Maze.prototype);
 Path.prototype.constructor = Path;
 
@@ -106,17 +115,23 @@ Path.prototype.build = function()
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
+    var cell =this.create_cell({ x: 0, z: 0});
+
+    // Top right
+    mesh = new THREE.Mesh( game.assets.smallwall1_geo);
+    this.set_mesh_orientation(mesh, 0);
+    cell.add(mesh);
 
     var mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-    this.set_mesh_orientation(mesh, 0);
-    console.log('mesh = ',mesh);
+    this.set_mesh_orientation(mesh, 2);
+    cell.add(mesh);
+
 
     this.container.position.x = current_x;
     this.container.position.y = 0;
     this.container.position.z = current_z;
     this.container.rotation.x = Math.radians(0);
 
-    this.container.add(mesh);
     game.scene.add(this.container);
 };
 
