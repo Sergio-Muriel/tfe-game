@@ -109,6 +109,20 @@ Path.prototype.collisionCallbacks = function(perso,collisions)
     }
 };
 
+Path.prototype.add_cell = function(params)
+{
+    var cell =this.create_cell(params);
+
+    // Top right
+    mesh = new THREE.Mesh( game.assets.smallwall1_geo);
+    this.set_mesh_orientation(mesh, 0);
+    //cell.add(mesh);
+
+    var mesh = new THREE.Mesh( game.assets.smallwall1_geo);
+    this.set_mesh_orientation(mesh, 2);
+    //cell.add(mesh);
+};
+
 Path.prototype.build = function()
 {
     var current_x = this.options.x;
@@ -117,16 +131,9 @@ Path.prototype.build = function()
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
-    var cell =this.create_cell({ x: 0, z: 0});
-
-    // Top right
-    mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-    this.set_mesh_orientation(mesh, 0);
-    cell.add(mesh);
-
-    var mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-    this.set_mesh_orientation(mesh, 2);
-    cell.add(mesh);
+    this.add_cell({ x: 0, z: 0});
+    this.add_cell({ x: -1, z: 0});
+    this.add_cell({ x: -1, z: -1});
 
 
     this.container.position.x = current_x;
