@@ -5,6 +5,7 @@ var Path = function(game, options)
     this.music = game.assets.path_sound;
     this.nextType='Maze';
 
+    this.num_items_line=2;
     this.width = 2;
     this.height = 2;
     this.id = game.getNewId();
@@ -111,16 +112,16 @@ Path.prototype.collisionCallbacks = function(perso,collisions)
 
 Path.prototype.add_cell = function(params)
 {
+    var self=this;
     var cell =this.create_cell(params);
 
-    // Top right
-    mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-    this.set_mesh_orientation(mesh, 0);
-    //cell.add(mesh);
-
-    var mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-    this.set_mesh_orientation(mesh, 2);
-    //cell.add(mesh);
+    params.walls.forEach(function(wall)
+    {
+        // Top right
+        mesh = new THREE.Mesh( game.assets.smallwall1_geo);
+        self.set_mesh_orientation(mesh, wall);
+        cell.add(mesh);
+    });
 };
 
 Path.prototype.build = function()
@@ -131,9 +132,9 @@ Path.prototype.build = function()
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
-    this.add_cell({ x: 0, z: 0});
-    this.add_cell({ x: -1, z: 0});
-    this.add_cell({ x: -1, z: -1});
+    this.add_cell({ x: 0, z: 0, walls: [2,3]});
+    this.add_cell({ x: -1, z: 0, walls: [0,1,4,5]});
+    this.add_cell({ x: -1, z: -1, walls: []});
 
 
     this.container.position.x = current_x;
