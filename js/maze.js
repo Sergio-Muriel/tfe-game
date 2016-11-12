@@ -1056,6 +1056,7 @@ Maze.prototype.create_meshes = function(params)
 
 Maze.prototype.findPath = function(origin, destination)
 {
+    var self=this;
     if(this.findPath_cache[origin.name+' to '+destination.name])
     {
         var res = this.findPath_cache[origin.name+' to '+destination.name].concat();
@@ -1089,7 +1090,7 @@ Maze.prototype.findPath = function(origin, destination)
 
         this.near_doors(cell.params.x, cell.params.z, true).forEach(function(door_data)
         {
-            var near_cell = this.generated_doors[door_data[0]][door_data[1]];
+            var near_cell = self.generated_doors[door_data[0]][door_data[1]];
             if(!parent_paths[near_cell.name])
             {
                 parent_paths[near_cell.name] = { i : (door_data[2]), cell: cell };
