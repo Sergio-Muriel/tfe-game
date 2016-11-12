@@ -1,7 +1,7 @@
 # Three.js
 
 ## 19
-- city ?
+- adding new land between mazes, with same hexagone structures
 
 ## 18 ?
 - switch weapon!
