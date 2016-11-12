@@ -5,8 +5,8 @@ var Path = function(game, options)
     this.music = game.assets.path_sound;
     this.nextType='Maze';
 
-    this.width = 3;
-    this.height = 3;
+    this.width = 2;
+    this.height = 2;
     this.id = game.getNewId();
 };
 Path.prototype = Object.create(Maze.prototype);
@@ -107,7 +107,7 @@ Path.prototype.build = function()
     this.angle = Math.radians(-30);
 
 
-    var mesh = new THREE.Mesh( game.assets.wall1_geo);
+    var mesh = new THREE.Mesh( game.assets.smallwall1_geo);
     this.set_mesh_orientation(mesh, 0);
     console.log('mesh = ',mesh);
 

@@ -264,7 +264,7 @@ Maze.prototype.get_random_start_end = function()
 {
     var start_on_x = this.loadSaveRandom(!!Math.floor(Math.random()*2));
     var x=0;
-    var z =-1;
+    var z =0;
 
     // Start pos
     while(!this.generated_doors[x] || !this.generated_doors[x][z])
@@ -909,16 +909,6 @@ Maze.prototype.create_cell = function(params)
     return cell;
 };
 
-Maze.prototype.get_pivot = function(cell, params, i)
-{
-    var pivot = new THREE.Object3D();
-    pivot.name ='p '+params.x+'/'+params.z+'/'+i;
-    pivot.rotation.y= Math.radians(i*60);
-    cell.add(pivot);
-
-    return pivot;
-};
-
 Maze.prototype.set_mesh_orientation = function(mesh,i)
 {
     var ratio = 0.6;
@@ -967,8 +957,6 @@ Maze.prototype.create_meshes = function(params)
         if(!this.created_doors[params.x+'.'+params.z] || !this.created_doors[params.x+'.'+params.z][i])
         {
             this.register_door(params.x, params.z, i, cell);
-
-            var pivot = this.get_pivot(cell, params, i);
 
             var materials = [];
 
@@ -1151,7 +1139,11 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
 
     var extra = extra_door ? game.opt.door_size*0.4 : 0;
     var separator = outside_door ? 0.8 : 0.85;
-    var pivot = this.get_pivot(cell, params, i);
+
+    var pivot = new THREE.Object3D();
+    pivot.name ='p '+params.x+'/'+params.z+'/'+i;
+    pivot.rotation.y= Math.radians(i*60);
+    cell.add(pivot);
 
     draw_line({
         visible: game.opt.debug_level>1,
