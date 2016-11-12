@@ -6,3 +6,4 @@ python convert_obj_three.py -i dooropen1.obj -o ../js/meshes/dooropen1.js
 
 python convert_obj_three.py -i wall.obj -o ../js/meshes/wall.js
 python convert_obj_three.py -i wall1.obj -o ../js/meshes/wall1.js
+python convert_obj_three.py -i smallwall1.obj -o ../js/meshes/smallwall1.js

@@ -9,8 +9,6 @@ var Path = function(game, options)
     this.height = 3;
     this.id = game.getNewId();
 };
-Path.prototype = Object.create(Maze.prototype);
-Path.prototype.constructor = Path;
 
 
 Path.prototype.get_start_pos = function()
@@ -108,13 +106,13 @@ Path.prototype.build = function()
 
 
     var mesh = new THREE.Mesh( game.assets.wall1_geo);
-    this.set_mesh_orientation(mesh, 0);
     console.log('mesh = ',mesh);
 
     this.container.position.x = current_x;
     this.container.position.y = 0;
     this.container.position.z = current_z;
-    this.container.rotation.x = Math.radians(0);
+    this.container.rotation.x = Math.radians(-90);
+    this.container.rotation.z = this.angle;
 
     this.container.add(mesh);
     game.scene.add(this.container);
@@ -128,7 +126,7 @@ Path.prototype.buildNext = function()
         console.log('build next' ,this.nextType, pos, this, this.options);
         this.next_item = new window[this.nextType](game, {
             parent: this,
-            level: this.options.level+1,
+            level: options.level+1,
             x: pos.x,
             z: pos.z });
         this.next_item.build();

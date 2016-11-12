@@ -16,6 +16,7 @@ var Assets = function()
     {
         this.add('js/meshes/wall.js','wall');
         this.add('js/meshes/wall1.js','wall1');
+        this.add('js/meshes/smallwall1.js','smallwall1');
         this.add('blender/wall_with_window.json','wall_with_window');
         this.add('js/meshes/door.js','door');
         this.add('js/meshes/door1.js','door1');
