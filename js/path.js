@@ -10,6 +10,8 @@ var Path = function(game, options)
     this.id = game.getNewId();
 
     this.cells=[];
+    this.level = [
+    ];
 
     this.floor_geom_refs = {};
     this.floor_geom = new THREE.Geometry();
@@ -131,6 +133,28 @@ Path.prototype.build = function()
     this.container.position.y = 0;
     this.container.position.z = current_z;
     this.container.rotation.x = Math.radians(0);
+
+    // Add floor
+    var maze_floor_texture = game.assets.maze_floor_texture;
+    maze_floor_texture.repeat.set(2,2);
+    var maze_floor_bump_texture = game.assets.maze_floor_bump_texture;
+    maze_floor_bump_texture.repeat.set(2,2);
+
+    var floor_material = new THREE.MeshPhongMaterial({
+        bumpScale:0.5,
+        color:0xbbbbbb,
+        map: maze_floor_texture,
+        bumpMap: maze_floor_bump_texture
+    });
+    if(game.opt.debug_level>1)
+    {
+        floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+    }
+    this.floor_geom.computeVertexNormals();
+    var floor = new THREE.Mesh( this.floor_geom, floor_material);
+    floor.receiveShadow=true;
+    floor.castShadow=true;
+    this.container.add(floor);
 
     game.scene.add(this.container);
 };
