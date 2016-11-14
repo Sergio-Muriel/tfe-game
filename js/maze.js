@@ -695,9 +695,6 @@ Maze.prototype.get_cell_pos = function(cellid)
 Maze.prototype.get_end_pos = function()
 {
     var coord = this.get_pos({ x: this.end_x - this.start_x , z: this.end_z - this.start_z });
-    var angle = Math.radians(30);
-    coord.x +=  Math.cos(angle) * game.opt.door_size;
-    coord.z +=  Math.sin(angle) * game.opt.door_size;
     return { x: coord.x + this.options.x , z: coord.z + this.options.z, cellid: this.cells.length };
 };
 
