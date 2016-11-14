@@ -499,7 +499,7 @@ var Perso = function(game, options)
         }
         if(this.is_moving)
         {
-            game.assets.step_sound.play();
+            game.current_item.play_step();
 
             var moving=0;
 
@@ -620,7 +620,7 @@ var Perso = function(game, options)
 
             if(!moving)
             {
-                game.assets.step_sound.pause();
+                game.current_item.stop_step();
                 this.updateMovingStatus(null);
             }
         }

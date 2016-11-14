@@ -3,6 +3,8 @@ var Maze = function(game, options)
     var self=this;
     this.id = game.getNewId();
     this.music = game.assets.maze_sound;
+    this.ambient = game.assets.cave_sound;
+
     this.options=options;
     options.maze_num = options.level+2;
 
@@ -1340,7 +1342,7 @@ Maze.prototype.enter = function()
 {
     if(!this.entered)
     {
-        game.fadeinmusic(this.music);
+        game.fadeinmusic([this.music,this.ambient]);
         console.log('entering maze 2');
         this.entered=true;
         game.enterType(this);
@@ -1371,7 +1373,8 @@ Maze.prototype.enter = function()
 
 Maze.prototype.leave = function()
 {
-    game.fadeoutmusic(this.music);
+    game.fadeoutmusic([this.music, this.ambient]);
+    this.stop_step();
     this.entered=false;
     console.log('leave maze');
 };
@@ -1425,6 +1428,17 @@ Maze.prototype.buildNext = function()
     }
 
 };
+
+Maze.prototype.play_step = function()
+{
+    game.assets.step_floor_sound.play();
+};
+
+Maze.prototype.stop_step = function()
+{
+    game.assets.step_floor_sound.pause();
+};
+
 Maze.prototype.unload = function()
 {
     this.next_item.options.parent = null;

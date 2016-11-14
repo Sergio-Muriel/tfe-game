@@ -3,8 +3,12 @@ var Path = function(game, options)
     var self=this;
 
     this.options = options;
+
     this.path_length = game.opt.debug_level>1 ? 2 : 3;
+
     this.music = game.assets.path_sound;
+    this.ambient = game.assets.blizzard_sound;
+
     this.nextType='Maze';
 
     this.num_items_line=2;
@@ -197,16 +201,16 @@ Path.prototype.build = function()
     this.container.rotation.x = Math.radians(0);
 
     // Add floor
-    var maze_floor_texture = game.assets.maze_floor_texture;
-    maze_floor_texture.repeat.set(2,2);
-    var maze_floor_bump_texture = game.assets.maze_floor_bump_texture;
-    maze_floor_bump_texture.repeat.set(2,2);
+    var path_floor_texture = game.assets.path_floor_texture;
+    path_floor_texture.repeat.set(2,2);
+    var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+    path_floor_bump_texture.repeat.set(2,2);
 
     var floor_material = new THREE.MeshPhongMaterial({
         bumpScale:0.5,
-        color:0xbbbbbb,
-        map: maze_floor_texture,
-        bumpMap: maze_floor_bump_texture
+        color:0x929ec4,
+        map: path_floor_texture,
+        bumpMap: path_floor_bump_texture
     });
     if(game.opt.debug_level>1)
     {
@@ -219,10 +223,10 @@ Path.prototype.build = function()
     this.container.add(floor);
 
     // Walls + doors
-    var cell_wall_texture = game.assets.cell_wall_texture;
-    cell_wall_texture.repeat.set(1,1);
-    var cell_wall_bump_texture = game.assets.cell_wall_bump_texture;
-    cell_wall_bump_texture.repeat.set(1,1);
+    var path_wall_texture = game.assets.path_wall_texture;
+    path_wall_texture.repeat.set(1,1);
+    var path_wall_bump_texture = game.assets.path_wall_bump_texture;
+    path_wall_bump_texture.repeat.set(1,1);
 
     var cell_door_texture = game.assets.cell_door_texture;
     cell_door_texture.repeat.set(10,10);
@@ -231,11 +235,12 @@ Path.prototype.build = function()
 
     var wall_material = new THREE.MeshPhongMaterial({
         bumpScale:0.5,
-        map: cell_wall_texture,
+        color:0x929ec4,
+        map: path_wall_texture,
         shininess:0,
         transparent: true,
         opacity:0.5,
-        bumpMap: cell_wall_bump_texture
+        bumpMap: path_wall_bump_texture
     });
 
     var door_material = new THREE.MeshPhongMaterial({
@@ -286,6 +291,15 @@ Path.prototype.build = function()
     this.container.add(this.walls_collision);
 
     game.scene.add(this.container);
+};
+
+Path.prototype.play_step = function()
+{
+    game.assets.step_snow_sound.play();
+};
+Path.prototype.stop_step = function()
+{
+    game.assets.step_snow_sound.pause();
 };
 
 Path.prototype.unload = function()

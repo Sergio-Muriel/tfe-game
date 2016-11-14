@@ -466,7 +466,6 @@ Ennemy.prototype.move_step= function()
 
         if(!moving)
         {
-            game.assets.step_sound.pause();
             this.move_weight_destination = 0;
             this.is_moving=false;
             this.move_destination=null;

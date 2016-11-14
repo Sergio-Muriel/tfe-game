@@ -31,24 +31,24 @@ var Assets = function()
         this.add('blender/potion.json','potion');
         this.add('blender/chest.json','chest');
 
-        this.add('blender/city.json','city');
+        this.add_texture('textures/ice.jpg','path_wall');
+        this.add_texture('textures/ice_bump.jpg','path_wall_bump');
 
-        this.add_texture('textures/path_wall.jpg','path_wall');
-        this.add_texture('textures/path_wall_bump.jpg','path_wall_bump');
-
-        this.add_texture('textures/wall.jpg','cell_wall');
-        this.add_texture('textures/path_wall_bump.jpg','cell_wall_bump');
+        this.add_texture('textures/ice.jpg','cell_wall');
+        this.add_texture('textures/ice_bump.jpg','cell_wall_bump');
         this.add_texture('textures/wood.jpg','cell_door');
         this.add_texture('textures/wood_bump.jpg','cell_door_bump');
 
-        this.add_texture('textures/snow.jpg','path_floor');
-        this.add_texture('textures/snow_bmap.jpg','path_floor_bump');
+        this.add_texture('textures/ice.jpg','path_floor');
+        this.add_texture('textures/ice_bump.jpg','path_floor_bump');
 
         this.add_texture('textures/terre.jpg','maze_floor');
         this.add_texture('textures/terre_bump.jpg','maze_floor_bump');
 
         // Perso
-        this.add_sound('sounds/step_floor.mp3','step',true, 0.8);
+        this.add_sound('sounds/step_floor.mp3','step_floor',true, 0.8);
+        this.add_sound('sounds/step_snow.mp3','step_snow',true, 0.3);
+
         this.add_sound('sounds/miss.mp3','miss', false, 1);
         this.add_sound('sounds/die.mp3','die', false, 1);
         this.add_sound('sounds/hit.mp3','hit', false, 0.5);
@@ -83,7 +83,10 @@ var Assets = function()
         // Music
         this.add_sound('sounds/music/path.mp3','path',true, 1);
         this.add_sound('sounds/music/maze.mp3','maze',true, 1);
-        this.add_sound('sounds/music/city.mp3','city',true, 1);
+
+        // Effects
+        this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 1);
+        this.add_sound('sounds/ambient/cave.mp3','cave',true, 1);
 
 
 

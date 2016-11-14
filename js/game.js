@@ -163,7 +163,7 @@ var Game = function(opt)
         });
         this.focus_perso.name='main character';
 
-        // Create start city
+        // Create start 
         this.current_item = new Path(this, {level: 1, direction: this.direction, x: 0, z: 0});
         this.current_item.build();
 
@@ -478,34 +478,41 @@ var Game = function(opt)
         animations.splice(idx, 1);
     }
 
-    this.fadeinmusic = function(audio)
+    this.fadeinmusic = function(audios)
     {
-        if(audio.paused) { audio.play(); }
-        if(audio.volume<game.config.music_volume)
+        var self=this;
+        audios.forEach(function(audio)
         {
-            audio.volume=Math.min(game.config.music_volume,audio.volume+0.1);
-            window.clearTimeout(this.fadeinmusic_timer);
-            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio), 100);
-        }
-        else
-        {
-            audio.volume = game.config.music_volume;
-        }
+            if(audio.paused) { audio.play(); }
+            if(audio.volume<game.config.music_volume)
+            {
+                audio.volume=Math.min(game.config.music_volume,audio.volume+0.1);
+                window.clearTimeout(self.fadeinmusic_timer);
+                self.fadeinmusic_timer = window.setTimeout(self.fadeinmusic.bind(self, [audio]), 100);
+            }
+            else
+            {
+                audio.volume = game.config.music_volume;
+            }
+        });
     };
 
-    this.fadeoutmusic = function(audio)
+    this.fadeoutmusic = function(audios)
     {
-        if(audio.volume>0)
+        audios.forEach(function(audio)
         {
-            audio.volume=Math.max(0,audio.volume-0.1);
-            window.clearTimeout(this.fadeoutmusic_timer);
-            this.fadeoutmusic_timer = window.setTimeout(this.fadeoutmusic.bind(this, audio), 100);
-        }
-        else
-        {
-            console.log('audio pause!');
-            audio.pause()
-        }
+            if(audio.volume>0)
+            {
+                audio.volume=Math.max(0,audio.volume-0.1);
+                window.clearTimeout(self.fadeoutmusic_timer);
+                self.fadeoutmusic_timer = window.setTimeout(self.fadeoutmusic.bind(self, [audio]), 100);
+            }
+            else
+            {
+                console.log('audio pause!');
+                audio.pause()
+            }
+        });
     };
 
     this.getRandomWeaponType = function(level)
