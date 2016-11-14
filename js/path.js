@@ -16,9 +16,9 @@ var Path = function(game, options)
         end_cell:  { x: 2 , z: 2},
         cells:
         [
-            { x: 0, z: 0, walls: [] },
-            { x: 1, z: 0, walls: [] },
-            { x: 1, z: 1, walls: [] },
+            { x: 0, z: 0, walls: [0,2,3,4,5] },
+            { x: 1, z: 0, walls: [1,2,3,5] },
+            { x: 1, z: 1, walls: [0,2,4,5] },
         ]
     };
 
