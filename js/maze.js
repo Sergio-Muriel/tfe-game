@@ -1342,7 +1342,8 @@ Maze.prototype.enter = function()
 {
     if(!this.entered)
     {
-        game.fadeinmusic([this.music,this.ambient]);
+        game.fadeinmusic(this.music, game.config.music_volume);
+        game.fadeinmusic(this.ambient, game.config.ambient_volume);
         console.log('entering maze 2');
         this.entered=true;
         game.enterType(this);
@@ -1373,7 +1374,8 @@ Maze.prototype.enter = function()
 
 Maze.prototype.leave = function()
 {
-    game.fadeoutmusic([this.music, this.ambient]);
+    game.fadeoutmusic(this.music);
+    game.fadeoutmusic(this.ambient);
     this.stop_step();
     this.entered=false;
     console.log('leave maze');

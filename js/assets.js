@@ -85,8 +85,8 @@ var Assets = function()
         this.add_sound('sounds/music/maze.mp3','maze',true, 1);
 
         // Effects
-        this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 1);
-        this.add_sound('sounds/ambient/cave.mp3','cave',true, 1);
+        this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 0);
+        this.add_sound('sounds/ambient/cave.mp3','cave',true, 0);
 
 
 

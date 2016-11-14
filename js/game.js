@@ -478,41 +478,36 @@ var Game = function(opt)
         animations.splice(idx, 1);
     }
 
-    this.fadeinmusic = function(audios)
+    this.fadeinmusic = function(audio, target)
     {
-        var self=this;
-        audios.forEach(function(audio)
+        console.log('fade in to ',audio, target);
+        if(audio.paused) { audio.play(); }
+        console.log('audio.volume ',audio.volume+' vs'+ target);
+        if(audio.volume<target)
         {
-            if(audio.paused) { audio.play(); }
-            if(audio.volume<game.config.music_volume)
-            {
-                audio.volume=Math.min(game.config.music_volume,audio.volume+0.1);
-                window.clearTimeout(self.fadeinmusic_timer);
-                self.fadeinmusic_timer = window.setTimeout(self.fadeinmusic.bind(self, [audio]), 100);
-            }
-            else
-            {
-                audio.volume = game.config.music_volume;
-            }
-        });
+            audio.volume+=0.1;
+            window.clearTimeout(this.fadeinmusic_timer);
+            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target), 100);
+        }
+        else
+        {
+            audio.volume = target;
+        }
     };
 
-    this.fadeoutmusic = function(audios)
+    this.fadeoutmusic = function(audio)
     {
-        audios.forEach(function(audio)
+        if(audio.volume>0)
         {
-            if(audio.volume>0)
-            {
-                audio.volume=Math.max(0,audio.volume-0.1);
-                window.clearTimeout(self.fadeoutmusic_timer);
-                self.fadeoutmusic_timer = window.setTimeout(self.fadeoutmusic.bind(self, [audio]), 100);
-            }
-            else
-            {
-                console.log('audio pause!');
-                audio.pause()
-            }
-        });
+            audio.volume=Math.max(0,audio.volume-0.1);
+            window.clearTimeout(this.fadeoutmusic_timer);
+            this.fadeoutmusic_timer = window.setTimeout(this.fadeoutmusic.bind(this, audio), 100);
+        }
+        else
+        {
+            console.log('audio pause!');
+            audio.pause()
+        }
     };
 
     this.getRandomWeaponType = function(level)
