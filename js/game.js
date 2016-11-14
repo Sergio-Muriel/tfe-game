@@ -478,16 +478,19 @@ var Game = function(opt)
         animations.splice(idx, 1);
     }
 
-    this.fadeinmusic = function(audio, target)
+    this.fadeinmusic = function(audio, target, looping)
     {
-        console.log('fade in to ',audio, target);
         if(audio.paused) { audio.play(); }
-        console.log('audio.volume ',audio.volume+' vs'+ target);
+
+        if(!looping)
+        {
+            audio.volume=0;
+        }
         if(audio.volume<target)
         {
-            audio.volume+=0.1;
+            audio.volume=Math.min(target,audio.volume+0.1);
             window.clearTimeout(this.fadeinmusic_timer);
-            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target), 100);
+            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target, true), 100);
         }
         else
         {
