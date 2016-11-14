@@ -14,12 +14,15 @@ var Path = function(game, options)
     this.level = {
         cells:
         [
-            { x: 0, z: 0, walls: [ 2, 3, ] },
+            { x: 0, z: 0, walls: [0, 2, 3, ] },
             { x: -1, z: 0, walls: [ 0, 1, 4 ,5] },
             { x: -1, z: -1, walls: [ 2,3,4,5] },
         ]
     };
 
+    this.walls_geom = new THREE.Geometry();
+    this.doors_geom = new THREE.Geometry();
+    this.walls_collision_geom = new THREE.Geometry();
     this.floor_geom_refs = {};
     this.floor_geom = new THREE.Geometry();
 
@@ -77,7 +80,8 @@ Path.prototype.leave = function()
 
 Path.prototype.getStaticObstacles = function()
 {
-    var meshes =  [];
+    var meshes =  [ this.walls_collision ];
+
     if(this.entered && this.close_mesh)
     {
         meshes.push(this.close_mesh);
@@ -125,8 +129,34 @@ Path.prototype.add_cell = function(params)
     {
         // Top right
         mesh = new THREE.Mesh( game.assets.smallwall1_geo);
+        mesh.type='wall';
+        collision_mesh = new THREE.Mesh( game.assets.wall_geo);
+
+        //cell.add(mesh);
+
+        mesh.position.x = cell.position.x;
+        mesh.position.y = cell.position.y;
+        mesh.position.z = cell.position.z;
+
+        collision_mesh.position.x = cell.position.x;
+        collision_mesh.position.y = cell.position.y;
+        collision_mesh.position.z = cell.position.z;
+
         self.set_mesh_orientation(mesh, wall);
-        cell.add(mesh);
+        self.set_mesh_orientation(collision_mesh, wall);
+
+        if(game.opt.debug_level<1)
+        {
+            if(mesh.type=='wall')
+            {
+                self.walls_geom.merge(mesh.geometry, mesh.matrix);
+            }
+            else
+            {
+                self.doors_geom.merge(mesh.geometry, mesh.matrix);
+            }
+        }
+        self.walls_collision_geom.merge(collision_mesh.geometry, mesh.matrix);
     });
 };
 
@@ -171,6 +201,73 @@ Path.prototype.build = function()
     floor.receiveShadow=true;
     floor.castShadow=true;
     this.container.add(floor);
+
+    // Walls + doors
+    var cell_wall_texture = game.assets.cell_wall_texture;
+    cell_wall_texture.repeat.set(1,1);
+    var cell_wall_bump_texture = game.assets.cell_wall_bump_texture;
+    cell_wall_bump_texture.repeat.set(1,1);
+
+    var cell_door_texture = game.assets.cell_door_texture;
+    cell_door_texture.repeat.set(10,10);
+    var cell_door_bump_texture = game.assets.cell_door_bump_texture;
+    cell_door_bump_texture.repeat.set(10,10);
+
+    var wall_material = new THREE.MeshPhongMaterial({
+        bumpScale:0.5,
+        map: cell_wall_texture,
+        shininess:0,
+        transparent: true,
+        opacity:0.5,
+        bumpMap: cell_wall_bump_texture
+    });
+
+    var door_material = new THREE.MeshPhongMaterial({
+        bumpScale:0.5,
+        map: cell_door_texture,
+        transparent: true,
+        shininess:0,
+        opacity:1.0,
+        bumpMap: cell_door_bump_texture
+    });
+    if(game.opt.debug_level>1)
+    {
+        wall_material = new THREE.MeshPhongMaterial({ visible: true});
+        door_material = new THREE.MeshPhongMaterial({ visible: true});
+    }
+
+
+
+    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    wall.name='walls';
+    wall.receiveShadow=true;
+    wall.castShadow=true;
+    wall.receiveShadow=true;
+    this.container.add(wall);
+
+    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    door.name='doors';
+    door.receiveShadow=true;
+    door.castShadow=true;
+    door.receiveShadow=true;
+    this.container.add(door);
+
+    // Walls collision
+    this.walls_collision = new THREE.Mesh(
+            this.walls_collision_geom,
+            new THREE.MeshPhongMaterial(
+                {
+                    color:0x555555,
+                    wireframe: false,
+                    visible:game.opt.debug_level>1,
+                    transparent: true,
+                    opacity:0.8 
+                }
+            )
+    );
+
+    this.walls_collision.name='walls';
+    this.container.add(this.walls_collision);
 
     game.scene.add(this.container);
 };
