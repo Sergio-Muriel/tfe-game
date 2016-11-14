@@ -1,5 +1,7 @@
 var Path = function(game, options)
 {
+    var self=this;
+
     this.options = options;
     this.path_length = game.opt.debug_level>1 ? 2 : 3;
     this.music = game.assets.path_sound;
@@ -14,14 +16,42 @@ var Path = function(game, options)
     this.cells=[];
     this.level = {
         start_cell: { x: 0, z: 0 },
-        end_cell:  { x: 1 , z: 1},
-        cells:
+        end_cell:  { x: 3 , z: 2},
+        outside_cells:
         [
-            { x: 0, z: 0, walls: [0,2,3,4,5] },
-            { x: 1, z: 0, walls: [1,2,3,5] },
-            { x: 1, z: 1, walls: [0,2,4,5] },
-        ]
+            { x: 0, z: 0},
+            { x: 0, z: 1},
+            { x: 1, z: 0},
+            { x: 1, z: 1},
+            { x: 2, z: 1},
+            { x: 2, z: 2},
+            { x: 3, z: 0},
+            { x: 3, z: 1},
+            { x: 3, z: 2},
+        ],
+        extracells:
+        [
+        ],
     };
+
+    // Auto add walls on outside cells
+    this.level.outside_cells.forEach(function(cell)
+    {
+        cell.walls=[];
+        for(var i=0; i<6; i++)
+        {
+            var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
+            var search = self.level.outside_cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
+
+            var is_start = cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4;
+            var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
+
+            if(!search.length && !is_start && !is_end)
+            {
+                cell.walls.push(self.get_opposide_door(nearcell[2]));
+            }
+        }
+    });
 
     this.walls_geom = new THREE.Geometry();
     this.doors_geom = new THREE.Geometry();
@@ -144,14 +174,14 @@ Path.prototype.add_cell = function(params)
 
 Path.prototype.build = function()
 {
+    var self=this;
     var current_x = this.options.x;
     var current_z = this.options.z;
 
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
-    var self=this;
-    this.level.cells.forEach(function(cell)
+    this.level.outside_cells.forEach(function(cell)
     {
         self.add_cell(cell);
     });

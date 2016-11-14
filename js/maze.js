@@ -341,7 +341,7 @@ Maze.prototype.maze_doors_next = function()
     var parent_path =  this.maze_path_ref[initial_cellid];
 
 
-    var next_doors_full = this.near_doors(initial_x, initial_z);
+    var next_doors_full = this.near_cells(initial_x, initial_z);
     var next_doors_unused=[];
     next_doors_full.forEach(function(door)
     {
@@ -382,7 +382,7 @@ Maze.prototype.maze_doors_next = function()
                 // Need to link and unused cell with a used cell
                 if(this.generated_doors[x][z] && !this.generated_doors[x][z].used)
                 {
-                    next_doors_full = this.near_doors(x, z);
+                    next_doors_full = this.near_cells(x, z);
                     next_doors_used=[];
                     next_doors_full.forEach(function(door)
                     {
@@ -615,13 +615,13 @@ Maze.prototype.get_coord_next_door = function(initial_x, initial_z, i)
     }
 };
 
-Maze.prototype.near_doors = function(initial_x, initial_z, only_connected)
+Maze.prototype.near_cells = function(initial_x, initial_z, only_connected)
 {
     var self=this;
     var next_doors = [];
 
     var check = [];
-    var door = this.generated_doors[initial_x][initial_z];
+    var door = this.generated_doors[initial_x] ? this.generated_doors[initial_x][initial_z] : null;
     var add_check = only_connected ?
         [
             door.opened_doors.indexOf(0)!==-1 ? 1 : 0,
@@ -1056,7 +1056,7 @@ Maze.prototype.findPath = function(origin, destination)
     var to_visit = [];
     var correct_path= null;
 
-    var doors = this.near_doors(origin.params.x, origin.params.z, true);
+    var doors = this.near_cells(origin.params.x, origin.params.z, true);
     var i=0;
     while(i<doors.length && !correct_path)
     {
@@ -1076,7 +1076,7 @@ Maze.prototype.findPath = function(origin, destination)
         var next = to_visit.shift();
         var cell = next.cell;
 
-        this.near_doors(cell.params.x, cell.params.z, true).forEach(function(door_data)
+        this.near_cells(cell.params.x, cell.params.z, true).forEach(function(door_data)
         {
             var near_cell = self.generated_doors[door_data[0]][door_data[1]];
             if(!parent_paths[near_cell.name])
@@ -1265,7 +1265,7 @@ Maze.prototype.getCollisionCallbacks = function()
         });
 
         // Add separation lines of neighbor cells
-        var doors = this.near_doors(params.x, params.z);
+        var doors = this.near_cells(params.x, params.z);
         doors.forEach(function(door)
         {
             var door_x = door[0];
