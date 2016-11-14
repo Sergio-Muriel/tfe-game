@@ -9,11 +9,12 @@ var Path = function(game, options)
     this.width = 2;
     this.height = 2;
     this.id = game.getNewId();
+    this.generated_doors = {};
 
     this.cells=[];
     this.level = {
         start_cell: { x: 0, z: 0 },
-        end_cell:  { x: 2 , z: 2},
+        end_cell:  { x: 1 , z: 1},
         cells:
         [
             { x: 0, z: 0, walls: [0,2,3,4,5] },
@@ -38,7 +39,8 @@ Path.prototype.constructor = Path;
 
 Path.prototype.get_start_pos = function()
 {
-    return this.get_cell_pos_params(this.level.start_cell);
+    console.log('get start pos');
+    return this.get_cell_pos_params({x: this.level.end_cell.x, z:this.level.end_cell.z});
 };
 
 Path.prototype.update = function(delta)
@@ -47,14 +49,8 @@ Path.prototype.update = function(delta)
 
 Path.prototype.get_end_pos = function()
 {
-    //var angle = Math.radians(30);
-    //var width = this.width*game.opt.door_size;
-    //var height = this.height*game.opt.door_size;
-
-    var result = this.get_cell_pos_params(this.level.end_cell);
-    console.log('result ',result);
-    return result;
-    //return { x: this.options.x + Math.cos(angle)*width, z: this.options.z + Math.sin(angle)*height};
+    var next_door = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 1); 
+    return this.get_cell_pos_params({x: next_door[0], z:next_door[1] });
 };
 
 Path.prototype.get_cell_pos_params = function(params)
@@ -63,32 +59,6 @@ Path.prototype.get_cell_pos_params = function(params)
     return { x: coord.x + this.options.x , z: coord.z + this.options.z, cellid: 0 };
 };
 
-
-Path.prototype.enter = function()
-{
-    if(!this.entered)
-    {
-        game.fadeinmusic(this.music);
-
-        // Create close mesh
-        var close_geo = new THREE.BoxGeometry(1, game.opt.door_size*0.5,game.opt.door_size);
-        this.close_material = this.wall_material;
-        if(game.opt.debug_level>1)
-        {
-            this.close_material = new THREE.MeshPhongMaterial({color:0xff0000, wireframe:true});
-        }
-        this.entered=true;
-        game.enterType(this);
-    }
-    this.buildNext();
-};
-
-Path.prototype.leave = function()
-{
-    game.fadeoutmusic(this.music);
-    this.entered=false;
-    console.log('leave path');
-};
 
 Path.prototype.getStaticObstacles = function()
 {
@@ -185,6 +155,10 @@ Path.prototype.build = function()
     {
         self.add_cell(cell);
     });
+
+    // Set start and end door/cell
+    this.start_i = 4;
+    this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
 
 
     this.container.position.x = current_x;
@@ -284,20 +258,6 @@ Path.prototype.build = function()
     game.scene.add(this.container);
 };
 
-Path.prototype.buildNext = function()
-{
-    if(!this.next_item)
-    {
-        var pos = this.get_end_pos();
-        this.next_item = new window[this.nextType](game, {
-            parent: this,
-            level: this.options.level+1,
-            x: pos.x,
-            z: pos.z });
-        this.next_item.build();
-    }
-
-};
 Path.prototype.unload = function()
 {
     this.next_item.options.parent = null;

@@ -90,11 +90,6 @@ Maze.prototype.build_doors = function()
             if(self.max_line<line) { self.max_line= line ; }
             total++;
             var cell =  self.create_cell({ x: row , y: 1, z:line });
-            if(!self.generated_doors[row])
-            {
-                self.generated_doors[row] = {};
-            }
-            self.generated_doors[row][line]  = cell;
         }
     }
 
@@ -694,18 +689,27 @@ Maze.prototype.get_cell_pos = function(cellid)
 
 Maze.prototype.get_end_pos = function()
 {
-    var coord = this.get_pos({ x: this.end_x - this.start_x , z: this.end_z - this.start_z });
+    var coord_close_door = this.get_coord_next_door(this.end_x, this.end_z, 1);
+    var coord = this.get_pos({ x: coord_close_door[0] - this.start_x , z: coord_close_door[1] - this.start_z });
     return { x: coord.x + this.options.x , z: coord.z + this.options.z, cellid: this.cells.length };
 };
 
 Maze.prototype.create_cell = function(params)
 {
     var self=this;
+
     var cellid = params.real_x=='outside' ? 'outside' : params.real_x*this.num_items_line + params.real_z;
 
     this.fulldepth = game.opt.door_size + game.opt.door_size*2;
     var pair = params.x%2 ? this.depth2 : 0;
     var cell = new THREE.Object3D();
+
+    if(!this.generated_doors[params.x])
+    {
+        this.generated_doors[params.x] = {};
+    }
+    this.generated_doors[params.x][params.z]  = cell;
+
     cell.id=cellid;
     cell.name='pos '+params.x+' / '+params.z;
     cell.separation_lines=[];
@@ -1410,11 +1414,13 @@ Maze.prototype.buildNext = function()
     if(!this.next_item)
     {
         var pos = this.get_end_pos();
+        var next_door = this.get_coord_next_door(pos.x ,pos.z, 1); 
+
         this.next_item = new window[this.nextType](game, {
             parent: this,
             level: this.options.level+1,
-            x: pos.x,
-            z: pos.z });
+            x: next_door[0],
+            z: next_door[1] });
         this.next_item.build();
     }
 
