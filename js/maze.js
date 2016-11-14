@@ -1148,7 +1148,7 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
         visible: game.opt.debug_level>1,
         opacity:game.opt.debug_level>1 ? 1 : 0,
         container: pivot,
-        color: 0x777777,
+        color: 0x999999 + Math.random()* 0xffffff,
         origin: { x: this.depth*( !extra_door ? .65 : .7), y: 1,  z: game.opt.door_size*separator +extra },
         destination: { x: -this.depth*(!extra_door ? .65 : .7), y: 1, z: game.opt.door_size*separator +extra }
     });
