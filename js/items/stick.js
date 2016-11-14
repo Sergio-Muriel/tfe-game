@@ -77,7 +77,6 @@ var Stick = function(game, options)
             {
                 this.remove();
                 console.log('stick picked');
-                game.focus_perso.open();
                 game.gui.add_weapon('stick');
                 play_multiple(game.assets.stick_pick_sound);
             }

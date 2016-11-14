@@ -90,7 +90,7 @@ var Game = function(opt)
         }
 
         this.perso_light.position.set(50, 50, 80);
-        this.perso_light.castShadow=opt.enable_shadow;
+        this.perso_light.castShadow=false;
         this.scene.add(this.perso_light);
 
 

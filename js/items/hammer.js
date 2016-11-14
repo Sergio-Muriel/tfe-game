@@ -77,7 +77,6 @@ var Hammer = function(game, options)
             {
                 console.log('hammer picked');
                 this.remove();
-                game.focus_perso.open();
                 game.gui.add_weapon('hammer');
                 play_multiple(game.assets.hammer_pick_sound);
             }

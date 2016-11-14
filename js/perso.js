@@ -129,6 +129,11 @@ var Perso = function(game, options)
 
     this.hand_equip = function(type)
     {
+        if(this.weapon_type===type)
+        {
+            return;
+        }
+
         var className = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase(); 
         var item  = new window[className](game, {});
 
