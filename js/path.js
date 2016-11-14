@@ -12,11 +12,13 @@ var Path = function(game, options)
 
     this.cells=[];
     this.level = {
+        start_cell: { x: 0, z: 0 },
+        end_cell:  { x: 2 , z: 2},
         cells:
         [
-            { x: 0, z: 0, walls: [0, 2, 3, ] },
-            { x: -1, z: 0, walls: [ 0, 1, 4 ,5] },
-            { x: -1, z: -1, walls: [ 2,3,4,5] },
+            { x: 0, z: 0, walls: [] },
+            { x: 1, z: 0, walls: [] },
+            { x: 1, z: 1, walls: [] },
         ]
     };
 
@@ -36,7 +38,7 @@ Path.prototype.constructor = Path;
 
 Path.prototype.get_start_pos = function()
 {
-    return { x: this.options.x, z: this.options.z};
+    return this.get_cell_pos_params(this.level.start_cell);
 };
 
 Path.prototype.update = function(delta)
@@ -45,10 +47,20 @@ Path.prototype.update = function(delta)
 
 Path.prototype.get_end_pos = function()
 {
-    var angle = Math.radians(30);
-    var width = this.width*game.opt.door_size;
-    var height = this.height*game.opt.door_size;
-    return { x: this.options.x + Math.cos(angle)*width, z: this.options.z + Math.sin(angle)*height};
+    //var angle = Math.radians(30);
+    //var width = this.width*game.opt.door_size;
+    //var height = this.height*game.opt.door_size;
+
+    var result = this.get_cell_pos_params(this.level.end_cell);
+    console.log('result ',result);
+    return result;
+    //return { x: this.options.x + Math.cos(angle)*width, z: this.options.z + Math.sin(angle)*height};
+};
+
+Path.prototype.get_cell_pos_params = function(params)
+{
+    var coord = this.get_pos({ x: params.x, z: params.z });
+    return { x: coord.x + this.options.x , z: coord.z + this.options.z, cellid: 0 };
 };
 
 
