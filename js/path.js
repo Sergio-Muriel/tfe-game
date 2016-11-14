@@ -11,8 +11,14 @@ var Path = function(game, options)
     this.id = game.getNewId();
 
     this.cells=[];
-    this.level = [
-    ];
+    this.level = {
+        cells:
+        [
+            { x: 0, z: 0, walls: [ 2, 3, ] },
+            { x: -1, z: 0, walls: [ 0, 1, 4 ,5] },
+            { x: -1, z: -1, walls: [ 2,3,4,5] },
+        ]
+    };
 
     this.floor_geom_refs = {};
     this.floor_geom = new THREE.Geometry();
@@ -132,9 +138,11 @@ Path.prototype.build = function()
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
-    this.add_cell({ x: 0, z: 0, walls: [2,3]});
-    this.add_cell({ x: -1, z: 0, walls: [0,1,4,5]});
-    this.add_cell({ x: -1, z: -1, walls: []});
+    var self=this;
+    this.level.cells.forEach(function(cell)
+    {
+        self.add_cell(cell);
+    });
 
 
     this.container.position.x = current_x;
@@ -172,7 +180,6 @@ Path.prototype.buildNext = function()
     if(!this.next_item)
     {
         var pos = this.get_end_pos();
-        console.log('build next' ,this.nextType, pos, this, this.options);
         this.next_item = new window[this.nextType](game, {
             parent: this,
             level: this.options.level+1,
