@@ -2,6 +2,7 @@
 
 ## 19
 - adding new land between mazes, with same hexagone structures
+- new ambient volume system
 
 ## 18 ?
 - switch weapon!
