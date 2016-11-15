@@ -22,7 +22,6 @@ var Path = function(game, options)
 
     this.cells=[];
     this.level = {
-        end_cell:  { x: 3 , z: 2},
         outside_cells:
         [
             { x: 0, z: 0},
@@ -38,16 +37,21 @@ var Path = function(game, options)
         extracells:
         [
         ],
+        end_cell:  { x: 3 , z: 2},
     };
     if(this.options.parent)
     {
         this.level.start_cell= { x: 0 , z: 0};
     }
 
+    var connected_end = self.get_coord_next_door(self.level.end_cell.x, self.level.end_cell.z, 4);
+
     // Auto add walls on outside cells
     this.level.outside_cells.forEach(function(cell)
     {
-        cell.walls=[];
+        cell.walls = [];
+        cell.collision_doors = [];
+        
         for(var i=0; i<6; i++)
         {
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
@@ -56,7 +60,12 @@ var Path = function(game, options)
             var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
             var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
 
-            if(!search.length && !is_start && !is_end)
+            if(is_end)
+            {
+                console.log('is end ',is_end, cell);
+                cell.collision_doors.push(1);
+            }
+            else if(!search.length && !is_start)
             {
                 cell.walls.push(self.get_opposide_door(nearcell[2]));
             }
@@ -179,6 +188,16 @@ Path.prototype.add_cell = function(params)
             }
         }
         self.walls_collision_geom.merge(collision_mesh.geometry, mesh.matrix);
+    });
+
+    params.collision_doors.forEach(function(door)
+    {
+        collision_mesh = new THREE.Mesh( game.assets.door_geo);
+        collision_mesh.position.x = cell.position.x;
+        collision_mesh.position.y = cell.position.y;
+        collision_mesh.position.z = cell.position.z;
+        self.set_mesh_orientation(collision_mesh, door);
+        self.walls_collision_geom.merge(collision_mesh.geometry, collision_mesh.matrix);
     });
 };
 

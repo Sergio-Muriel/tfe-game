@@ -1348,7 +1348,7 @@ Maze.prototype.enter = function()
         game.fadeinmusic(this.music, game.config.music_volume);
         game.fadeinmusic(this.ambient, game.config.ambient_volume);
         game.ambient_light.color = new THREE.Color(this.ambient_light_color);
-        game.ambient_light.intensity = this.ambient_light_intensity;
+        game.ambient_light.intensity = game.opt.debug_level>1 ? 1 : this.ambient_light_intensity;
         this.entered=true;
         game.enterType(this);
         if(this.options.parent)
