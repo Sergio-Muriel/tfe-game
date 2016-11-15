@@ -9,6 +9,9 @@ var Path = function(game, options)
     this.music = game.assets.path_sound;
     this.ambient = game.assets.blizzard_sound;
 
+    this.ambient_light_color = 0xffffff;
+    this.ambient_light_intensity = 0.20;
+
     this.nextType='Maze';
 
     this.num_items_line=2;

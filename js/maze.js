@@ -5,6 +5,9 @@ var Maze = function(game, options)
     this.music = game.assets.maze_sound;
     this.ambient = game.assets.cave_sound;
 
+    this.ambient_light_color =  0xd9cba2;
+    this.ambient_light_intensity =  0.20;
+
     this.options=options;
     options.maze_num = options.level+2;
 
@@ -1344,6 +1347,8 @@ Maze.prototype.enter = function()
     {
         game.fadeinmusic(this.music, game.config.music_volume);
         game.fadeinmusic(this.ambient, game.config.ambient_volume);
+        game.ambient_light.color = new THREE.Color(this.ambient_light_color);
+        game.ambient_light.intensity = this.ambient_light_intensity;
         this.entered=true;
         game.enterType(this);
         if(this.options.parent)
