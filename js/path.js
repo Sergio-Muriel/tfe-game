@@ -19,7 +19,6 @@ var Path = function(game, options)
 
     this.cells=[];
     this.level = {
-        start_cell: { x: 0, z: 0 },
         end_cell:  { x: 3 , z: 2},
         outside_cells:
         [
@@ -37,6 +36,10 @@ var Path = function(game, options)
         [
         ],
     };
+    if(this.options.parent)
+    {
+        this.level.start_cell= { x: 0 , z: 0};
+    }
 
     // Auto add walls on outside cells
     this.level.outside_cells.forEach(function(cell)
@@ -47,7 +50,7 @@ var Path = function(game, options)
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
             var search = self.level.outside_cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
 
-            var is_start = cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4;
+            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
             var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
 
             if(!search.length && !is_start && !is_end)
@@ -192,7 +195,11 @@ Path.prototype.build = function()
 
     // Set start and end door/cell
     this.start_i = 4;
-    this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
+    this.start_door=null;
+    if(this.level.start_cell)
+    {
+        this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
+    }
 
 
     this.container.position.x = current_x;

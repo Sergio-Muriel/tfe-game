@@ -1344,30 +1344,30 @@ Maze.prototype.enter = function()
     {
         game.fadeinmusic(this.music, game.config.music_volume);
         game.fadeinmusic(this.ambient, game.config.ambient_volume);
-        console.log('entering maze 2');
         this.entered=true;
         game.enterType(this);
-        game.assets.door_close_sound.play();
+        if(this.options.parent)
+        {
+            game.assets.door_close_sound.play();
+            var door_collision_mat = new THREE.MeshBasicMaterial( { color:0xffbbbb, wireframe: false, visible:game.opt.debug_level>1, transparent:true, opacity:0.5   } );
 
+            this.close_mesh = new THREE.Mesh( game.assets.dooropen_geo, door_collision_mat);
+            var close_mesh1 = new THREE.Mesh( game.assets.dooropen1_geo, new THREE.MultiMaterial(game.assets.dooropen1_mat));
 
-        var door_collision_mat = new THREE.MeshBasicMaterial( { color:0xffbbbb, wireframe: false, visible:game.opt.debug_level>1, transparent:true, opacity:0.5   } );
+            this.container.add(this.close_mesh);
+            this.container.add(close_mesh1);
 
-        this.close_mesh = new THREE.Mesh( game.assets.dooropen_geo, door_collision_mat);
-        var close_mesh1 = new THREE.Mesh( game.assets.dooropen1_geo, new THREE.MultiMaterial(game.assets.dooropen1_mat));
+            var cell = this.start_door;
+            this.close_mesh.position.x = cell.position.x;
+            this.close_mesh.position.y = cell.position.y;
+            this.close_mesh.position.z = cell.position.z;
+            this.set_mesh_orientation(this.close_mesh, this.start_i);
 
-        this.container.add(this.close_mesh);
-        this.container.add(close_mesh1);
-
-        var cell = this.start_door;
-        this.close_mesh.position.x = cell.position.x;
-        this.close_mesh.position.y = cell.position.y;
-        this.close_mesh.position.z = cell.position.z;
-        this.set_mesh_orientation(this.close_mesh, this.start_i);
-
-        close_mesh1.position.x = cell.position.x;
-        close_mesh1.position.y = cell.position.y;
-        close_mesh1.position.z = cell.position.z;
-        this.set_mesh_orientation(close_mesh1, this.start_i);
+            close_mesh1.position.x = cell.position.x;
+            close_mesh1.position.y = cell.position.y;
+            close_mesh1.position.z = cell.position.z;
+            this.set_mesh_orientation(close_mesh1, this.start_i);
+        }
     }
     this.buildNext();
 };
