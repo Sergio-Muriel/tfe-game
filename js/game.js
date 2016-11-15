@@ -488,9 +488,9 @@ var Game = function(opt)
         }
         if(audio.volume<target)
         {
-            audio.volume=Math.min(target,audio.volume+0.05);
+            audio.volume=Math.min(target,audio.volume+0.01);
             window.clearTimeout(this.fadeinmusic_timer);
-            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target, true), 100);
+            this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target, true), 10);
         }
         else
         {
@@ -502,9 +502,9 @@ var Game = function(opt)
     {
         if(audio.volume>0)
         {
-            audio.volume=Math.max(0,audio.volume-0.05);
+            audio.volume=Math.max(0,audio.volume-0.01);
             window.clearTimeout(this.fadeoutmusic_timer);
-            this.fadeoutmusic_timer = window.setTimeout(this.fadeoutmusic.bind(this, audio), 100);
+            this.fadeoutmusic_timer = window.setTimeout(this.fadeoutmusic.bind(this, audio), 10);
         }
         else
         {
