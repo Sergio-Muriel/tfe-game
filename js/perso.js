@@ -708,7 +708,6 @@ var Perso = function(game, options)
     this.update_temperature = function(delta)
     {
         delta*=0.1;
-        console.log('update ',delta);
         this.temperature = Math.max(0, this.temperature+delta);
         this.temperature = Math.min(this.max_temperature, this.temperature);
 
