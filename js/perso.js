@@ -146,8 +146,6 @@ var Perso = function(game, options)
 
         this.attack_action = this.mixer.clipAction(this.attackingClip, null ).setDuration(this.weapon_speed);
 
-        play_multiple(game.assets.weapon_switch_sound);
-
         if(this.weapon_mesh)
         {
             console.log('remove mesh ');

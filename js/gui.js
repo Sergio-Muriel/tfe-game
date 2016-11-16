@@ -36,6 +36,11 @@ Game.prototype.gui =
         {
             e.stopPropagation();
         }
+        if(this.weapons.length>1)
+        {
+            play_multiple(game.assets.weapon_switch_sound);
+        }
+
         return false;
     },
     update_loading: function(current, total)
