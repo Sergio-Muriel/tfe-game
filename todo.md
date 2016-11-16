@@ -1,4 +1,4 @@
-- better path (between mazes)
+- stamina = temperature bar. Auto loose temperature in mazes,  increase in path (with blizzard)
 - add roof (techo) of maze
 - open door animation ( clickable door - click to open if key)
 - Levels difficulties:

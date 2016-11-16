@@ -27,8 +27,8 @@ var Perso = function(game, options)
     self.max_life=game.opt.debug_level>1 ? 10000 : 100;
     self.life=self.max_life;
 
-    self.max_stamina = game.opt.debug_level>1 ? 1000 : 500;
-    self.stamina = self.max_stamina;
+    self.max_temperature = game.opt.debug_level>1 ? 1000 : 500;
+    self.temperature = self.max_temperature;
 
     self.is_attacking=false;
     self.is_opening=false;
@@ -51,7 +51,7 @@ var Perso = function(game, options)
     this.bind = function()
     {
         this.life_value = document.querySelector('.life_value');
-        this.stamina_value = document.querySelector('.staminabar_filled');
+        this.temperature_value = document.querySelector('.temperaturebar_filled');
     };
 
     this.create =function()
@@ -705,19 +705,12 @@ var Perso = function(game, options)
         console.log('running!');
     };
 
-    this.update_stamina = function(delta)
+    this.loose_temperature = function(delta)
     {
         delta*=30;
-        if(this.is_running && this.is_moving)
-        {
-            this.stamina = Math.max(0, this.stamina-delta);
-        }
-        else if(!this.is_exhausted)
-        {
-            this.stamina = Math.min(this.max_stamina, this.stamina+(delta*2));
-        }
-        
-        if(this.stamina===0 && !this.is_exhausted) {
+        this.temperature = Math.max(0, this.temperature-delta);
+
+        if(this.temperature===0 && !this.is_exhausted) {
             this.is_exhausted=true;
             this.walk();
         }
@@ -726,7 +719,7 @@ var Perso = function(game, options)
             this.is_exhausted=false;
             this.run();
         }
-        this.stamina_value.style.width=(((this.stamina/this.max_stamina)*100))+'%';
+        this.temperature_value.style.width=(((this.temperature/this.max_temperature)*100))+'%';
     };
 
 
@@ -739,8 +732,6 @@ var Perso = function(game, options)
         {
             this.move_step();
         }
-        this.update_stamina(delta);
-        this.update_weight();
     };
     this.build();
 };
