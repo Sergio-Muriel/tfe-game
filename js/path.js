@@ -267,15 +267,15 @@ Path.prototype.build = function()
         color:0x929ec4,
         map: path_wall_texture,
         shininess:0,
-        transparent: true,
-        opacity:0.5,
+        transparent: false,
+        opacity:1,
         bumpMap: path_wall_bump_texture
     });
 
     var door_material = new THREE.MeshPhongMaterial({
         bumpScale:0.5,
         map: cell_door_texture,
-        transparent: true,
+        transparent: false,
         shininess:0,
         opacity:1.0,
         bumpMap: cell_door_bump_texture

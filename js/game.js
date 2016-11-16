@@ -67,11 +67,29 @@ var Game = function(opt)
         var width = 10000;
         var height = 10000;
         var click_ground = new THREE.PlaneGeometry(width, height);
-        var material = new THREE.LineBasicMaterial( { color: 0x555555, opacity:0, transparent:true  } );
+
+        // Add floor
+        var path_floor_texture = game.assets.path_floor_texture;
+        path_floor_texture.repeat.set(0.00001, 0.00001);
+        var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+        path_floor_bump_texture.repeat.set(0.00001, 0.00001);
+
+        var floor_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            color:0x929ec4,
+            map: path_floor_texture,
+            bumpMap: path_floor_bump_texture
+        });
+        if(game.opt.debug_level>1)
+        {
+            floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+        }
+
         // Set and add the click_ground
-        this.click_ground = new THREE.Mesh(click_ground, material);
+        this.click_ground = new THREE.Mesh(click_ground, floor_material);
         this.click_ground.name='click_ground';
         this.click_ground.rotation.x = -Math.PI / 2;
+        this.click_ground.position.y=-1;
 
         this.scene.add(this.click_ground);
 
