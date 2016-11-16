@@ -1416,6 +1416,7 @@ Maze.prototype.update= function(delta)
     this.interraction_items.forEach(function(item)
     {
         item.update(delta);
+        game.focus_perso.update_temperature(-1);
     });
 };
 

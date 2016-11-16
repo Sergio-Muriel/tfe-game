@@ -705,18 +705,19 @@ var Perso = function(game, options)
         console.log('running!');
     };
 
-    this.loose_temperature = function(delta)
+    this.update_temperature = function(delta)
     {
-        delta*=30;
-        this.temperature = Math.max(0, this.temperature-delta);
+        delta*=0.1;
+        console.log('update ',delta);
+        this.temperature = Math.max(0, this.temperature+delta);
+        this.temperature = Math.min(this.max_temperature, this.temperature);
 
-        if(this.temperature===0 && !this.is_exhausted) {
-            this.is_exhausted=true;
+        if(this.temperature===0 && this.is_running)
+        {
             this.walk();
         }
-        else if(!this.mouse_clicked && this.is_exhausted && !this.is_moving)
+        else if(this.temperature>0 && !this.is_running)
         {
-            this.is_exhausted=false;
             this.run();
         }
         this.temperature_value.style.width=(((this.temperature/this.max_temperature)*100))+'%';
@@ -732,6 +733,7 @@ var Perso = function(game, options)
         {
             this.move_step();
         }
+        this.update_weight();
     };
     this.build();
 };
