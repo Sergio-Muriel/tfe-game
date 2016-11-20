@@ -19,7 +19,7 @@ var Game = function(opt)
     {
         camera_decal_x = 0;
         camera_decal_y = 300;
-        camera_decal_z = 50;
+        camera_decal_z = 80;
     }
 
     var current_item_id = 0;
