@@ -94,7 +94,7 @@ Path.prototype.get_start_pos = function()
 
 Path.prototype.update = function(delta)
 {
-    game.focus_perso.update_temperature(delta*30);
+    game.focus_perso.update_temperature(delta*500);
 };
 
 Path.prototype.get_end_pos = function()

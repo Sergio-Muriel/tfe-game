@@ -1306,9 +1306,9 @@ Maze.prototype.enter = function()
         if(this.options.parent)
         {
             game.assets.door_close_sound.play();
-            var door_collision_mat = new THREE.MeshBasicMaterial( { color:0xffbbbb, wireframe: false, visible:game.opt.debug_level>1, transparent:true, opacity:0.5   } );
+            var door_collision_mat = new THREE.MeshBasicMaterial( { visible:false    } );
 
-            this.close_mesh = new THREE.Mesh( game.assets.dooropen_geo, door_collision_mat);
+            this.close_mesh = new THREE.Mesh( game.assets.wall_geo, door_collision_mat);
             var close_mesh1 = new THREE.Mesh( game.assets.dooropen1_geo, new THREE.MultiMaterial(game.assets.dooropen1_mat));
 
             this.container.add(this.close_mesh);
@@ -1369,7 +1369,7 @@ Maze.prototype.update= function(delta)
     {
         item.update(delta);
     });
-    game.focus_perso.update_temperature(-delta);
+    game.focus_perso.update_temperature(-delta*100);
 };
 
 Maze.prototype.buildNext = function()
