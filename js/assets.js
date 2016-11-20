@@ -1,4 +1,4 @@
-var Assets = function()
+var Assets = function(opt)
 {
     this.load_meshes = [];
     this.load_textures = [];
@@ -14,6 +14,8 @@ var Assets = function()
 
     this.load = function()
     {
+        var self=this;
+
         this.add('js/meshes/wall.js','wall');
         this.add('js/meshes/wall1.js','wall1');
         this.add('js/meshes/smallwall1.js','smallwall1');
@@ -88,10 +90,136 @@ var Assets = function()
         this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 0);
         this.add_sound('sounds/ambient/cave.mp3','cave',true, 0);
 
+        return this._load().then(this.loaded.bind(this));
+    };
+    this.loaded= function()
+    {
+        console.log('loaded', this);
+        // Add floor
+        var path_floor_texture = game.assets.path_floor_texture;
+        path_floor_texture.repeat.set(0.00001, 0.00001);
+        var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+        path_floor_bump_texture.repeat.set(0.00001, 0.00001);
+
+        this.outside_floor_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            color:0x929ec4,
+            map: path_floor_texture,
+            bumpMap: path_floor_bump_texture
+        });
+        if(opt.debug_level>1)
+        {
+            this.outside_floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+        }
 
 
+        // Maze floor
+        var maze_floor_texture = game.assets.maze_floor_texture;
+        maze_floor_texture.repeat.set(2,2);
+        var maze_floor_bump_texture = game.assets.maze_floor_bump_texture;
+        maze_floor_bump_texture.repeat.set(2,2);
 
-        return this._load();
+        this.maze_floor_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            color:0xbbbbbb,
+            shininess:1,
+            map: maze_floor_texture,
+            bumpMap: maze_floor_bump_texture
+        });
+        if(opt.debug_level>1)
+        {
+            this.maze_floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+        }
+
+        // Maze cell wall
+        var cell_wall_texture = game.assets.cell_wall_texture;
+        cell_wall_texture.repeat.set(1,1);
+        var cell_wall_bump_texture = game.assets.cell_wall_bump_texture;
+        cell_wall_bump_texture.repeat.set(1,1);
+
+        this.maze_wall_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            map: cell_wall_texture,
+            shininess:0,
+            transparent: true,
+            opacity:0.5,
+            bumpMap: cell_wall_bump_texture
+        });
+
+        var cell_door_texture = game.assets.cell_door_texture;
+        cell_door_texture.repeat.set(10,10);
+        var cell_door_bump_texture = game.assets.cell_door_bump_texture;
+        cell_door_bump_texture.repeat.set(10,10);
+
+
+        this.maze_door_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            map: cell_door_texture,
+            transparent: true,
+            shininess:0,
+            opacity:1.0,
+            bumpMap: cell_door_bump_texture
+        });
+
+        if(opt.debug_level>1)
+        {
+            this.maze_wall_material = new THREE.MeshPhongMaterial({ visible: true});
+            this.maze_door_material = new THREE.MeshPhongMaterial({ visible: true});
+        }
+
+        // Path floor
+        var path_floor_texture = game.assets.path_floor_texture;
+        path_floor_texture.repeat.set(2,2);
+        var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+        path_floor_bump_texture.repeat.set(2,2);
+
+        this.path_floor_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            color:0x929ec4,
+            map: path_floor_texture,
+            bumpMap: path_floor_bump_texture
+        });
+        if(opt.debug_level>1)
+        {
+            this.path_floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+        }
+
+        // Walls + doors
+        var path_wall_texture = game.assets.path_wall_texture;
+        path_wall_texture.repeat.set(1,1);
+        var path_wall_bump_texture = game.assets.path_wall_bump_texture;
+        path_wall_bump_texture.repeat.set(1,1);
+
+        var cell_door_texture = game.assets.cell_door_texture;
+        cell_door_texture.repeat.set(10,10);
+        var cell_door_bump_texture = game.assets.cell_door_bump_texture;
+        cell_door_bump_texture.repeat.set(10,10);
+
+        game.assets.path_wall_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            color:0x929ec4,
+            map: path_wall_texture,
+            shininess:0,
+            transparent: false,
+            opacity:1,
+            bumpMap: path_wall_bump_texture
+        });
+
+        game.assets.path_door_material = new THREE.MeshPhongMaterial({
+            bumpScale:0.5,
+            map: cell_door_texture,
+            transparent: false,
+            shininess:0,
+            opacity:1.0,
+            bumpMap: cell_door_bump_texture
+        });
+        if(opt.debug_level>1)
+        {
+            wall_material = new THREE.MeshPhongMaterial({ visible: true});
+            door_material = new THREE.MeshPhongMaterial({ visible: true});
+        }
+
+
     };
 
     this.total = function()

@@ -169,71 +169,23 @@ Maze.prototype.build_doors = function()
         }
     }
 
-    var maze_floor_texture = game.assets.maze_floor_texture;
-    maze_floor_texture.repeat.set(2,2);
-    var maze_floor_bump_texture = game.assets.maze_floor_bump_texture;
-    maze_floor_bump_texture.repeat.set(2,2);
-
-    var floor_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        color:0xbbbbbb,
-        shininess:1,
-        map: maze_floor_texture,
-        bumpMap: maze_floor_bump_texture
-    });
-    if(game.opt.debug_level>1)
-    {
-        floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
-    }
     this.floor_geom.computeVertexNormals();
-    var floor = new THREE.Mesh( this.floor_geom, floor_material);
+    var floor = new THREE.Mesh( this.floor_geom, game.assets.maze_floor_material);
     floor.receiveShadow=true;
     floor.castShadow=true;
     this.container.add(floor);
 
 
-    var cell_wall_texture = game.assets.cell_wall_texture;
-    cell_wall_texture.repeat.set(1,1);
-    var cell_wall_bump_texture = game.assets.cell_wall_bump_texture;
-    cell_wall_bump_texture.repeat.set(1,1);
-
-    var cell_door_texture = game.assets.cell_door_texture;
-    cell_door_texture.repeat.set(10,10);
-    var cell_door_bump_texture = game.assets.cell_door_bump_texture;
-    cell_door_bump_texture.repeat.set(10,10);
-
-    var wall_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        map: cell_wall_texture,
-        shininess:0,
-        transparent: true,
-        opacity:0.5,
-        bumpMap: cell_wall_bump_texture
-    });
-
-    var door_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        map: cell_door_texture,
-        transparent: true,
-        shininess:0,
-        opacity:1.0,
-        bumpMap: cell_door_bump_texture
-    });
-    if(game.opt.debug_level>1)
-    {
-        wall_material = new THREE.MeshPhongMaterial({ visible: true});
-        door_material = new THREE.MeshPhongMaterial({ visible: true});
-    }
 
 
-    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]));
     wall.name='walls';
     wall.receiveShadow=true;
     wall.castShadow=true;
     wall.receiveShadow=true;
     this.container.add(wall);
 
-    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]));
     door.name='doors';
     door.receiveShadow=true;
     door.castShadow=true;
@@ -1416,8 +1368,8 @@ Maze.prototype.update= function(delta)
     this.interraction_items.forEach(function(item)
     {
         item.update(delta);
-        game.focus_perso.update_temperature(-1);
     });
+    game.focus_perso.update_temperature(-delta);
 };
 
 Maze.prototype.buildNext = function()

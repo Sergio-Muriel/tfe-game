@@ -94,7 +94,7 @@ Path.prototype.get_start_pos = function()
 
 Path.prototype.update = function(delta)
 {
-    game.focus_perso.update_temperature(10);
+    game.focus_perso.update_temperature(delta*30);
 };
 
 Path.prototype.get_end_pos = function()
@@ -230,73 +230,21 @@ Path.prototype.build = function()
     this.container.position.z = current_z;
     this.container.rotation.x = Math.radians(0);
 
-    // Add floor
-    var path_floor_texture = game.assets.path_floor_texture;
-    path_floor_texture.repeat.set(2,2);
-    var path_floor_bump_texture = game.assets.path_floor_bump_texture;
-    path_floor_bump_texture.repeat.set(2,2);
-
-    var floor_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        color:0x929ec4,
-        map: path_floor_texture,
-        bumpMap: path_floor_bump_texture
-    });
-    if(game.opt.debug_level>1)
-    {
-        floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
-    }
     this.floor_geom.computeVertexNormals();
-    var floor = new THREE.Mesh( this.floor_geom, floor_material);
+    var floor = new THREE.Mesh( this.floor_geom, game.assets.path_floor_material);
     floor.receiveShadow=true;
     floor.castShadow=true;
     this.container.add(floor);
 
-    // Walls + doors
-    var path_wall_texture = game.assets.path_wall_texture;
-    path_wall_texture.repeat.set(1,1);
-    var path_wall_bump_texture = game.assets.path_wall_bump_texture;
-    path_wall_bump_texture.repeat.set(1,1);
 
-    var cell_door_texture = game.assets.cell_door_texture;
-    cell_door_texture.repeat.set(10,10);
-    var cell_door_bump_texture = game.assets.cell_door_bump_texture;
-    cell_door_bump_texture.repeat.set(10,10);
-
-    var wall_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        color:0x929ec4,
-        map: path_wall_texture,
-        shininess:0,
-        transparent: false,
-        opacity:1,
-        bumpMap: path_wall_bump_texture
-    });
-
-    var door_material = new THREE.MeshPhongMaterial({
-        bumpScale:0.5,
-        map: cell_door_texture,
-        transparent: false,
-        shininess:0,
-        opacity:1.0,
-        bumpMap: cell_door_bump_texture
-    });
-    if(game.opt.debug_level>1)
-    {
-        wall_material = new THREE.MeshPhongMaterial({ visible: true});
-        door_material = new THREE.MeshPhongMaterial({ visible: true});
-    }
-
-
-
-    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]));
     wall.name='walls';
     wall.receiveShadow=true;
     wall.castShadow=true;
     wall.receiveShadow=true;
     this.container.add(wall);
 
-    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([wall_material, door_material]));
+    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]));
     door.name='doors';
     door.receiveShadow=true;
     door.castShadow=true;
