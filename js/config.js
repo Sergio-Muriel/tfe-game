@@ -1,7 +1,7 @@
 Game.prototype.config =
 {
-    music_volume: 0.51,
-    ambient_volume: 0.6,
+    music_volume: 0.09,
+    ambient_volume: 1.0,
 
 
     text_hit_color: 0x550000,

@@ -1,4 +1,6 @@
 - add roof (techo) of maze
+- add some fake doors to the path?
+
 - open door animation ( clickable door - click to open if key)
 - Levels difficulties:
     * 1: no weapons available, need to avoid the ennemies
