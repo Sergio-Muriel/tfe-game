@@ -3,6 +3,7 @@
 ## 19
 - adding new land between mazes, with same hexagone structures
 - new ambient volume system
+- remove stamina / temperature bar
 
 ## 18 ?
 - switch weapon!
