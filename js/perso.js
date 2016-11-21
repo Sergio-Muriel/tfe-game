@@ -27,7 +27,7 @@ var Perso = function(game, options)
     self.max_life=game.opt.debug_level>1 ? 10000 : 100;
     self.life=self.max_life;
 
-    self.max_temperature = game.opt.debug_level>1 ? 1000 : 500;
+    self.max_temperature = game.opt.debug_level>1 ? 1000 : 100;
     self.temperature = self.max_temperature;
 
     self.is_attacking=false;
@@ -197,10 +197,6 @@ var Perso = function(game, options)
                 play_multiple(game.assets.miss_sound);
             }
 
-            if(this.life===0)
-            {
-                this.die();
-            }
         }
     };
 
@@ -214,6 +210,10 @@ var Perso = function(game, options)
     this.update_life = function()
     {
         this.life_value.innerText = this.life;
+        if(this.life===0)
+        {
+            this.die();
+        }
     };
 
     this.attack=function()
@@ -246,6 +246,8 @@ var Perso = function(game, options)
 
     this.die = function()
     {
+        window.clearInterval(this.loose_life_timer);
+
         var self=this;
         // Already dead?
         if(this.is_dying)
@@ -381,12 +383,15 @@ var Perso = function(game, options)
 
     this.reload = function(pos)
     {
+        window.clearInterval(this.loose_life_timer);
+
         this.is_dead=false;
         this.is_dying=false;
         this.is_attacking=false;
         this.is_opening=false;
         this.is_moving=false;
         this.move_destination=null;
+
 
         this.life = this.max_life;
         this.update_life();
@@ -713,13 +718,23 @@ var Perso = function(game, options)
 
         if(this.temperature===0 && this.is_running)
         {
-            this.walk();
+            console.log('delta ', delta);
+            if(!this.loose_life_timer)
+            {
+                this.loose_life_timer = window.setInterval(this.loose_life.bind(this), 1000);
+            }
         }
-        else if(this.temperature>0 && !this.is_running)
+        else if(this.temperature>0)
         {
-            this.run();
+            window.clearInterval(this.loose_life_timer);
         }
         this.temperature_value.style.width=(((this.temperature/this.max_temperature)*100))+'%';
+    };
+
+    this.loose_life = function()
+    {
+        this.life= Math.max(0, this.life-1);
+        this.update_life();
     };
 
 

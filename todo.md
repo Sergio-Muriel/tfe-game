@@ -1,3 +1,4 @@
+- mark the player red, when it received a hit
 - add roof (techo) of maze
 - add some fake doors to the path?
 
