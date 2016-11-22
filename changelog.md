@@ -1,6 +1,10 @@
 # Three.js
 
-## 19
+## 21
+
+- add emissive red when the player is attacked
+
+## 20
 - adding new land between mazes, with same hexagone structures
 - new ambient volume system
 - remove stamina / temperature bar

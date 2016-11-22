@@ -34,6 +34,9 @@ var Perso = function(game, options)
     self.is_opening=false;
     self.is_moving=false;
 
+    var original_material_emissive=[];
+    var hover_material_emissive=[];
+
     this.build = function()
     {
         this.game = game;
@@ -77,6 +80,18 @@ var Perso = function(game, options)
 		var materials = game.assets.perso_mat;
 		for ( var i = 0; i < materials.length; i ++ ) {
 			var m = materials[ i ];
+			m.skinning = true;
+			m.morphTargets = true;
+		}
+        // Clone material to be able to change the texture
+        var materials=[];
+		game.assets.perso_mat.forEach(function(mat){
+            materials.push(mat.clone());
+        });
+		for ( var i = 0; i < materials.length; i ++ ) {
+			var m = materials[ i ];
+            original_material_emissive[i] = m.emissive;
+            hover_material_emissive[i] = new THREE.Color(m.emissive).add(new THREE.Color(0x331111));
 			m.skinning = true;
 			m.morphTargets = true;
 		}
@@ -183,6 +198,14 @@ var Perso = function(game, options)
         if(!this.is_dying)
         {
             var value = get_attack_value(from, this);
+
+            this.mesh.material.materials.forEach(function(material, i)
+            {
+                material.emissive = hover_material_emissive[i];
+            });
+            window.clearTimeout(this.unattacked_timer),
+            this.unattacked_timer = window.setTimeout(this.unattacked.bind(this), 100);
+
             if(value>0)
             {
                 play_multiple(game.assets[from.weapon_type+'_attack_sound']);
@@ -198,6 +221,13 @@ var Perso = function(game, options)
             }
 
         }
+    };
+    this.unattacked = function()
+    {
+        this.mesh.material.materials.forEach(function(material, i)
+        {
+            material.emissive = original_material_emissive[i];
+        });
     };
 
     this.increase_life_value = function(value)
