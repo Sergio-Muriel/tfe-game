@@ -1,3 +1,4 @@
+- add snow like / blizzard particles
 - add some fake doors to the path?
 
 - open door animation ( clickable door - click to open if key)
