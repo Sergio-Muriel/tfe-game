@@ -103,7 +103,7 @@ var Assets = function(opt)
 
         this.outside_floor_material = new THREE.MeshPhongMaterial({
             bumpScale:0.5,
-            color:0x929ec4,
+            color:0xffffff,
             map: path_floor_texture,
             bumpMap: path_floor_bump_texture
         });
