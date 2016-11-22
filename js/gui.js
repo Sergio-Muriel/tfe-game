@@ -77,7 +77,6 @@ Game.prototype.gui =
     {
         switch(e.key)
         {
-            case 'Shift' : game.focus_perso.walk(); break;
             case '1' :  this.toggle_weapon(this.bone_attachments[0],e); break;
             case '2' :  this.toggle_weapon(this.bone_attachments[1],e); break;
             case '3' :  this.toggle_weapon(this.bone_attachments[2],e); break;
