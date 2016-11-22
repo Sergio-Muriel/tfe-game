@@ -178,14 +178,14 @@ Maze.prototype.build_doors = function()
 
 
 
-    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]));
+    var wall = new THREE.Mesh( this.walls_geom, game.assets.multi_wall_material);
     wall.name='walls';
     wall.receiveShadow=true;
     wall.castShadow=true;
     wall.receiveShadow=true;
     this.container.add(wall);
 
-    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]));
+    var door = new THREE.Mesh( this.doors_geom, game.assets.multi_wall_material);
     door.name='doors';
     door.receiveShadow=true;
     door.castShadow=true;

@@ -219,6 +219,10 @@ var Assets = function(opt)
             door_material = new THREE.MeshPhongMaterial({ visible: true});
         }
 
+        // create multi materials
+        this.multi_wall_material = new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]);
+        this.multi_path_wall_material = new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]);
+
 
     };
 

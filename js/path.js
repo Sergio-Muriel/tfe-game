@@ -237,14 +237,14 @@ Path.prototype.build = function()
     this.container.add(floor);
 
 
-    var wall = new THREE.Mesh( this.walls_geom, new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]));
+    var wall = new THREE.Mesh( this.walls_geom, game.assets.multi_path_wall_material);
     wall.name='walls';
     wall.receiveShadow=true;
     wall.castShadow=true;
     wall.receiveShadow=true;
     this.container.add(wall);
 
-    var door = new THREE.Mesh( this.doors_geom, new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]));
+    var door = new THREE.Mesh( this.doors_geom, game.assets.multi_path_wall_material);
     door.name='doors';
     door.receiveShadow=true;
     door.castShadow=true;
