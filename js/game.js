@@ -426,6 +426,14 @@ var Game = function(opt)
         return Math.max(0,damage);
     };
 
+    this.add_damage_text = function(params)
+    {
+        params.fadeout = true;
+        params.anim_callback = this.inc_scale_fadeout.bind(this);
+
+        return this.add_fadeout_text(params);
+    };
+
     this.add_fadeout_text = function(params)
     {
         var text = params.text;
@@ -451,16 +459,22 @@ var Game = function(opt)
         text_mesh.position.y= delta_y + position.y;
         text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2 + position.z;
         
-        //text_mesh.rotation.x = -this.camera.rotation.x;
-        text_mesh.rotation.x=Math.radians(-90);
+        text_mesh.rotation.x = -this.camera.rotation.x + Math.radians(-90);
         text_mesh.rotation.y = -this.camera.rotation.y;
-        text_mesh.rotation.z = -this.camera.rotation.z;
+        text_mesh.rotation.z = -this.camera.rotation.z + Math.radians(5);
 
-        text_mesh.animation_function = this.inc_scale_fadeout.bind(this, text_mesh);
-        animations.push(text_mesh);
+        console.log('params ',params);
+        if(params.anim_callback)
+        {
+            text_mesh.animation_function = params.anim_callback.bind(undefined, text_mesh);
+            animations.push(text_mesh);
+        }
 
         this.scene.add(text_mesh);
-        window.setTimeout(this.remove_fadeout_text.bind(this, text_mesh), 1000);
+        if(params.fadeout)
+        {
+            window.setTimeout(this.remove_fadeout_text.bind(this, text_mesh), 1000);
+        }
     };
 
     this.inc_scale_fadeout = function(mesh)

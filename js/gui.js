@@ -70,7 +70,6 @@ Game.prototype.gui =
     {
         switch(e.key)
         {
-            case 'Shift' : game.focus_perso.run(); break;
         }
     },
     keydown: function(e)

@@ -1297,6 +1297,15 @@ Maze.prototype.enter = function()
 {
     if(!this.entered)
     {
+        game.add_fadeout_text({
+            text:'Entering '+this.options.level+' level',
+            color:game.config.text_hit_color,
+            anim_callback: function() { },
+            size: game.config.enter_size,
+            delta_y : 15,
+            position: this.container.position
+        });
+
         this.music.currentTime=0;
         this.ambient.currentTime=0;
 
