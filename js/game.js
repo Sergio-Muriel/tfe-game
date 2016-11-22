@@ -430,6 +430,7 @@ var Game = function(opt)
     {
         params.fadeout = true;
         params.anim_callback = this.inc_scale_fadeout.bind(this);
+        params.bevelSize= 0.1;
 
         return this.add_fadeout_text(params);
     };
@@ -448,8 +449,8 @@ var Game = function(opt)
             height: 0,
             curveSegments: 4,
             bevelThickness: 1,
-            bevelSize: 0.5,
-            bevelEnabled: false,
+            bevelSize: params.bevelSize || 0.1,
+            bevelEnabled: true,
             material: 0,
             extrudeMaterial: 1
         });
@@ -459,9 +460,9 @@ var Game = function(opt)
         text_mesh.position.y= delta_y + position.y;
         text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2 + position.z;
         
-        text_mesh.rotation.x = -this.camera.rotation.x + Math.radians(-90);
-        text_mesh.rotation.y = -this.camera.rotation.y;
-        text_mesh.rotation.z = -this.camera.rotation.z + Math.radians(5);
+        text_mesh.rotation.x = Math.radians(-75);
+        text_mesh.rotation.y = 0;
+        text_mesh.rotation.z = Math.radians(5);
 
         console.log('params ',params);
         if(params.anim_callback)

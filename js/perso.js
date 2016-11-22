@@ -748,7 +748,6 @@ var Perso = function(game, options)
 
         if(this.temperature===0 && this.is_running)
         {
-            console.log('delta ', delta);
             if(!this.loose_life_timer)
             {
                 this.loose_life_timer = window.setInterval(this.loose_life.bind(this), 1000);
