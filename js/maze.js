@@ -1301,11 +1301,11 @@ Maze.prototype.enter = function()
         game.add_fadeout_text({
             text:'L e v e l   '+this.options.level,
             color:game.config.enter_color,
-            //anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0.01, scale: 0.008, opacity: 0.010}),
-            anim_time: 3000,
+            anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0, scale: 0.003, opacity: 0.005}),
+            anim_time: 5000,
             bevelSize: 0.4,
             size: game.config.enter_size,
-            material: this.floor_material,
+            material: this.floor_material.clone(),
             delta_y : 5,
             position: this.container.position
         });
