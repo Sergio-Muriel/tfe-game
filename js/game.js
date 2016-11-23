@@ -429,8 +429,14 @@ var Game = function(opt)
     this.add_damage_text = function(params)
     {
         params.fadeout = true;
-        params.anim_callback = this.inc_scale_fadeout.bind(this);
-        params.bevelSize= 0.1;
+        params.anim_callback = this.inc_scale_fadeout.bind(this, { move_y: 0.10, scale:  0, opacity: 0.02});
+        params.bevelSize= 0.01;
+
+        params.delta_y=15;
+        params.size= game.config.text_hit_size;
+        params.color= game.config.text_hit_color;
+        params.anim_time = 1000;
+        console.log(' params ',params);
 
         return this.add_fadeout_text(params);
     };
@@ -443,12 +449,14 @@ var Game = function(opt)
         var position = params.position;
         var delta_y = params.delta_y;
 
+        var text_container = new THREE.Object3D();
+
         var text_geo = new THREE.TextGeometry(text , {
             font: game.assets.text_font,
             size: size,
             height: 0,
-            curveSegments: 4,
-            bevelThickness: 1,
+            curveSegments: 1,
+            bevelThickness: 0.1,
             bevelSize: params.bevelSize || 0.1,
             bevelEnabled: true,
             material: 0,
@@ -456,39 +464,49 @@ var Game = function(opt)
         });
         text_geo.computeBoundingBox();
         var text_mesh = new THREE.Mesh( text_geo, new THREE.MeshPhongMaterial({color: color}));
-        text_mesh.position.x= -( text_geo.boundingBox.max.x - text_geo.boundingBox.min.x)/2 + position.x;
-        text_mesh.position.y= delta_y + position.y;
-        text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2 + position.z;
+        text_mesh.position.x= -( text_geo.boundingBox.max.x - text_geo.boundingBox.min.x)/2;
+        text_mesh.position.y= 0;
+        text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2;
         
         text_mesh.rotation.x = Math.radians(-75);
         text_mesh.rotation.y = 0;
         text_mesh.rotation.z = Math.radians(5);
 
-        console.log('params ',params);
+        text_container.position.x = position.x;
+        text_container.position.y = position.y + delta_y;
+        text_container.position.z = position.z;
+
         if(params.anim_callback)
         {
-            text_mesh.animation_function = params.anim_callback.bind(undefined, text_mesh);
-            animations.push(text_mesh);
+            text_container.animation_function = params.anim_callback.bind(undefined, text_container, text_mesh);
+            animations.push(text_container);
+            window.setTimeout(this.remove_animation.bind(this, text_container), params.anim_time);
         }
-
-        this.scene.add(text_mesh);
-        if(params.fadeout)
-        {
-            window.setTimeout(this.remove_fadeout_text.bind(this, text_mesh), 1000);
-        }
+        text_container.add(text_mesh);
+        this.scene.add(text_container);
+        console.log('adding ',text_container);
     };
 
-    this.inc_scale_fadeout = function(mesh)
+    this.inc_scale_fadeout = function(params, container, mesh)
     {
-        mesh.position.y+=0.3;
-        mesh.scale.x+=0.05;
-        mesh.scale.y+=0.05;
-        mesh.scale.z+=0.05;
-        mesh.material.transparent=true;
-        mesh.material.opacity-=0.05;
+        if(params.move_y)
+        {
+            container.position.y+=params.move_y;
+        }
+        if(params.scale)
+        {
+            container.scale.x+=params.scale;
+            container.scale.y+=params.scale;
+            container.scale.z+=params.scale;
+        }
+        if(params.opacity)
+        {
+            mesh.material.transparent=true;
+            mesh.material.opacity-=params.opacity;
+        }
     };
 
-    this.remove_fadeout_text = function(mesh)
+    this.remove_animation = function(mesh)
     {
         this.scene.remove(mesh);
         var idx = animations.indexOf(mesh);

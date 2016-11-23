@@ -249,7 +249,7 @@ Ennemy.prototype.targeted=function(from)
                 console.log('play2', this.type);
                 play_multiple(game.assets[this.type+'_hit_sound']);
 
-                game.add_damage_text({ text:value, color:game.config.text_hit_color, size: game.config.text_hit_size, delta_y : 15,position: this.container.position});
+                game.add_damage_text({ text:value, position: this.container.position});
                 this.life= Math.max(0,this.life-value);
                 this.update_life();
             }

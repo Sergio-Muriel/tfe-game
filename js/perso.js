@@ -212,7 +212,7 @@ var Perso = function(game, options)
                 play_multiple(game.assets.hit_sound);
 
                 this.life= Math.max(0,this.life-value);
-                game.add_damage_text({ text:value, color:game.config.text_hit_color, size: game.config.text_hit_size, delta_y : 15,position: this.container.position});
+                game.add_damage_text({ text:value, position: this.container.position});
                 this.update_life();
             }
             else
