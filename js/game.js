@@ -456,7 +456,7 @@ var Game = function(opt)
             size: size,
             height: 0,
             curveSegments: 1,
-            bevelThickness: 0.1,
+            bevelThickness: 1,
             bevelSize: params.bevelSize || 0.1,
             bevelEnabled: true,
             material: 0,
