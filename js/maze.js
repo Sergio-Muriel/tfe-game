@@ -1300,11 +1300,11 @@ Maze.prototype.enter = function()
         game.add_fadeout_text({
             text:'Entering '+this.options.level+' level',
             color:game.config.text_hit_color,
-            anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0.3, scale: 0.1, opacity: 0.005}),
+            anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0.01, scale: 0.008, opacity: 0.010}),
             anim_time: 3000,
-            bevelSize: 0.6,
+            bevelSize: 0.4,
             size: game.config.enter_size,
-            delta_y : 15,
+            delta_y : game.opt.door_size,
             position: this.container.position
         });
 

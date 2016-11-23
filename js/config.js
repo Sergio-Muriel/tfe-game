@@ -10,5 +10,5 @@ Game.prototype.config =
     text_heal_color: 0x005500,
     text_heal_size: 5,
 
-    enter_size: 10
+    enter_size: 7
 };

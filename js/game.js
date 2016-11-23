@@ -81,7 +81,7 @@ var Game = function(opt)
         this.scene.add(this.camera);
 
         this.ambient_light = new THREE.PointLight(0xd9cba2, 0.15, 0, 1);
-        this.ambient_light.position.set(50, 50, 80);
+        this.ambient_light.position.set(50, 150, 80);
         this.ambient_light.castShadow=opt.enable_shadow;
         this.scene.add(this.ambient_light);
 
@@ -91,7 +91,7 @@ var Game = function(opt)
             this.ambient_light.intensity=1;
         }
 
-        this.perso_light.position.set(50, 50, 80);
+        this.perso_light.position.set(50, 150, 80);
         this.perso_light.castShadow=false;
         this.scene.add(this.perso_light);
 
