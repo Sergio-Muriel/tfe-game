@@ -4,6 +4,7 @@ var Maze = function(game, options)
     this.id = game.getNewId();
     this.music = game.assets.maze_sound;
     this.ambient = game.assets.cave_sound;
+    this.floor_material = game.assets.maze_floor_material;
 
     this.ambient_light_color =  0xd9cba2;
     this.ambient_light_intensity =  0.20;
@@ -170,7 +171,7 @@ Maze.prototype.build_doors = function()
     }
 
     this.floor_geom.computeVertexNormals();
-    var floor = new THREE.Mesh( this.floor_geom, game.assets.maze_floor_material);
+    var floor = new THREE.Mesh( this.floor_geom, this.floor_material);
     floor.receiveShadow=true;
     floor.castShadow=true;
     this.container.add(floor);
@@ -1298,13 +1299,14 @@ Maze.prototype.enter = function()
     if(!this.entered)
     {
         game.add_fadeout_text({
-            text:'Entering '+this.options.level+' level',
-            color:game.config.text_hit_color,
-            anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0.01, scale: 0.008, opacity: 0.010}),
+            text:'L e v e l   '+this.options.level,
+            color:game.config.enter_color,
+            //anim_callback: game.inc_scale_fadeout.bind(game, { move_y: 0.01, scale: 0.008, opacity: 0.010}),
             anim_time: 3000,
             bevelSize: 0.4,
             size: game.config.enter_size,
-            delta_y : game.opt.door_size,
+            material: this.floor_material,
+            delta_y : 5,
             position: this.container.position
         });
 

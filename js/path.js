@@ -8,6 +8,7 @@ var Path = function(game, options)
 
     this.music = game.assets.path_sound;
     this.ambient = game.assets.blizzard_sound;
+    this.floor_material = game.assets.path_floor_material;
 
     this.ambient_light_color = 0xffffff;
     this.ambient_light_intensity = 0.20;

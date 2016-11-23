@@ -454,7 +454,7 @@ var Game = function(opt)
         var text_geo = new THREE.TextGeometry(text , {
             font: game.assets.text_font,
             size: size,
-            height: 0,
+            height: 1,
             curveSegments: 1,
             bevelThickness: 1,
             bevelSize: params.bevelSize || 0.1,
@@ -463,14 +463,14 @@ var Game = function(opt)
             extrudeMaterial: 1
         });
         text_geo.computeBoundingBox();
-        var text_mesh = new THREE.Mesh( text_geo, new THREE.MeshPhongMaterial({color: color}));
+        var text_mesh = new THREE.Mesh( text_geo, params.material || new THREE.MeshPhongMaterial({color: color}));
         text_mesh.position.x= -( text_geo.boundingBox.max.x - text_geo.boundingBox.min.x)/2;
-        text_mesh.position.y= 0;
+        text_mesh.position.y= -( text_geo.boundingBox.max.y - text_geo.boundingBox.min.y)/2;
         text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2;
         
-        text_mesh.rotation.x = Math.radians(-75);
+        text_mesh.rotation.x = Math.radians(-90);
         text_mesh.rotation.y = 0;
-        text_mesh.rotation.z = Math.radians(5);
+        text_mesh.rotation.z = Math.radians(0);
 
         text_container.position.x = position.x;
         text_container.position.y = position.y + delta_y;
