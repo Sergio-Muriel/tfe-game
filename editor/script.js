@@ -27,7 +27,49 @@ document.getElementById('edit_map').addEventListener('click',function() { mode='
 document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; });
 document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; });
 document.getElementById('save').addEventListener('click',save);
+document.getElementById('load').addEventListener('click',load);
 
+function reset()
+{
+    var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
+    nodes.forEach(function(node)
+    {
+        if(node.getAttribute('row')!==0 || node.getAttribute('line')!==0)
+        {
+            node.classList.add('disabled');
+            node.classList.remove('end_cell');
+        }
+    });
+
+}
+function load()
+{
+    if(txt=  prompt('Level string: '))
+    {
+        try
+        {
+            reset();
+            // Fix javascript parse format
+            txt = txt.replace(/([^{}:",]+):/g,'"$1":')
+            var data= JSON.parse(txt);
+
+            if(data && data.outside_cells && data.end_cell)
+            {
+                data.outside_cells.forEach(function(cell)
+                {
+                    var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
+                    node.classList.remove('disabled');
+                });
+                node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
+                node.classList.add('end_cell');
+            }
+        }
+        catch(err)
+        {
+            alert('Error parseing the level data : '+txt);
+        }
+    }
+}
 
 function save()
 {
@@ -48,7 +90,6 @@ function save()
     });
     var node = document.querySelector('.end_cell');
     map.end_cell = { x: node.getAttribute('row'), z: node.getAttribute('line') };
-    console.log(map);
     window.open('data:text/plain,'+JSON.stringify(map).replace(/"/g,''));
 
 };
