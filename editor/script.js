@@ -1,5 +1,8 @@
 var editor = document.getElementById('editor');
 
+var selected_item=null;
+var selected_hexagone=null;
+
 for(var line=0; line<30; line++)
 {
     var l = document.createElement('div');
@@ -14,7 +17,7 @@ for(var line=0; line<30; line++)
         h.className='hexagone '+(line==0 && row==0 ? 'start_cell' : 'disabled');
         h.setAttribute('line',real_line);
         h.setAttribute('row',real_row);
-        h.addEventListener('click',toggle.bind(this,h, real_line, real_row));
+        h.addEventListener('click',toggle.bind(this,h, real_line, real_row), false);
         l.appendChild(h);
     }
     editor.appendChild(l);
@@ -24,11 +27,13 @@ for(var line=0; line<30; line++)
 
 var mode='edit_map';
 
-document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; });
-document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; });
-document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; });
-document.getElementById('save').addEventListener('click',save);
-document.getElementById('load').addEventListener('click',load);
+document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; }, false);
+document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; }, false);
+document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; }, false);
+document.getElementById('save').addEventListener('click',save, false);
+document.getElementById('load').addEventListener('click',load, false);
+document.getElementById('rotate').addEventListener('click',rotate, false);
+document.getElementById('remove').addEventListener('click',remove, false);
 
 function reset()
 {
@@ -136,12 +141,48 @@ function toggle(h, line, row, e)
             
             var left = (e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth;
             var top = (e.pageY - h.offsetTop - editorTop ) / h.offsetHeight;
+            div.setAttribute('rotate','0');
             div.style.left=(left*100)+'%';
             div.style.top=(top*100)+'%';
 
-
+            div.addEventListener('click', selectItem.bind(this, div, h), true);
+            div.click();
+            e.stopPropagation();
         }
     }
+}
+function selectItem(div, hexagone, e)
+{
+    if(selected_item)
+    {
+        selected_item.classList.remove('selected');
+    }
+    selected_item=div;
+    selected_item.classList.add('selected');
+
+    selected_hexagone = hexagone;
+
+    e.stopPropagation();
+}
+
+function rotate(e)
+{
+    var rotation = parseInt(selected_item.getAttribute('rotate'),10);
+    rotation+=10;
+
+    selected_item.style.transform='rotate('+rotation+'deg)';
+    selected_item.setAttribute('rotate',rotation);
+    console.log('rotate ennemy',e);
+    e.stopPropagation();
+}
+
+function remove(e)
+{
+    selected_item.parentElement.removeChild(selected_item);
+    selected_item=null;
+    selected_hexagone=null;
+
+    e.stopPropagation();
 }
 
 var re = /load=(.*)/;
