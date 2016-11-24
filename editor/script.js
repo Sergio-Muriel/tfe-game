@@ -27,6 +27,7 @@ for(var line=0; line<30; line++)
 
 var mode='edit_map';
 
+document.getElementById('reset').addEventListener('click',function() { if(confirm('Are you sure you want to reset the map?')) { reset(); }}, false);
 document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; }, false);
 document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; }, false);
 document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; }, false);
@@ -41,7 +42,7 @@ function reset()
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
-        if(node.getAttribute('row')!==0 || node.getAttribute('line')!==0)
+        if(node.getAttribute('row')!=="0" || node.getAttribute('line')!=="0")
         {
             node.classList.add('disabled');
             node.classList.remove('end_cell');
