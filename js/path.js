@@ -59,20 +59,6 @@ Path.prototype.get_cell_pos_params = function(params)
 };
 
 
-Path.prototype.getStaticObstacles = function()
-{
-    var meshes =  [ this.walls_collision ];
-
-    if(this.entered && this.close_mesh)
-    {
-        meshes.push(this.close_mesh);
-    }
-    return meshes;
-};
-Path.prototype.getMovingObstacles = function()
-{
-    return [];
-};
 
 Path.prototype.getCollisionCallbacks = function()
 {
@@ -86,11 +72,14 @@ Path.prototype.getCollisionCallbacks = function()
     {
         coll = coll.concat(this.options.parent.getOutsideCollisionCallbacks());
     }
+    this.interraction_items.forEach(function(item)
+    {
+        if(item.has_walk_through_callback)
+        {
+            coll.push(item.container_mesh);
+        }
+    });
     return coll;
-};
-Path.prototype.getHovers = function()
-{
-    return [];
 };
 
 Path.prototype.collisionCallbacks = function(perso,collisions)
@@ -152,29 +141,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-230}],extracells:[],end_cell:{x:3,z:0}},
-    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-60}],extracells:[],end_cell:{x:3,z:0}},
-{
-    outside_cells:
-    [
-        { x: 0, z: 0},
-        { x: 0, z: 1},
-        { x: 1, z: 0},
-        { x: 1, z: 1},
-        { x: 2, z: 1},
-        { x: 2, z: 2},
-        { x: 3, z: 0},
-        { x: 3, z: 1},
-        { x: 3, z: 2},
-    ],
-    ennemys: [
-        { x: 0, z: 0, left: 10, right: 10, rotation: 90 }
-    ],
-    extracells:
-    [
-    ],
-    end_cell:  { x: 3 , z: 2},
-}
+    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-230}],extracells:[],end_cell:{x:3,z:0}}
 ];
 
 Path.prototype.build = function()
