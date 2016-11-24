@@ -162,6 +162,12 @@ function selectItem(div, hexagone, e)
 
     selected_hexagone = hexagone;
 
+    var nodes = [...document.querySelectorAll('.selected_item_action')];
+    nodes.forEach(function(node)
+    {
+        node.removeAttribute('disabled');
+    });
+
     e.stopPropagation();
 }
 
@@ -181,6 +187,12 @@ function remove(e)
     selected_item.parentElement.removeChild(selected_item);
     selected_item=null;
     selected_hexagone=null;
+
+    var nodes = [...document.querySelectorAll('.selected_item_action')];
+    nodes.forEach(function(node)
+    {
+        node.setAttribute('disabled','');
+    });
 
     e.stopPropagation();
 }
