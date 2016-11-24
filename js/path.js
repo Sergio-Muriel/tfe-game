@@ -21,6 +21,9 @@ var Path = function(game, options)
     this.id = game.getNewId();
     this.generated_doors = {};
 
+    this.interraction_items=[];
+    this.all_interraction_items=[];
+
     this.cells=[];
 };
 
@@ -36,6 +39,10 @@ Path.prototype.get_start_pos = function()
 
 Path.prototype.update = function(delta)
 {
+    this.interraction_items.forEach(function(item)
+    {
+        item.update(delta);
+    });
     game.focus_perso.update_temperature(delta*500);
 };
 
@@ -145,18 +152,8 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:2,z:0},{x:1,z:0},{x:3,z:0},{x:5,z:0},{x:6,z:1},{x:1,z:1},{x:6,z:2},{x:1,z:2},{x:3,z:2},{x:5,z:2},{x:0,z:3},{x:2,z:3},{x:4,z:3},{x:3,z:3},{x:2,z:4},{x:4,z:4},{x:3,z:4},{x:3,z:5}],extracells:[],end_cell:{x:6,z:2}},
-{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:1,z:1},{x:2,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],extracells:[],end_cell:{x:3,z:0}},
-{
-    outside_cells:
-    [
-        { x: 0, z: 0},
-    ],
-    extracells:
-    [
-    ],
-    end_cell:  { x: 0 , z: 0},
-},
+    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-230}],extracells:[],end_cell:{x:3,z:0}},
+    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-60}],extracells:[],end_cell:{x:3,z:0}},
 {
     outside_cells:
     [
@@ -169,6 +166,9 @@ Path.prototype.levels =[
         { x: 3, z: 0},
         { x: 3, z: 1},
         { x: 3, z: 2},
+    ],
+    ennemys: [
+        { x: 0, z: 0, left: 10, right: 10, rotation: 90 }
     ],
     extracells:
     [
@@ -287,8 +287,56 @@ Path.prototype.build = function()
     this.walls_collision.name='walls';
     this.container.add(this.walls_collision);
 
+    this.add_ennemys();
+
     game.scene.add(this.container);
 };
+
+Path.prototype.add_ennemys = function()
+{
+    var self=this;
+    console.log('this level ',this.level);
+    if(this.level.ennemys)
+    {
+        this.level.ennemys.forEach(function(ennemy)
+        {
+            var coord = self.get_pos({ x: ennemy.x, z: ennemy.z });
+            var patrol_wait = (2 + Math.floor(Math.random()*4))*1000;
+
+            var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
+            var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
+
+            self.add_interraction_item('Ennemy',
+            {
+                level: game.level,
+                x: coord.x,
+                z: coord.z,
+                patrol_positions: [],
+                view_direction:  { x: view_x, z: view_z } ,
+                patrol_loop:false,
+                drops: [
+                    {
+                        type:'Stick',
+                        params:{
+                            walk_through_callback: function(){},
+                            type:'stick'
+                        }
+                    },
+                    {
+                        type:'Potion',
+                        params:{
+                            walk_through_callback: function(){},
+                            type:'potion'
+                        }
+                    }
+                ],
+                patrol_wait: patrol_wait
+            });
+        });
+    }
+};
+
+
 
 Path.prototype.play_step = function()
 {

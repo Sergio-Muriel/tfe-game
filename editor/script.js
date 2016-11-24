@@ -83,21 +83,35 @@ function save()
 {
     var map =
     {
-        outside_cells:
-        [
-        ],
-        extracells:
-        [
-        ],
+        outside_cells: [ ],
+        ennemys: [],
+        extracells: [ ],
         end_cell:  null
     };
+    // Add outside cells
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
         map.outside_cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
     });
+    // Add end node
     var node = document.querySelector('.end_cell');
     map.end_cell = { x: node.getAttribute('row'), z: node.getAttribute('line') };
+
+    // Add ennemys
+    var nodes = [...document.querySelectorAll('.ennemy')];
+    nodes.forEach(function(node)
+    {
+        var p = node.parentElement;
+        map.ennemys.push({
+            x: p.getAttribute('row'),
+            z: p.getAttribute('line'),
+            top: node.getAttribute('top'),
+            left: node.getAttribute('left'),
+            rotation: node.getAttribute('rotation'),
+        });
+    });
+
     window.open('data:text/plain,'+JSON.stringify(map).replace(/"/g,''));
 
 };
@@ -143,7 +157,9 @@ function toggle(h, line, row, e)
             
             var left = (e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth;
             var top = (e.pageY - h.offsetTop - editorTop ) / h.offsetHeight;
-            div.setAttribute('rotate','0');
+            div.setAttribute('rotation','0');
+            div.setAttribute('left', left*100);
+            div.setAttribute('top', top*100);
             div.style.left=(left*100)+'%';
             div.style.top=(top*100)+'%';
 
@@ -175,11 +191,11 @@ function selectItem(div, hexagone, e)
 
 function rotate(num,e)
 {
-    var rotation = parseInt(selected_item.getAttribute('rotate'),10);
+    var rotation = parseInt(selected_item.getAttribute('rotation'),10);
     rotation+=num;
 
     selected_item.style.transform='rotate('+rotation+'deg)';
-    selected_item.setAttribute('rotate',rotation);
+    selected_item.setAttribute('rotation',rotation);
     e.stopPropagation();
 }
 

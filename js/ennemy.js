@@ -67,8 +67,17 @@ var Ennemy = function(game, options)
 
         this.create();
 
-        var v = new THREE.Vector3(this.next_pos.x, this.next_pos.y, this.next_pos.z);
-        this.view_vector = v.sub(this.container.position);
+        if(this.next_pos)
+        {
+            var v = new THREE.Vector3(this.next_pos.x, this.next_pos.y, this.next_pos.z);
+            this.view_vector = v.sub(this.container.position);
+        }
+        else
+        {
+            var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
+            this.view_vector = v.clone().sub(this.container.position);
+            this.lookAt(v, v);
+        }
     };
 };
 
@@ -587,7 +596,7 @@ Ennemy.prototype.check_vision = function()
     }
     if(collisions.length>0)
     {
-        this.run(game.focus_perso.container.position.clone());
+        //this.run(game.focus_perso.container.position.clone());
     }
 
     this.vision.material.visible=is_near;
@@ -676,7 +685,7 @@ Ennemy.prototype.update= function(delta)
     {
         this.life_container.rotation.z += 0.03;
     }
-    if(!this.move_destination)
+    if(!this.move_destination && this.patrol_positions)
     {
         if(!this.patrol_waiting_timer)
         {
