@@ -42,9 +42,9 @@ function reset()
     });
 
 }
-function load()
+function load(txt)
 {
-    if(txt=  prompt('Level string: '))
+    if(txt || (txt=  prompt('Level string: ')))
     {
         try
         {
@@ -128,4 +128,11 @@ function toggle(h, line, row, e)
             console.log('add ennemy',(e.clientX - h.offsetLeft) / h.offsetWidth , (e.clientY - h.offsetTop)/h.offsetHeight);
         }
     }
+}
+
+var re = /load=(.*)/;
+if(result = location.href.match(re))
+{
+    console.log('result ',result);
+    load(result[1]);
 }
