@@ -8,11 +8,15 @@ var Game = function(opt)
     var renderer;
     var mazes= {};
 
+    var tick=0;
+    var options_particle;
     var animations = [];
 
     var camera_decal_x = 10;
-    var camera_decal_y = 200;
+    var camera_decal_y = 300;
     var camera_decal_z = 100;
+
+
 
     var drop_delay_multiple=50;
     if(opt.debug_level>1)
@@ -76,6 +80,33 @@ var Game = function(opt)
         this.click_ground.position.y=-1;
 
         this.scene.add(this.click_ground);
+
+        this.particleSystem = new THREE.GPUParticleSystem({
+            maxParticles: 250000
+        });
+        this.scene.add( this.particleSystem);
+
+        options_particle = {
+            position: new THREE.Vector3(),
+            positionRandomness: .3,
+            velocity: new THREE.Vector3(),
+            velocityRandomness: .5,
+            color: 0xaa88ff,
+            colorRandomness: .2,
+            turbulence: .5,
+            lifetime: 2,
+            size: 500,
+            sizeRandomness: 1
+        };
+
+        this.spawnerOptions = {
+            spawnRate: 15000,
+            horizontalSpeed: 1.5,
+            verticalSpeed: 1.33,
+            timeScale: 1
+        }
+
+
 
         this.camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000);
         this.scene.add(this.camera);
@@ -200,6 +231,24 @@ var Game = function(opt)
     // Camera refresh animation
     this.update = function(delta)
     {
+var delta = clock.getDelta() * this.spawnerOptions.timeScale;
+            tick += delta;
+
+            if (tick < 0) tick = 0;
+
+            if (delta > 0) {
+                options_particle.position.x = Math.sin(tick * this.spawnerOptions.horizontalSpeed) * 20 + 30;
+                options_particle.position.y = Math.sin(tick * this.spawnerOptions.verticalSpeed) * 10 + 30;
+                options_particle.position.z = Math.sin(tick * this.spawnerOptions.horizontalSpeed + this.spawnerOptions.verticalSpeed) * 5 + 30;
+
+                for (var x = 0; x < this.spawnerOptions.spawnRate * delta; x++) {
+                    // Yep, that's really it.   Spawning particles is super cheap, and once you spawn them, the rest of
+                    // their lifecycle is handled entirely on the GPU, driven by a time uniform updated below
+                    this.particleSystem.spawnParticle(options_particle);
+                }
+            }
+
+            this.particleSystem.update(tick);
         if(this.zoomOut)
         {
         }

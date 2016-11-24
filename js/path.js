@@ -22,6 +22,7 @@ var Path = function(game, options)
     this.generated_doors = {};
 
     this.cells=[];
+
     this.level = {
         outside_cells:
         [
