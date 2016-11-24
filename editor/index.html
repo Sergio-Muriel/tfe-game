@@ -3,6 +3,7 @@
         <style type="text/css" rel="stylesheet">
 #editor
 {
+    font-family:sans-serif;
     margin:150px 200px;
     transform:rotate(0deg);
     transform-origin:0 0;
@@ -19,6 +20,7 @@
 }
 .hexagone
 {
+    position:relative;
     display:inline-block;
     width:113px;
     height:91.7px;
@@ -34,6 +36,25 @@
                 .hexagone.end_cell
                 {
                     background-image:url(end.png);
+                }
+                .hexagone.start_cell:before
+                {
+                    content:'Start cell';
+                    position:absolute;
+                    color:white;
+                    top:50%;
+                    font-size:15px;
+                    left:50%;
+                    transform:translateX(-50%) translateY(-50%);
+                }
+                .hexagone.end_cell:before
+                {
+                    content:'End cell';
+                    position:absolute;
+                    top:50%;
+                    font-size:15px;
+                    left:50%;
+                    transform:translateX(-50%) translateY(-50%);
                 }
         </style>
     </head>
@@ -58,7 +79,7 @@
                     var real_line = Math.floor(line/2);
 
                     var h = document.createElement('div');
-                    h.className='hexagone '+(line==0 && row==0 ? '' : 'disabled');
+                    h.className='hexagone '+(line==0 && row==0 ? 'start_cell' : 'disabled');
                     h.setAttribute('line',real_line);
                     h.setAttribute('row',real_row);
                     h.addEventListener('click',toggle.bind(this,h, real_line, real_row));
