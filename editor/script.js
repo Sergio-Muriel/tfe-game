@@ -32,7 +32,8 @@ document.getElementById('mark_end').addEventListener('click',function() { mode='
 document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; }, false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
-document.getElementById('rotate').addEventListener('click',rotate, false);
+document.getElementById('rotate_moins').addEventListener('click',rotate.bind(this,10), false);
+document.getElementById('rotate_plus').addEventListener('click',rotate.bind(this,-10), false);
 document.getElementById('remove').addEventListener('click',remove, false);
 
 function reset()
@@ -171,14 +172,13 @@ function selectItem(div, hexagone, e)
     e.stopPropagation();
 }
 
-function rotate(e)
+function rotate(num,e)
 {
     var rotation = parseInt(selected_item.getAttribute('rotate'),10);
-    rotation+=10;
+    rotation+=num;
 
     selected_item.style.transform='rotate('+rotation+'deg)';
     selected_item.setAttribute('rotate',rotation);
-    console.log('rotate ennemy',e);
     e.stopPropagation();
 }
 
@@ -200,6 +200,5 @@ function remove(e)
 var re = /load=(.*)/;
 if(result = location.href.match(re))
 {
-    console.log('result ',result);
     load(result[1]);
 }
