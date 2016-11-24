@@ -1395,7 +1395,7 @@ Maze.prototype.buildNext = function()
 
         this.next_item = new window[this.nextType](game, {
             parent: this,
-            level: this.options.level+1,
+            level: this.options.level,
             x: next_door[0],
             z: next_door[1] });
         this.next_item.build();

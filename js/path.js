@@ -22,65 +22,6 @@ var Path = function(game, options)
     this.generated_doors = {};
 
     this.cells=[];
-    this.level = {
-        outside_cells:
-        [
-            { x: 0, z: 0},
-            { x: 0, z: 1},
-            { x: 1, z: 0},
-            { x: 1, z: 1},
-            { x: 2, z: 1},
-            { x: 2, z: 2},
-            { x: 3, z: 0},
-            { x: 3, z: 1},
-            { x: 3, z: 2},
-        ],
-        extracells:
-        [
-        ],
-        end_cell:  { x: 3 , z: 2},
-    };
-    if(this.options.parent)
-    {
-        this.level.start_cell= { x: 0 , z: 0};
-    }
-
-    var connected_end = self.get_coord_next_door(self.level.end_cell.x, self.level.end_cell.z, 4);
-
-    // Auto add walls on outside cells
-    this.level.outside_cells.forEach(function(cell)
-    {
-        cell.walls = [];
-        cell.collision_doors = [];
-        
-        for(var i=0; i<6; i++)
-        {
-            var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
-            var search = self.level.outside_cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
-
-            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
-            var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
-
-            if(is_end)
-            {
-                console.log('is end ',is_end, cell);
-                cell.collision_doors.push(1);
-            }
-            else if(!search.length && !is_start)
-            {
-                cell.walls.push(self.get_opposide_door(nearcell[2]));
-            }
-        }
-    });
-
-    this.walls_geom = new THREE.Geometry();
-    this.doors_geom = new THREE.Geometry();
-    this.walls_collision_geom = new THREE.Geometry();
-    this.floor_geom_refs = {};
-    this.floor_geom = new THREE.Geometry();
-
-    this.depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
-    this.depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
 };
 
 Path.prototype = Object.create(Maze.prototype);
@@ -203,8 +144,84 @@ Path.prototype.add_cell = function(params)
     });
 };
 
+Path.prototype.levels =[
+{
+    outside_cells:
+    [
+        { x: 0, z: 0},
+    ],
+    extracells:
+    [
+    ],
+    end_cell:  { x: 0 , z: 0},
+},
+{
+    outside_cells:
+    [
+        { x: 0, z: 0},
+        { x: 0, z: 1},
+        { x: 1, z: 0},
+        { x: 1, z: 1},
+        { x: 2, z: 1},
+        { x: 2, z: 2},
+        { x: 3, z: 0},
+        { x: 3, z: 1},
+        { x: 3, z: 2},
+    ],
+    extracells:
+    [
+    ],
+    end_cell:  { x: 3 , z: 2},
+}
+];
+
 Path.prototype.build = function()
 {
+    var self=this;
+    this.level = this.levels[this.options.level-1];
+    this.options.level++;
+
+    if(this.options.parent)
+    {
+        this.level.start_cell= { x: 0 , z: 0};
+    }
+
+    var connected_end = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 4);
+
+    // Auto add walls on outside cells
+    this.level.outside_cells.forEach(function(cell)
+    {
+        cell.walls = [];
+        cell.collision_doors = [];
+        
+        for(var i=0; i<6; i++)
+        {
+            var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
+            var search = self.level.outside_cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
+
+            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
+            var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
+
+            if(is_end)
+            {
+                console.log('is end ',is_end, cell);
+                cell.collision_doors.push(1);
+            }
+            else if(!search.length && !is_start)
+            {
+                cell.walls.push(self.get_opposide_door(nearcell[2]));
+            }
+        }
+    });
+
+    this.walls_geom = new THREE.Geometry();
+    this.doors_geom = new THREE.Geometry();
+    this.walls_collision_geom = new THREE.Geometry();
+    this.floor_geom_refs = {};
+    this.floor_geom = new THREE.Geometry();
+
+    this.depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
+    this.depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
     var self=this;
     var current_x = this.options.x;
     var current_z = this.options.z;
