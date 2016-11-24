@@ -145,6 +145,8 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
+{outside_cells:[{x:0,z:0},{x:2,z:0},{x:1,z:0},{x:3,z:0}],extracells:[],end_cell:{x:3,z:0}},
+{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:1,z:1},{x:2,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],extracells:[],end_cell:{x:3,z:0}},
 {
     outside_cells:
     [

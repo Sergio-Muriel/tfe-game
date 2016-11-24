@@ -11,7 +11,7 @@ var Game = function(opt)
     var animations = [];
 
     var camera_decal_x = 10;
-    var camera_decal_y = 200;
+    var camera_decal_y = 1000;
     var camera_decal_z = 100;
 
     var drop_delay_multiple=50;

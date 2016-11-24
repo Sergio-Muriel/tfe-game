@@ -1,0 +1,132 @@
+<body>
+    <head>
+        <style type="text/css" rel="stylesheet">
+#editor
+{
+    margin:150px 200px;
+    transform:rotate(0deg);
+    transform-origin:0 0;
+}
+.line
+{
+    white-space:nowrap;
+    font-size:0px;
+    margin-top:-60px;
+}
+.line-impair
+{
+    margin-left:77px;
+}
+.hexagone
+{
+    display:inline-block;
+    width:100px;
+    height:91.7px;
+    background:url(hexagone.png) center center no-repeat;
+    background-size:auto 100%;
+    margin:6px 24px;
+    opacity:1;
+}
+                .hexagone.disabled
+                {
+                    opacity:0.1;
+                }
+                .hexagone.end_cell
+                {
+                    background-image:url(end.png);
+                }
+        </style>
+    </head>
+    <html>
+
+        <div class="menu">
+            <button id="edit_map">Edit Map</button>
+            <button id="mark_end">Mark end</button>
+            <button id="save">Save</button>
+        </div>
+        <div id="editor"></div>
+        <script type="text/javascript">
+            var p = document.getElementById('editor');
+            for(var line=0; line<30; line++)
+            {
+                var l = document.createElement('div');
+                l.className='line '+(line%2 ? 'line-impair' : '');
+
+                for(var row=0; row<30; row++)
+                {
+                    var real_row = line%2===0 ? row*2  : row*2+1;
+                    var real_line = Math.floor(line/2);
+
+                    var h = document.createElement('div');
+                    h.className='hexagone '+(line==0 && row==0 ? '' : 'disabled');
+                    h.setAttribute('line',real_line);
+                    h.setAttribute('row',real_row);
+                    h.addEventListener('click',toggle.bind(this,h, real_line, real_row));
+                    l.appendChild(h);
+                }
+                p.appendChild(l);
+
+            }
+
+
+var mode='edit_map';
+
+document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; });
+document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; });
+document.getElementById('save').addEventListener('click',save);
+
+
+function save()
+{
+    var map =
+    {
+        outside_cells:
+        [
+        ],
+        extracells:
+        [
+        ],
+        end_cell:  null
+    };
+    var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
+    nodes.forEach(function(node)
+    {
+        map.outside_cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
+    });
+    var node = document.querySelector('.end_cell');
+    map.end_cell = { x: node.getAttribute('row'), z: node.getAttribute('line') };
+    console.log(map);
+    window.open('data:text/plain,'+JSON.stringify(map).replace(/"/g,''));
+
+};
+
+function toggle(h, line, row)
+{
+    if(mode=='edit_map')
+    {
+        if(h.classList.contains('disabled'))
+        {
+            h.classList.remove('disabled');
+        }
+        else
+        {
+            h.classList.add('disabled');
+        }
+    }
+    else
+    {
+        if(h.classList.contains('disabled'))
+        {
+            return;
+        }
+        var nodes = [...document.querySelectorAll('.hexagone')];
+        nodes.forEach(function(node)
+        {
+            node.classList.remove('end_cell');
+        });
+        h.classList.add('end_cell');
+    }
+}
+        </script>
+    </html>
+</body>
