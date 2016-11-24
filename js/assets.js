@@ -109,7 +109,7 @@ var Assets = function(opt)
         });
         if(opt.debug_level>1)
         {
-            this.outside_floor_material = new THREE.MeshPhongMaterial({ color:0x555555, visible: true});
+            this.outside_floor_material = new THREE.MeshPhongMaterial({ color:0x000000, visible: true});
         }
 
 
