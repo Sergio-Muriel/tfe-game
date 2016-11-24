@@ -1,4 +1,5 @@
-var p = document.getElementById('editor');
+var editor = document.getElementById('editor');
+
 for(var line=0; line<30; line++)
 {
     var l = document.createElement('div');
@@ -16,7 +17,7 @@ for(var line=0; line<30; line++)
         h.addEventListener('click',toggle.bind(this,h, real_line, real_row));
         l.appendChild(h);
     }
-    p.appendChild(l);
+    editor.appendChild(l);
 
 }
 
@@ -125,7 +126,20 @@ function toggle(h, line, row, e)
         }
         else if(mode=='add_ennemy')
         {
-            console.log('add ennemy',(e.clientX - h.offsetLeft) / h.offsetWidth , (e.clientY - h.offsetTop)/h.offsetHeight);
+            var div = document.createElement('div');
+            div.className='ennemy';
+            div.innerText='Ennemy';
+            h.appendChild(div);
+
+            var editorLeft =  editor.offsetLeft;
+            var editorTop =  editor.offsetTop;
+            
+            var left = (e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth;
+            var top = (e.pageY - h.offsetTop - editorTop ) / h.offsetHeight;
+            div.style.left=(left*100)+'%';
+            div.style.top=(top*100)+'%';
+
+
         }
     }
 }
