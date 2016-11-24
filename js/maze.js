@@ -10,7 +10,7 @@ var Maze = function(game, options)
     this.ambient_light_intensity =  0.20;
 
     this.options=options;
-    options.maze_num = options.level;
+    options.maze_num = game.level;
 
     this.outside_separators = [];
     this.nextType='Path';
@@ -135,7 +135,7 @@ Maze.prototype.build_doors = function()
                 {
                     var id = -current+2;
                     self.add_interraction_item('Chest',{
-                        level: self.options.level,
+                        level: game.level,
                         mazeid: self.id,
                         cellid: cellid,
                         type: 'chest',
@@ -419,7 +419,7 @@ Maze.prototype.game_doors = function(currentid, subnodes)
             var patrol_wait = (2 + this.loadSaveRandom(Math.floor(Math.random()*4)))*1000;
             this.add_interraction_item('Ennemy',
             {
-                level: this.options.level,
+                level: game.level,
                 x: patrol_positions[0].x,
                 z: patrol_positions[0].z,
                 patrol_positions: patrol_positions,
@@ -1299,7 +1299,7 @@ Maze.prototype.enter = function()
     if(!this.entered)
     {
         this.level_text = game.add_fadeout_text({
-            text:'L e v e l   '+this.options.level,
+            text:'L e v e l   '+game.level,
             color:game.config.enter_color,
             bevelSize: 0.4,
             size: game.config.enter_size,
@@ -1388,6 +1388,7 @@ Maze.prototype.update= function(delta)
 
 Maze.prototype.buildNext = function()
 {
+    game.level++;
     if(!this.next_item)
     {
         var pos = this.get_end_pos();
@@ -1395,7 +1396,6 @@ Maze.prototype.buildNext = function()
 
         this.next_item = new window[this.nextType](game, {
             parent: this,
-            level: this.options.level,
             x: next_door[0],
             z: next_door[1] });
         this.next_item.build();

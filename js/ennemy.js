@@ -26,8 +26,8 @@ var Ennemy = function(game, options)
 
     this.weapon_defense = 0.1;
 
-    this.life=10;
     this.max_life=10;
+    this.life=this.max_life;
 
     this.is_running= false;
     this.running_timer= null;
