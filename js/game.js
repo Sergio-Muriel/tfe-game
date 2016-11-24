@@ -484,7 +484,7 @@ var Game = function(opt)
         }
         text_container.add(text_mesh);
         this.scene.add(text_container);
-        console.log('adding ',text_container);
+        return text_container;
     };
 
     this.inc_scale_fadeout = function(params, container, mesh)
