@@ -10,7 +10,7 @@ var Maze = function(game, options)
     this.ambient_light_intensity =  0.20;
 
     this.options=options;
-    options.maze_num = options.level+2;
+    options.maze_num = options.level;
 
     this.outside_separators = [];
     this.nextType='Path';
@@ -233,7 +233,7 @@ Maze.prototype.get_random_start_end = function()
     x= this.max_row;
 
     // End door
-    while(!this.generated_doors[x] || !this.generated_doors[x][z] || (this.start_x===x && this.start_z===z))
+    while(!this.generated_doors[x] || !this.generated_doors[x][z])
     {
         z = this.loadSaveRandom(Math.floor(Math.random()*(this.max_line+1)));
     }
