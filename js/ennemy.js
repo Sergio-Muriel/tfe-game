@@ -596,7 +596,7 @@ Ennemy.prototype.check_vision = function()
     }
     if(collisions.length>0)
     {
-        //this.run(game.focus_perso.container.position.clone());
+        this.run(game.focus_perso.container.position.clone());
     }
 
     this.vision.material.visible=is_near;
