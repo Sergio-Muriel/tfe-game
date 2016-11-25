@@ -325,7 +325,7 @@ function build_form()
     attributes.forEach(function(attribute)
     {
         var div =document.createElement('div');
-        div.innerHTML='<div><label>'+attribute.name+'</label><input type="text" value="'+attribute.value+'" /> </div>';
+        div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
         container.appendChild(div);
     });
 }
@@ -360,6 +360,10 @@ function remove(e)
 function edit_submit()
 {
     console.log('save!');
+    [...document.querySelectorAll('#edit_item input')].forEach(function(input)
+    {
+        selected_item.setAttribute(input.name,input.value);
+    });
 }
 
 var re = /load=(.*)/;
