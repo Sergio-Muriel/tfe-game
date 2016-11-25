@@ -124,13 +124,30 @@ function save()
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
-        map.ennemys.push({
+        var e_id = node.getAttribute('ennemy_id');
+        var ennemy = 
+        {
             x: p.getAttribute('row'),
             z: p.getAttribute('line'),
             top: node.getAttribute('top'),
             left: node.getAttribute('left'),
+            patrol_positions : [],
             rotation: node.getAttribute('rotation'),
+        };
+        // Add patrol positions if any
+        var patrols = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')];
+        patrols.forEach(function(patrol)
+        {
+            var parent_patrol = patrol.parentElement;
+            ennemy.patrol_positions.push(
+            {
+                x: parent_patrol.getAttribute('row'),
+                z: parent_patrol.getAttribute('line'),
+                top: node.getAttribute('top'),
+                left: node.getAttribute('left'),
+            });
         });
+        map.ennemys.push(ennemy);
     });
 
     window.open('data:text/plain,'+JSON.stringify(map).replace(/"/g,''));
