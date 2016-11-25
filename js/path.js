@@ -140,7 +140,8 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:2,z:0},{x:1,z:0},{x:0,z:1},{x:2,z:1},{x:1,z:1}],ennemys:[{x:2,z:0,top:0.41,left:0.5,patrol_positions:[{x:0,z:1,top:0.41,left:0.5},{x:1,z:1,top:0.41,left:0.5}],rotation:0},{x:1,z:0,top:0.55,left:0.52,patrol_positions:[],rotation:0}],extracells:[],end_cell:{x:2,z:1}}
+{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:5,z:0},{x:2,z:1},{x:6,z:1},{x:5,z:1},{x:2,z:2},{x:4,z:2},{x:6,z:2},{x:1,z:2},{x:3,z:2},{x:0,z:3},{x:3,z:3},{x:3,z:4}],ennemys:[{x:1,z:0,top:0.49,left:0.03,patrol_positions:[],rotation:0}],extracells:[],end_cell:{x:6,z:2}}
+
 ];
 
 Path.prototype.build = function()
@@ -276,16 +277,16 @@ Path.prototype.add_ennemys = function()
             {
                 var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
                 patrols.push({
-                    x: coord_pat.x + self.depth2 * patrol.left - (self.depth2/2),
+                    x: coord_pat.x + (self.depth2 * patrol.left)*2 - self.depth2,
                     y: 1,
-                    z: coord_pat.z + self.depth2 * patrol.left - (self.depth2/2)
+                    z: coord_pat.z + (self.depth * patrol.left)*2 - self.depth
                 });
             });
             self.add_interraction_item('Ennemy',
             {
                 level: game.level,
-                x: coord.x + self.depth2 * ennemy.left - (self.depth2/2),
-                z: coord.z + self.depth2 * ennemy.top - (self.depth2/2),
+                x: coord.x + (self.depth2 * ennemy.left)*2 - (self.depth2),
+                z: coord.z + (self.depth * ennemy.top)*2 - (self.depth),
                 patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
                 patrol_loop:true,
