@@ -165,7 +165,9 @@ function toggle(h, line, row, e)
         }
         else
         {
-            if(!h.classList.contains('end_cell'))
+            var row = h.getAttribute('row');
+            var line = h.getAttribute('line');
+            if(!h.classList.contains('end_cell') && (row!='0' || line!='0'))
             {
                 h.classList.add('disabled');
             }
