@@ -84,13 +84,24 @@ function load(txt)
 
             if(data && data.outside_cells && data.end_cell)
             {
+                // Load walls
                 data.outside_cells.forEach(function(cell)
                 {
                     var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
                     node.classList.remove('disabled');
                 });
+
+                // Load end cell
                 node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
                 node.classList.add('end_cell');
+
+                // Load ennemys + patrol points
+                data.ennemys.forEach(function(ennemy)
+                {
+                    var node = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
+                    self.add_ennemy(node, ennemy.top, ennemy.left, ennemy.rotation);
+                });
+
             }
         }
         catch(err)
@@ -189,30 +200,14 @@ function toggle(h, line, row, e)
         {
             return;
         }
-        console.log('test = ',ennemy_id);
-        ennemy_id++;
-
-        var div = document.createElement('div');
-        div.className='ennemy';
-        div.setAttribute('ennemy_id', ennemy_id);
-        div.innerText='E.'+(ennemy_id);
-        h.appendChild(div);
-
         var editorLeft =  editor.offsetLeft;
         var editorTop =  editor.offsetTop;
-        
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        div.setAttribute('rotation','0');
-        div.setAttribute('left', left);
-        div.setAttribute('top', top);
-        div.style.left=(left*100)+'%';
-        div.style.top=(top*100)+'%';
 
-        div.addEventListener('click', selectItem.bind(this, div, h), true);
-        div.click();
+        this.add_ennemy(h, top, left, 0);
+
         e.stopPropagation();
-        update_ennemy_list();
     }
     else if(mode=='add_patrol_point')
     {
@@ -230,8 +225,6 @@ function toggle(h, line, row, e)
         div.innerText='P.'+num;
         h.appendChild(div);
 
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
         
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
@@ -248,6 +241,31 @@ function toggle(h, line, row, e)
         console.log('added patrol point');
         e.stopPropagation();
     }
+}
+
+function add_ennemy(h, top, left, rotation)
+{
+        ennemy_id++;
+
+        var div = document.createElement('div');
+        div.className='ennemy';
+        div.setAttribute('ennemy_id', ennemy_id);
+        div.innerText='E.'+(ennemy_id);
+        h.appendChild(div);
+
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        
+        div.setAttribute('rotation',rotation);
+        div.style.transform='rotate('+rotation+'deg)';
+        div.setAttribute('left', left);
+        div.setAttribute('top', top);
+        div.style.left=(parseFloat(left)*100)+'%';
+        div.style.top=(parseFloat(top)*100)+'%';
+
+        div.addEventListener('click', selectItem.bind(this, div, h), true);
+        div.click();
+        update_ennemy_list();
 }
 
 function selectItem(div, hexagone, e)
