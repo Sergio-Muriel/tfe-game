@@ -37,6 +37,7 @@ document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('rotate_moins').addEventListener('click',rotate.bind(this,10), false);
 document.getElementById('rotate_plus').addEventListener('click',rotate.bind(this,-10), false);
 document.getElementById('remove').addEventListener('click',remove, false);
+document.getElementById('edit_submit').addEventListener('click',edit_submit, false);
 
 
 var ennemy_id = 0;
@@ -241,6 +242,7 @@ function add_patrol_point(h, e_id, top, left)
     var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
     var div = document.createElement('div');
     div.className='patrol_point';
+    div.setAttribute('type','patrol_point');
     div.innerText='E.'+e_id+' - p'+num;
     h.appendChild(div);
 
@@ -264,6 +266,7 @@ function add_ennemy(h, top, left, rotation)
 
         var div = document.createElement('div');
         div.className='ennemy';
+        div.setAttribute('type','ennemy');
         div.setAttribute('ennemy_id', ennemy_id);
         div.innerText='E.'+(ennemy_id);
         h.appendChild(div);
@@ -292,6 +295,7 @@ function selectItem(div, hexagone, e)
     }
     selected_item=div;
     selected_item.classList.add('selected');
+    document.getElementById('edit_submit').removeAttribute('disabled');
 
     selected_hexagone = hexagone;
 
@@ -308,8 +312,22 @@ function selectItem(div, hexagone, e)
             node.removeAttribute('disabled');
         });
     }
+    this.build_form();
 
     e.stopPropagation();
+}
+
+function build_form()
+{
+    var container = document.getElementById('edit_item');
+    container.innerText='';
+    var attributes = Array.prototype.slice.call(selected_item.attributes);
+    attributes.forEach(function(attribute)
+    {
+        var div =document.createElement('div');
+        div.innerHTML='<div>'+attribute.name+' <input type="text" value="'+attribute.value+'" /> </div>';
+        container.appendChild(div);
+    });
 }
 
 function rotate(num,e)
@@ -333,9 +351,15 @@ function remove(e)
     {
         node.setAttribute('disabled','');
     });
+    document.getElementById('edit_submit').setAttribute('disabled','disabled');
 
     e.stopPropagation();
     update_ennemy_list();
+}
+
+function edit_submit()
+{
+    console.log('save!');
 }
 
 var re = /load=(.*)/;
