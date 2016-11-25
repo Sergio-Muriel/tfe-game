@@ -328,6 +328,11 @@ function build_form()
         div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
         container.appendChild(div);
     });
+    [...document.querySelectorAll('#edit_item input')].forEach(function(input)
+    {
+        input.addEventListener('submit', edit_submit);
+        input.addEventListener('keyup', edit_submit);
+    });
 }
 
 function rotate(num,e)
