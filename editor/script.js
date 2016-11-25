@@ -98,14 +98,20 @@ function load(txt)
                 // Load ennemys + patrol points
                 data.ennemys.forEach(function(ennemy)
                 {
-                    var node = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
-                    self.add_ennemy(node, ennemy.top, ennemy.left, ennemy.rotation);
+                    var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
+                    var e_id = self.add_ennemy(ennemynode, ennemy.top, ennemy.left, ennemy.rotation);
+                    ennemy.patrol_positions.forEach(function(patrol)
+                    {
+                        var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
+                        self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
+                    });
                 });
 
             }
         }
         catch(err)
         {
+            console.error('error loading ',txt, err, this);
             alert('Error parseing the level data : '+txt);
         }
     }
@@ -216,31 +222,40 @@ function toggle(h, line, row, e)
             return;
         }
 
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+
         var c = document.getElementById('ennemy_list');
         var e_id =  c.options[c.selectedIndex].value;
 
-        var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
-        var div = document.createElement('div');
-        div.className='patrol_point';
-        div.innerText='P.'+num;
-        h.appendChild(div);
+        self.add_patrol_point(h, e_id, top, left);
 
-        
-        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
-        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        div.setAttribute('rotation','0');
-        div.setAttribute('left', left);
-        div.setAttribute('ennemy_id', e_id);
-        div.setAttribute('patrol_id', num);
-        div.setAttribute('top', top);
-        div.style.left=(left*100)+'%';
-        div.style.top=(top*100)+'%';
-
-        div.addEventListener('click', selectItem.bind(this, div, h), true);
-        div.click();
-        console.log('added patrol point');
         e.stopPropagation();
     }
+}
+
+function add_patrol_point(h, e_id, top, left)
+{
+    var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
+    var div = document.createElement('div');
+    div.className='patrol_point';
+    div.innerText='P.'+num;
+    h.appendChild(div);
+
+
+    div.setAttribute('rotation','0');
+    div.setAttribute('left', left);
+    div.setAttribute('ennemy_id', e_id);
+    div.setAttribute('patrol_id', num);
+    div.setAttribute('top', top);
+    div.style.left=(left*100)+'%';
+    div.style.top=(top*100)+'%';
+
+    div.addEventListener('click', selectItem.bind(this, div, h), true);
+    div.click();
+    console.log('added patrol point');
 }
 
 function add_ennemy(h, top, left, rotation)
@@ -266,6 +281,7 @@ function add_ennemy(h, top, left, rotation)
         div.addEventListener('click', selectItem.bind(this, div, h), true);
         div.click();
         update_ennemy_list();
+        return ennemy_id;
 }
 
 function selectItem(div, hexagone, e)
