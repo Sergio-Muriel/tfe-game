@@ -265,7 +265,7 @@ Path.prototype.add_ennemys = function()
     {
         this.level.ennemys.forEach(function(ennemy)
         {
-            var coord = self.get_pos({ x: ennemy.x, z: ennemy.z });
+            var coord = self.get_cell_pos_params({ x: ennemy.x, z: ennemy.z });
             var patrol_wait = (2 + Math.floor(Math.random()*4))*1000;
 
             var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
@@ -274,7 +274,7 @@ Path.prototype.add_ennemys = function()
             var patrols = [];
             ennemy.patrol_positions.forEach(function(patrol)
             {
-                var coord_pat = self.get_pos({ x: patrol.x, z: patrol.z });
+                var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
                 patrols.push({
                     x: coord_pat.x + self.depth2 * patrol.left - (self.depth2/2),
                     y: 1,
