@@ -33,7 +33,7 @@ Path.prototype.constructor = Path;
 
 Path.prototype.get_start_pos = function()
 {
-    return this.get_cell_pos_params({x: this.level.end_cell.x, z:this.level.end_cell.z});
+    return this.get_cell_pos_params({x: 0, z:0});
 };
 
 Path.prototype.update = function(delta)
