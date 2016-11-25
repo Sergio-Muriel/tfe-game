@@ -31,11 +31,31 @@ document.getElementById('reset').addEventListener('click',function() { if(confir
 document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; }, false);
 document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; }, false);
 document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; }, false);
+document.getElementById('add_patrol_point').addEventListener('click',function() { mode='add_patrol_point'; }, false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('rotate_moins').addEventListener('click',rotate.bind(this,10), false);
 document.getElementById('rotate_plus').addEventListener('click',rotate.bind(this,-10), false);
 document.getElementById('remove').addEventListener('click',remove, false);
+
+
+var ennemy_id = 0;
+var has_ennemy = false;
+function update_ennemy_list()
+{
+    has_ennemy=false;
+    var c = document.getElementById('ennemy_list');
+    c.innerText='';
+    var nodes = [...document.querySelectorAll('.ennemy')];
+    nodes.forEach(function(node)
+    {
+        has_ennemy=true;
+        var opt = document.createElement('option');
+        opt.setAttribute('value', node.getAttribute('ennemy_id'));
+        opt.innerText =  node.innerText;
+        c.appendChild(opt);
+    });
+}
 
 function reset()
 {
@@ -119,6 +139,7 @@ function save()
 
 function toggle(h, line, row, e)
 {
+    console.log('toggle ',mode);
     if(mode=='edit_map')
     {
         if(h.classList.contains('disabled'))
@@ -133,47 +154,83 @@ function toggle(h, line, row, e)
             }
         }
     }
-    else
+    else if(mode=='mark_end')
     {
-        if(mode=='mark_end')
+        var nodes = [...document.querySelectorAll('.hexagone')];
+        nodes.forEach(function(node)
         {
-            var nodes = [...document.querySelectorAll('.hexagone')];
-            nodes.forEach(function(node)
-            {
-                node.classList.remove('end_cell');
-            });
-            h.classList.add('end_cell');
-            h.classList.remove('disabled');
-        }
-        else if(mode=='add_ennemy')
+            node.classList.remove('end_cell');
+        });
+        h.classList.add('end_cell');
+        h.classList.remove('disabled');
+    }
+    else if(mode=='add_ennemy')
+    {
+        if(h.classList.contains('disabled'))
         {
-            if(h.classList.contains('disabled'))
-            {
-                return;
-            }
-
-            var div = document.createElement('div');
-            div.className='ennemy';
-            div.innerText='Ennemy';
-            h.appendChild(div);
-
-            var editorLeft =  editor.offsetLeft;
-            var editorTop =  editor.offsetTop;
-            
-            var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
-            var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-            div.setAttribute('rotation','0');
-            div.setAttribute('left', left);
-            div.setAttribute('top', top);
-            div.style.left=(left*100)+'%';
-            div.style.top=(top*100)+'%';
-
-            div.addEventListener('click', selectItem.bind(this, div, h), true);
-            div.click();
-            e.stopPropagation();
+            return;
         }
+        console.log('test = ',ennemy_id);
+        ennemy_id++;
+
+        var div = document.createElement('div');
+        div.className='ennemy';
+        div.setAttribute('ennemy_id', ennemy_id);
+        div.innerText='E.'+(ennemy_id);
+        h.appendChild(div);
+
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        
+        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        div.setAttribute('rotation','0');
+        div.setAttribute('left', left);
+        div.setAttribute('top', top);
+        div.style.left=(left*100)+'%';
+        div.style.top=(top*100)+'%';
+
+        div.addEventListener('click', selectItem.bind(this, div, h), true);
+        div.click();
+        e.stopPropagation();
+        update_ennemy_list();
+    }
+    else if(mode=='add_patrol_point')
+    {
+        if(h.classList.contains('disabled') || !has_ennemy)
+        {
+            return;
+        }
+
+        var c = document.getElementById('ennemy_list');
+        var e_id =  c.options[c.selectedIndex].value;
+
+        var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
+        var div = document.createElement('div');
+        div.className='patrol_point';
+        div.innerText='P.'+num;
+        h.appendChild(div);
+
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        
+        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        div.setAttribute('rotation','0');
+        div.setAttribute('left', left);
+        div.setAttribute('ennemy_id', e_id);
+        div.setAttribute('patrol_id', num);
+        div.setAttribute('top', top);
+        div.style.left=(left*100)+'%';
+        div.style.top=(top*100)+'%';
+
+        div.addEventListener('click', selectItem.bind(this, div, h), true);
+        div.click();
+        console.log('added patrol point');
+        e.stopPropagation();
     }
 }
+
 function selectItem(div, hexagone, e)
 {
     if(selected_item)
@@ -190,6 +247,14 @@ function selectItem(div, hexagone, e)
     {
         node.removeAttribute('disabled');
     });
+    if(selected_item.classList.contains('ennemy'))
+    {
+        var nodes = [...document.querySelectorAll('.ennemy_action')];
+        nodes.forEach(function(node)
+        {
+            node.removeAttribute('disabled');
+        });
+    }
 
     e.stopPropagation();
 }
@@ -210,13 +275,14 @@ function remove(e)
     selected_item=null;
     selected_hexagone=null;
 
-    var nodes = [...document.querySelectorAll('.selected_item_action')];
+    var nodes = [...document.querySelectorAll('.selected_item_action, .ennemy_action')];
     nodes.forEach(function(node)
     {
         node.setAttribute('disabled','');
     });
 
     e.stopPropagation();
+    update_ennemy_list();
 }
 
 var re = /load=(.*)/;

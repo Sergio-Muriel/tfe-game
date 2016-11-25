@@ -5,7 +5,7 @@
     transform:rotate(0deg);
     transform-origin:0 0;
 }
-.menu button, .submenu button
+.menu *, .submenu *,
 {
     font-size:10px;
     padding:0px 3px;
@@ -63,13 +63,22 @@
     left:50%;
     transform:translateX(-50%) translateY(-50%);
 }
-.ennemy
+.ennemy,
+.patrol_point
 {
+    font-size:9px;
+    color:white;
     position:absolute;
     width:10px;
     height:15px;
-    background:url(ennemy.png) center center no-repeat;
-    background-size:contain;
+    padding:15px 1px 0px 1px;
+    background:url(ennemy.png) top center no-repeat;
+    background-size:10px;
+}
+
+.patrol_point
+{
+    background-image:url(patrol_point.png);
 }
 .selected
 {
