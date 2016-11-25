@@ -141,7 +141,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:70.65217391304348,left:58.4070796460177,rotation:-230}],extracells:[],end_cell:{x:3,z:0}}
+{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:0.07,left:0.28,rotation:0}],extracells:[],end_cell:{x:3,z:0}}
 ];
 
 Path.prototype.build = function()
@@ -273,11 +273,13 @@ Path.prototype.add_ennemys = function()
             var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
             var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
 
+            console.log('here');
+            console.log('test = ', coord.x + game.opt.door_size * ennemy.left);
             self.add_interraction_item('Ennemy',
             {
                 level: game.level,
-                x: coord.x,
-                z: coord.z,
+                x: coord.x + self.depth2 * ennemy.left - (self.depth2/2),
+                z: coord.z + self.depth2 * ennemy.top - (self.depth2/2),
                 patrol_positions: [],
                 view_direction:  { x: view_x, z: view_z } ,
                 patrol_loop:false,

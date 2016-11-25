@@ -155,11 +155,11 @@ function toggle(h, line, row, e)
             var editorLeft =  editor.offsetLeft;
             var editorTop =  editor.offsetTop;
             
-            var left = (e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth;
-            var top = (e.pageY - h.offsetTop - editorTop ) / h.offsetHeight;
+            var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+            var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
             div.setAttribute('rotation','0');
-            div.setAttribute('left', left*100);
-            div.setAttribute('top', top*100);
+            div.setAttribute('left', left);
+            div.setAttribute('top', top);
             div.style.left=(left*100)+'%';
             div.style.top=(top*100)+'%';
 
