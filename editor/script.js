@@ -46,6 +46,7 @@ function reset()
         {
             node.classList.add('disabled');
             node.classList.remove('end_cell');
+            node.innerText='';
         }
     });
 
