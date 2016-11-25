@@ -325,7 +325,7 @@ function build_form()
     attributes.forEach(function(attribute)
     {
         var div =document.createElement('div');
-        div.innerHTML='<div>'+attribute.name+' <input type="text" value="'+attribute.value+'" /> </div>';
+        div.innerHTML='<div><label>'+attribute.name+'</label><input type="text" value="'+attribute.value+'" /> </div>';
         container.appendChild(div);
     });
 }

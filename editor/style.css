@@ -17,6 +17,11 @@
     font-size:10px;
     padding:0px 3px;
 }
+#edit_item label
+{
+    display:inline-block;
+    width:50px;
+}
 .line
 {
     white-space:nowrap;
