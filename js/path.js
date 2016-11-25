@@ -140,7 +140,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:1,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:2,z:2}],ennemys:[{x:1,z:0,top:0.33,left:0.57,patrol_positions:[{x:1,z:0,top:0.60,left:0.36},{x:1,z:1,top:0.30,left:0.35},{x:1,z:1,top:0.76,left:0.26},{x:1,z:1,top:0.80,left:0.65},{x:1,z:1,top:0.99,left:0.96},{x:2,z:2,top:0.82,left:0.28},{x:2,z:2,top:0.86,left:0.66},{x:2,z:2,top:0.50,left:0.76},{x:2,z:2,top:0.13,left:0.65},{x:2,z:1,top:0.78,left:0.65},{x:2,z:1,top:0.52,left:0.81},{x:2,z:1,top:0.16,left:0.53},{x:2,z:1,top:0.20,left:0.27},{x:1,z:0,top:0.49,left:0.80}],rotation:0}],extracells:[],end_cell:{x:3,z:1}}
+    {outside_cells:[{x:0,z:0},{x:1,z:0},{x:2,z:1},{x:1,z:1}],ennemys:[{x:1,z:0,top:0.49,left:0.52,patrol_positions:[{x:1,z:1,top:0.51,left:0.21},{x:1,z:1,top:0.80,left:0.45},{x:1,z:1,top:0.47,left:0.80},{x:1,z:1,top:0.14,left:0.52}],rotation:0}],extracells:[],end_cell:{x:2,z:1}}
 
 ];
 
@@ -273,13 +273,18 @@ Path.prototype.add_ennemys = function()
             var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
 
             var patrols = [];
+            patrols.push({
+                x: coord.x + (self.depth2 * ennemy.left)*2 - (self.depth2),
+                y:1,
+                z: coord.z + (self.depth * ennemy.top)*2 - (self.depth),
+            });
             ennemy.patrol_positions.forEach(function(patrol)
             {
                 var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
                 patrols.push({
                     x: coord_pat.x + (self.depth2 * patrol.left)*2 - self.depth2,
                     y: 1,
-                    z: coord_pat.z + (self.depth * patrol.left)*2 - self.depth
+                    z: coord_pat.z + (self.depth * patrol.top)*2 - self.depth
                 });
             });
             self.add_interraction_item('Ennemy',
