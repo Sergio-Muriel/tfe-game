@@ -131,11 +131,6 @@ function toggle(h, line, row, e)
     }
     else
     {
-        if(h.classList.contains('disabled'))
-        {
-            return;
-        }
-
         if(mode=='mark_end')
         {
             var nodes = [...document.querySelectorAll('.hexagone')];
@@ -144,9 +139,15 @@ function toggle(h, line, row, e)
                 node.classList.remove('end_cell');
             });
             h.classList.add('end_cell');
+            h.classList.remove('disabled');
         }
         else if(mode=='add_ennemy')
         {
+            if(h.classList.contains('disabled'))
+            {
+                return;
+            }
+
             var div = document.createElement('div');
             div.className='ennemy';
             div.innerText='Ennemy';

@@ -1,0 +1,77 @@
+#editor
+{
+    font-family:sans-serif;
+    margin:150px 200px;
+    transform:rotate(0deg);
+    transform-origin:0 0;
+}
+.menu button, .submenu button
+{
+    font-size:10px;
+    padding:0px 3px;
+}
+.line
+{
+    white-space:nowrap;
+    font-size:0px;
+    margin-top:-57.7px;
+}
+.line-impair
+{
+    margin-left:80.6px;
+}
+.hexagone
+{
+    position:relative;
+    display:inline-block;
+    width:113px;
+    height:91.7px;
+    background:url(hexagone.png) center center no-repeat;
+    background-size:auto 100%;
+    margin:6px 24px;
+    opacity:0.8;
+}
+.hexagone:hover
+ {
+     z-index:10;
+    opacity:1;
+}
+.hexagone.disabled
+{
+    opacity:0.1;
+}
+.hexagone.end_cell
+{
+    background-image:url(end.png);
+}
+.hexagone.start_cell:before
+{
+    content:'Start cell';
+    position:absolute;
+    color:white;
+    top:50%;
+    font-size:15px;
+    left:50%;
+    transform:translateX(-50%) translateY(-50%);
+}
+.hexagone.end_cell:before
+{
+    content:'End cell';
+    position:absolute;
+    top:50%;
+    font-size:15px;
+    left:50%;
+    transform:translateX(-50%) translateY(-50%);
+}
+.ennemy
+{
+    position:absolute;
+    width:10px;
+    height:15px;
+    background:url(ennemy.png) center center no-repeat;
+    background-size:contain;
+}
+.selected
+{
+    border:1px solid white;
+}
