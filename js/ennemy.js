@@ -221,7 +221,6 @@ Ennemy.prototype.hover=function()
 {
     this.hovered=true;
     this.life_material.visible=true;
-    //console.log('hover in me!',this);
 };
 Ennemy.prototype.unhover=function()
 {
@@ -253,9 +252,7 @@ Ennemy.prototype.targeted=function(from)
             var value = get_attack_value(from, this);
             if(value>0)
             {
-                console.log('play ',from, from.weapon_type);
                 play_multiple(game.assets[from.weapon_type+'_attack_sound']);
-                console.log('play2', this.type);
                 play_multiple(game.assets[this.type+'_hit_sound']);
 
                 game.add_damage_text({ text:value, position: this.container.position});
@@ -685,7 +682,7 @@ Ennemy.prototype.update= function(delta)
     {
         this.life_container.rotation.z += 0.03;
     }
-    if(!this.move_destination && this.patrol_positions)
+    if(!this.move_destination && this.options.patrol_positions)
     {
         if(!this.patrol_waiting_timer)
         {

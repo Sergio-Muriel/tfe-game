@@ -1146,12 +1146,10 @@ Maze.prototype.reload = function()
 Maze.prototype.getStaticObstacles = function()
 {
     var obstacles = [this.walls_collision];
-            console.log('here0');
     if(this.closed_doors)
     {
         for(var i in this.closed_doors)
         {
-            console.log('here fail');
             obstacles.push(this.closed_doors[i]);
         }
     }
@@ -1159,7 +1157,6 @@ Maze.prototype.getStaticObstacles = function()
     {
         if(item.is_static_collision && !item.can_walk_through)
         {
-            console.log('here1');
             obstacles.push(item.container_mesh);
         }
     });
@@ -1167,7 +1164,6 @@ Maze.prototype.getStaticObstacles = function()
     {
         obstacles.push(this.close_mesh);
     }
-    console.log('result ',obstacles);
     return obstacles;
 };
 

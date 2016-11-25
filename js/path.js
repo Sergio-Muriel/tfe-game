@@ -33,7 +33,6 @@ Path.prototype.constructor = Path;
 
 Path.prototype.get_start_pos = function()
 {
-    console.log('get start pos');
     return this.get_cell_pos_params({x: this.level.end_cell.x, z:this.level.end_cell.z});
 };
 
@@ -141,7 +140,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:0.07,left:0.28,rotation:0}],extracells:[],end_cell:{x:3,z:0}}
+{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:0.42,left:0.32,patrol_positions:[{x:1,z:0,top:0.42,left:0.32},{x:2,z:1,top:0.42,left:0.32},{x:1,z:1,top:0.42,left:0.32}],rotation:0}],extracells:[],end_cell:{x:3,z:0}}
 ];
 
 Path.prototype.build = function()
@@ -172,7 +171,6 @@ Path.prototype.build = function()
 
             if(is_end)
             {
-                console.log('is end ',is_end, cell);
                 cell.collision_doors.push(1);
             }
             else if(!search.length && !is_start)
@@ -273,16 +271,24 @@ Path.prototype.add_ennemys = function()
             var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
             var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
 
-            console.log('here');
-            console.log('test = ', coord.x + game.opt.door_size * ennemy.left);
+            var patrols = [];
+            ennemy.patrol_positions.forEach(function(patrol)
+            {
+                var coord_pat = self.get_pos({ x: patrol.x, z: patrol.z });
+                patrols.push({
+                    x: coord_pat.x + self.depth2 * patrol.left - (self.depth2/2),
+                    y: 1,
+                    z: coord_pat.z + self.depth2 * patrol.left - (self.depth2/2)
+                });
+            });
             self.add_interraction_item('Ennemy',
             {
                 level: game.level,
                 x: coord.x + self.depth2 * ennemy.left - (self.depth2/2),
                 z: coord.z + self.depth2 * ennemy.top - (self.depth2/2),
-                patrol_positions: [],
+                patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
-                patrol_loop:false,
+                patrol_loop:true,
                 drops: [
                     {
                         type:'Stick',
