@@ -126,7 +126,10 @@ function toggle(h, line, row, e)
         }
         else
         {
-            h.classList.add('disabled');
+            if(!h.classList.contains('end_cell'))
+            {
+                h.classList.add('disabled');
+            }
         }
     }
     else
