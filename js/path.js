@@ -140,7 +140,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:0,z:2},{x:1,z:3}],ennemys:[{x:1,z:0,top:0.42,left:0.32,patrol_positions:[{x:1,z:0,top:0.42,left:0.32},{x:2,z:1,top:0.42,left:0.32},{x:1,z:1,top:0.42,left:0.32}],rotation:0}],extracells:[],end_cell:{x:3,z:0}}
+{outside_cells:[{x:0,z:0},{x:2,z:0},{x:1,z:0},{x:0,z:1},{x:2,z:1},{x:1,z:1}],ennemys:[{x:2,z:0,top:0.41,left:0.5,patrol_positions:[{x:0,z:1,top:0.41,left:0.5},{x:1,z:1,top:0.41,left:0.5}],rotation:0},{x:1,z:0,top:0.55,left:0.52,patrol_positions:[],rotation:0}],extracells:[],end_cell:{x:2,z:1}}
 ];
 
 Path.prototype.build = function()

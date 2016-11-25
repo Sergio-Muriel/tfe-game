@@ -687,13 +687,16 @@ Ennemy.prototype.update= function(delta)
         if(!this.patrol_waiting_timer)
         {
             var pos = this.next_pos;
-            this.patrol_waiting_timer=window.setTimeout(function()
+            if(pos)
             {
-                self.patrol_waiting_timer=null;
-                self.move_weight_destination=1;
-                self.moveTo(pos);
-                self.next_pos = self.get_next_patrol_point();
-            }, this.patrol_wait);
+                this.patrol_waiting_timer=window.setTimeout(function()
+                {
+                    self.patrol_waiting_timer=null;
+                    self.move_weight_destination=1;
+                    self.moveTo(pos);
+                    self.next_pos = self.get_next_patrol_point();
+                }, this.patrol_wait);
+            }
         }
     }
 

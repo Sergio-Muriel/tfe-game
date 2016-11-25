@@ -241,7 +241,7 @@ function add_patrol_point(h, e_id, top, left)
     var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
     var div = document.createElement('div');
     div.className='patrol_point';
-    div.innerText='P.'+num;
+    div.innerText='E.'+e_id+' - p'+num;
     h.appendChild(div);
 
 
