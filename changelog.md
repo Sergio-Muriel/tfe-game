@@ -3,6 +3,7 @@
 ## 21
 
 - add emissive red when the player is attacked
+- Path Editor
 
 ## 20
 - adding new land between mazes, with same hexagone structures
