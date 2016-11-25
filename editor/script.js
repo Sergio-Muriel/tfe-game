@@ -34,8 +34,6 @@ document.getElementById('add_ennemy').addEventListener('click',function() { mode
 document.getElementById('add_patrol_point').addEventListener('click',function() { mode='add_patrol_point'; }, false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
-document.getElementById('rotate_moins').addEventListener('click',rotate.bind(this,10), false);
-document.getElementById('rotate_plus').addEventListener('click',rotate.bind(this,-10), false);
 document.getElementById('remove').addEventListener('click',remove, false);
 document.getElementById('edit_submit').addEventListener('click',edit_submit, false);
 
@@ -152,19 +150,26 @@ function save()
             patrol_positions : [],
             rotation: node.getAttribute('rotation'),
         };
-        // Add patrol positions if any
-        var patrols = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')];
-        patrols.forEach(function(patrol)
+        var search=1;
+        var found=true;
+        while(found)
         {
-            var parent_patrol = patrol.parentElement;
-            ennemy.patrol_positions.push(
+            // Add patrol positions if any
+            var patrols = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"][patrol_id="'+search+'"')];
+            patrols.forEach(function(patrol)
             {
-                x: parent_patrol.getAttribute('row'),
-                z: parent_patrol.getAttribute('line'),
-                top: node.getAttribute('top'),
-                left: node.getAttribute('left'),
+                var parent_patrol = patrol.parentElement;
+                ennemy.patrol_positions.push(
+                {
+                    x: parent_patrol.getAttribute('row'),
+                    z: parent_patrol.getAttribute('line'),
+                    top: patrol.getAttribute('top'),
+                    left: patrol.getAttribute('left'),
+                });
             });
-        });
+            found = patrols.length;
+            search++;
+        }
         map.ennemys.push(ennemy);
     });
 
@@ -324,25 +329,18 @@ function build_form()
     var attributes = Array.prototype.slice.call(selected_item.attributes);
     attributes.forEach(function(attribute)
     {
-        var div =document.createElement('div');
-        div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
-        container.appendChild(div);
+        if(attribute.name!='style')
+        {
+            var div =document.createElement('div');
+            div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
+            container.appendChild(div);
+        }
     });
     [...document.querySelectorAll('#edit_item input')].forEach(function(input)
     {
         input.addEventListener('submit', edit_submit);
         input.addEventListener('keyup', edit_submit);
     });
-}
-
-function rotate(num,e)
-{
-    var rotation = parseInt(selected_item.getAttribute('rotation'),10);
-    rotation+=num;
-
-    selected_item.style.transform='rotate('+rotation+'deg)';
-    selected_item.setAttribute('rotation',rotation);
-    e.stopPropagation();
 }
 
 function remove(e)
@@ -368,6 +366,19 @@ function edit_submit()
     [...document.querySelectorAll('#edit_item input')].forEach(function(input)
     {
         selected_item.setAttribute(input.name,input.value);
+        // Update style
+        if(input.name=='left')
+        {
+            selected_item.style.left = (parseFloat(input.value)*100)+'%';
+        }
+        if(input.name=='top')
+        {
+            selected_item.style.top = (parseFloat(input.value)*100)+'%';
+        }
+        if(input.name=='rotation')
+        {
+            selected_item.style.transform='rotate('+input.value+'deg)';
+        }
     });
 }
 

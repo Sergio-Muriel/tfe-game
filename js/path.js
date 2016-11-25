@@ -140,7 +140,7 @@ Path.prototype.add_cell = function(params)
 };
 
 Path.prototype.levels =[
-{outside_cells:[{x:0,z:0},{x:1,z:0},{x:3,z:0},{x:5,z:0},{x:2,z:1},{x:6,z:1},{x:5,z:1},{x:2,z:2},{x:4,z:2},{x:6,z:2},{x:1,z:2},{x:3,z:2},{x:0,z:3},{x:3,z:3},{x:3,z:4}],ennemys:[{x:1,z:0,top:0.49,left:0.03,patrol_positions:[],rotation:0}],extracells:[],end_cell:{x:6,z:2}}
+{outside_cells:[{x:0,z:0},{x:1,z:0},{x:2,z:1},{x:1,z:1},{x:3,z:1},{x:2,z:2}],ennemys:[{x:1,z:0,top:0.33,left:0.57,patrol_positions:[{x:1,z:0,top:0.60,left:0.36},{x:1,z:1,top:0.30,left:0.35},{x:1,z:1,top:0.76,left:0.26},{x:1,z:1,top:0.80,left:0.65},{x:1,z:1,top:0.99,left:0.96},{x:2,z:2,top:0.82,left:0.28},{x:2,z:2,top:0.86,left:0.66},{x:2,z:2,top:0.50,left:0.76},{x:2,z:2,top:0.13,left:0.65},{x:2,z:1,top:0.78,left:0.65},{x:2,z:1,top:0.52,left:0.81},{x:2,z:1,top:0.16,left:0.53},{x:2,z:1,top:0.20,left:0.27},{x:1,z:0,top:0.49,left:0.80}],rotation:0}],extracells:[],end_cell:{x:3,z:1}}
 
 ];
 
