@@ -328,8 +328,3 @@ Path.prototype.stop_step = function()
     game.assets.step_snow_sound.pause();
 };
 
-Path.prototype.unload = function()
-{
-    this.next_item.options.parent = null;
-    game.scene.remove(this.container);
-};
