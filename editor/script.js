@@ -343,7 +343,6 @@ function selectItem(div, hexagone, e)
     }
     selected_item=div;
     selected_item.classList.add('selected');
-    document.getElementById('edit_submit').removeAttribute('disabled');
 
     var nodes = [...document.querySelectorAll('.selected_item_action')];
     nodes.forEach(function(node)
