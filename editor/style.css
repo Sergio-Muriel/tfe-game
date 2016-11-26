@@ -19,7 +19,7 @@
 }
 .mode.selected
 {
-    background:#b0b0b0;
+    background:#a4b4fc;
 }
 #edit_item label
 {
@@ -127,9 +127,7 @@ hr
     margin:20px 0px;
 }
 
-.wall,
-.opened,
-.door
+.walltype
 {
     position:absolute;
     top:0px;

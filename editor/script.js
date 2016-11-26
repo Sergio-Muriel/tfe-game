@@ -45,7 +45,6 @@ document.getElementById('add_patrol_point').addEventListener('click',toggle_mode
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('remove').addEventListener('click',remove, false);
-document.getElementById('edit_submit').addEventListener('click',edit_submit, false);
 
 
 var ennemy_id = 0;
@@ -116,6 +115,13 @@ function load()
                 node.classList.remove('disabled');
             });
 
+            // Load wall types
+            data.extracells.forEach(function(cell)
+            {
+                var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
+                add_walltype(node, cell.i,  cell.type);
+            });
+
             // Load end cell
             node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
             node.classList.add('end_cell');
@@ -155,6 +161,16 @@ function save()
     {
         map.outside_cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
     });
+
+
+    // Add extra walls
+    var nodes = [...document.querySelectorAll('.walltype')];
+    nodes.forEach(function(node)
+    {
+        var p = node.parentElement;
+        map.extracells.push({ type:node.getAttribute('type'), i:node.getAttribute('i'), x: p.getAttribute('row'), z: p.getAttribute('line') });
+    });
+
     // Add end node
     var node = document.querySelector('.end_cell');
     if(!node){
@@ -446,21 +462,29 @@ function edit_wall()
     for(var i=0; i< 6; i++)
     {
         select = document.querySelector('#edit_item .type'+i);
-        if(select.value!='0')
+        add_walltype(node, i, select.value);
+    }
+}
+
+function add_walltype(node,i,type)
+{
+    console.log('add walltype ',node, i ,type);
+    if(type!='0')
+    {
+        var wall =  document.createElement('div');
+        var classname='';
+        switch(type+'')
         {
-            var wall =  document.createElement('div');
-            var type='';
-            switch(select.value)
-            {
-                case '1': type = 'wall';break;
-                case '2': type = 'opened'; break;
-                case '3': type = 'door'; break;
-            }
-            if(type)
-            {
-                wall.className=type+' type'+i;
-                node.appendChild(wall);
-            }
+            case '1': classname = 'wall';break;
+            case '2': classname = 'opened'; break;
+            case '3': classname = 'door'; break;
+        }
+        if(classname)
+        {
+            wall.setAttribute('type', type);
+            wall.setAttribute('i', i);
+            wall.className=classname+' walltype type'+i;
+            node.appendChild(wall);
         }
     }
 }
