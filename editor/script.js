@@ -67,8 +67,7 @@ function update_ennemy_list()
 }
 
 function reset()
-{
-    ennemy_id=0;
+{ ennemy_id=0;
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
@@ -180,9 +179,15 @@ function save()
         }
         map.ennemys.push(ennemy);
     });
+    Levels[levels_container.options[levels_container.selectedIndex].value] =  map;
 
-    window.open('data:text/plain,'+JSON.stringify(map).replace(/"/g,''));
-
+    var link = document.createElement('a');
+    link.download = 'levels.js';
+    link.href = 'data:text/plain,var Levels = '+JSON.stringify(Levels, null , '\t').replace(/"/g,'');
+    link.innerText='Download';
+    document.body.appendChild(link);
+    console.log('link ',link);
+    link.click();
 };
 
 function toggle(h, line, row, e)
