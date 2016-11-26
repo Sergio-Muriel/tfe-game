@@ -1,7 +1,6 @@
 var editor = document.getElementById('editor');
 
 var selected_item=null;
-var selected_hexagone=null;
 
 var levels_container = document.getElementById('levels');
 // Build load levels list
@@ -38,10 +37,11 @@ for(var line=0; line<30; line++)
 var mode='edit_map';
 
 document.getElementById('reset').addEventListener('click',function() { if(confirm('Are you sure you want to reset the map?')) { reset(); }}, false);
-document.getElementById('edit_map').addEventListener('click',function() { mode='edit_map'; }, false);
-document.getElementById('mark_end').addEventListener('click',function() { mode='mark_end'; }, false);
-document.getElementById('add_ennemy').addEventListener('click',function() { mode='add_ennemy'; }, false);
-document.getElementById('add_patrol_point').addEventListener('click',function() { mode='add_patrol_point'; }, false);
+document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(this,'edit_map'), false);
+document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
+document.getElementById('mark_end').addEventListener('click',toggle_mode.bind(this,'mark_end'), false);
+document.getElementById('add_ennemy').addEventListener('click',toggle_mode.bind(this,'add_ennemy'), false);
+document.getElementById('add_patrol_point').addEventListener('click',toggle_mode.bind(this,'add_patrol_point'), false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('remove').addEventListener('click',remove, false);
@@ -50,6 +50,24 @@ document.getElementById('edit_submit').addEventListener('click',edit_submit, fal
 
 var ennemy_id = 0;
 var has_ennemy = false;
+
+function toggle_mode(_mode)
+{
+    mode = _mode;
+    var nodes = [...document.querySelectorAll('.mode')];
+    nodes.forEach(function(node)
+    {
+        if(node.id!==_mode)
+        {
+            node.classList.remove('selected');
+        }
+        else
+        {
+            node.classList.add('selected');
+        }
+    });
+
+}
 function update_ennemy_list()
 {
     has_ennemy=false;
@@ -205,11 +223,15 @@ function toggle(h, line, row, e)
         {
             var row = h.getAttribute('row');
             var line = h.getAttribute('line');
-            if(!h.classList.contains('end_cell') && (row!='0' || line!='0') && h.children.length===0)
+            if(!h.classList.contains('end_cell') && (row!='0' || line!='0'))
             {
                 h.classList.add('disabled');
             }
         }
+    }
+    else if(mode=='wall_properties')
+    {
+        build_form_wall(h);
     }
     else if(mode=='mark_end')
     {
@@ -242,6 +264,7 @@ function toggle(h, line, row, e)
         {
             return;
         }
+        console.log('here ');
 
         var editorLeft =  editor.offsetLeft;
         var editorTop =  editor.offsetTop;
@@ -319,8 +342,6 @@ function selectItem(div, hexagone, e)
     selected_item.classList.add('selected');
     document.getElementById('edit_submit').removeAttribute('disabled');
 
-    selected_hexagone = hexagone;
-
     var nodes = [...document.querySelectorAll('.selected_item_action')];
     nodes.forEach(function(node)
     {
@@ -334,12 +355,12 @@ function selectItem(div, hexagone, e)
             node.removeAttribute('disabled');
         });
     }
-    this.build_form();
+    this.build_form_item();
 
     e.stopPropagation();
 }
 
-function build_form()
+function build_form_item()
 {
     var container = document.getElementById('edit_item');
     container.innerText='';
@@ -383,18 +404,28 @@ function build_form()
     });
 }
 
+function build_form_wall()
+{
+    var container = document.getElementById('edit_item');
+    container.innerText='';
+    console.log('build form wall');
+}
+
 function remove(e)
 {
+    if(!selected_item)
+    {
+        return false;
+    }
     selected_item.parentElement.removeChild(selected_item);
     selected_item=null;
-    selected_hexagone=null;
 
     var nodes = [...document.querySelectorAll('.selected_item_action, .ennemy_action')];
     nodes.forEach(function(node)
     {
-        node.setAttribute('disabled','');
+        //node.setAttribute('disabled','');
     });
-    document.getElementById('edit_submit').setAttribute('disabled','disabled');
+    //document.getElementById('edit_submit').setAttribute('disabled','disabled');
 
     e.stopPropagation();
     update_ennemy_list();
