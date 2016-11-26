@@ -103,7 +103,7 @@ function load()
             data.ennemys.forEach(function(ennemy)
             {
                 var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
-                var e_id = self.add_ennemy(ennemynode, ennemy.top, ennemy.left, ennemy.rotation);
+                var e_id = self.add_ennemy(ennemynode, ennemy);
                 ennemy.patrol_positions.forEach(function(patrol)
                 {
                     var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
@@ -155,6 +155,8 @@ function save()
             top: node.getAttribute('top'),
             left: node.getAttribute('left'),
             patrol_positions : [],
+            patrol_loop : node.getAttribute('patrol_loop'),
+            patrol_wait : node.getAttribute('patrol_wait'),
             rotation: node.getAttribute('rotation'),
         };
         var search=1;
@@ -230,7 +232,7 @@ function toggle(h, line, row, e)
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
 
-        this.add_ennemy(h, top, left, 0);
+        this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, patrol_wait: 2000});
 
         e.stopPropagation();
     }
@@ -278,7 +280,7 @@ function add_patrol_point(h, e_id, top, left)
     console.log('added patrol point');
 }
 
-function add_ennemy(h, top, left, rotation)
+function add_ennemy(h, params)
 {
         ennemy_id++;
 
@@ -292,12 +294,14 @@ function add_ennemy(h, top, left, rotation)
         var editorLeft =  editor.offsetLeft;
         var editorTop =  editor.offsetTop;
         
-        div.setAttribute('rotation',rotation);
-        div.style.transform='rotate('+rotation+'deg)';
-        div.setAttribute('left', left);
-        div.setAttribute('top', top);
-        div.style.left=(parseFloat(left)*100)+'%';
-        div.style.top=(parseFloat(top)*100)+'%';
+        div.setAttribute('rotation',params.rotation);
+        div.style.transform='rotate('+params.rotation+'deg)';
+        div.setAttribute('left', params.left);
+        div.setAttribute('patrol_loop', !!params.patrol_loop);
+        div.setAttribute('patrol_wait', params.patrol_wait);
+        div.setAttribute('top', params.top);
+        div.style.left=(parseFloat(params.left)*100)+'%';
+        div.style.top=(parseFloat(params.top)*100)+'%';
 
         div.addEventListener('click', selectItem.bind(this, div, h), true);
         div.click();
@@ -340,13 +344,25 @@ function build_form()
     var container = document.getElementById('edit_item');
     container.innerText='';
     var attributes = Array.prototype.slice.call(selected_item.attributes);
+    var hidden_fields =
+    [
+        'style',
+        'type',
+        'class',
+        'ennemy_id',
+        'patrol_id'
+    ];
     attributes.forEach(function(attribute)
     {
-        if(attribute.name!='style' && attribute.name!='class' && attribute.name!='type')
+        if(hidden_fields.indexOf(attribute.name)===-1)
         {
             var div =document.createElement('div');
             var type='text';
             var extra='';
+            if(attribute.value=='true' || attribute.value=='false')
+            {
+                type='checkbox';
+            }
             switch(attribute.name)
             {
                 case 'rotation': type = 'range'; extra='min="0" max="360"'; break; 
@@ -363,6 +379,7 @@ function build_form()
         input.addEventListener('submit', edit_submit);
         input.addEventListener('keyup', edit_submit);
         input.addEventListener('input', edit_submit);
+        input.addEventListener('click', edit_submit);
     });
 }
 
@@ -388,7 +405,16 @@ function edit_submit()
     console.log('save!');
     [...document.querySelectorAll('#edit_item input')].forEach(function(input)
     {
-        selected_item.setAttribute(input.name,input.value);
+        console.log('here ',input);
+        if(input.type=='checkbox')
+        {
+            console.log('set ',(!!input.checked)+'');
+            selected_item.setAttribute(input.name,(!!input.checked)+'');
+        }
+        else
+        {
+            selected_item.setAttribute(input.name,input.value);
+        }
         // Update style
         if(input.name=='left')
         {

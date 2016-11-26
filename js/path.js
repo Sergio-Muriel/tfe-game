@@ -262,7 +262,6 @@ Path.prototype.add_ennemys = function()
         this.level.ennemys.forEach(function(ennemy)
         {
             var coord = self.get_cell_pos_params({ x: ennemy.x, z: ennemy.z });
-            var patrol_wait = (2 + Math.floor(Math.random()*4))*1000;
 
             var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
             var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
@@ -289,7 +288,7 @@ Path.prototype.add_ennemys = function()
                 z: coord.z + (self.depth * ennemy.top)*2 - (self.depth),
                 patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
-                patrol_loop:true,
+                patrol_loop:ennemy.patrol_loop,
                 drops: [
                     {
                         type:'Stick',
@@ -306,7 +305,7 @@ Path.prototype.add_ennemys = function()
                         }
                     }
                 ],
-                patrol_wait: patrol_wait
+                patrol_wait: ennemy.patrol_wait
             });
         });
     }
