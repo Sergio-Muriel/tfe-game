@@ -53,6 +53,9 @@ var has_ennemy = false;
 
 function toggle_mode(_mode)
 {
+    var container = document.getElementById('edit_item');
+    container.innerText='';
+
     mode = _mode;
     var nodes = [...document.querySelectorAll('.mode')];
     nodes.forEach(function(node)
@@ -284,7 +287,7 @@ function add_patrol_point(h, e_id, top, left)
 {
     var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
     var div = document.createElement('div');
-    div.className='patrol_point';
+    div.className='patrol_point selectable_item';
     div.setAttribute('type','patrol_point');
     div.innerText=e_id+'-'+num;
     h.appendChild(div);
@@ -308,7 +311,7 @@ function add_ennemy(h, params)
         ennemy_id++;
 
         var div = document.createElement('div');
-        div.className='ennemy';
+        div.className='ennemy selectable_item';
         div.setAttribute('type','ennemy');
         div.setAttribute('ennemy_id', ennemy_id);
         div.innerText=ennemy_id;
@@ -404,11 +407,63 @@ function build_form_item()
     });
 }
 
-function build_form_wall()
+function build_form_wall(h)
 {
     var container = document.getElementById('edit_item');
     container.innerText='';
     console.log('build form wall');
+
+    var div = document.createElement('div');
+    div.className='wall_editor';
+    for(var i=0; i< 6; i++)
+    {
+        div.innerHTML+='<select class="type'+i+'" line="'+h.getAttribute('line')+'" row="'+h.getAttribute('row')+'">'+
+                '<option value="">None</option>'+
+                '<option value="1">Wall</option>'+
+                '<option value="2">Opened</option>'+
+                '<option value="3">Door</option>'+
+            '</select>';
+    }
+    container.appendChild(div);
+
+    [...document.querySelectorAll('#edit_item select')].forEach(function(select)
+    {
+        select.addEventListener('submit', edit_wall);
+        select.addEventListener('keyup', edit_wall);
+        select.addEventListener('input', edit_wall);
+        select.addEventListener('click', edit_wall);
+    });
+}
+
+function edit_wall()
+{
+    var select = document.querySelector('#edit_item select');
+    var node = document.querySelector('.hexagone[row="'+select.getAttribute('row')+'"][line="'+select.getAttribute('line')+'"]');
+
+    [...node.querySelectorAll('.wall,.opened,.door')].forEach(function(wall)
+    {
+        wall.parentElement.removeChild(wall);
+    });
+    for(var i=0; i< 6; i++)
+    {
+        select = document.querySelector('#edit_item .type'+i);
+        if(select.value!='0')
+        {
+            var wall =  document.createElement('div');
+            var type='';
+            switch(select.value)
+            {
+                case '1': type = 'wall';break;
+                case '2': type = 'opened'; break;
+                case '3': type = 'door'; break;
+            }
+            if(type)
+            {
+                wall.className=type+' type'+i;
+                node.appendChild(wall);
+            }
+        }
+    }
 }
 
 function remove(e)
@@ -419,13 +474,6 @@ function remove(e)
     }
     selected_item.parentElement.removeChild(selected_item);
     selected_item=null;
-
-    var nodes = [...document.querySelectorAll('.selected_item_action, .ennemy_action')];
-    nodes.forEach(function(node)
-    {
-        //node.setAttribute('disabled','');
-    });
-    //document.getElementById('edit_submit').setAttribute('disabled','disabled');
 
     e.stopPropagation();
     update_ennemy_list();

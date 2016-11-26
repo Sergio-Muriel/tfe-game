@@ -268,24 +268,24 @@ Path.prototype.add_ennemys = function()
 
             var patrols = [];
             patrols.push({
-                x: coord.x + (self.depth2 * ennemy.left)*2 - (self.depth2),
+                x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
                 y:1,
-                z: coord.z + (self.depth * ennemy.top)*2 - (self.depth),
+                z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
             });
             ennemy.patrol_positions.forEach(function(patrol)
             {
                 var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
                 patrols.push({
-                    x: coord_pat.x + (self.depth2 * patrol.left)*2 - self.depth2,
+                    x: coord_pat.x + (game.opt.door_size * patrol.left)*2 - game.opt.door_size,
                     y: 1,
-                    z: coord_pat.z + (self.depth * patrol.top)*2 - self.depth
+                    z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size
                 });
             });
             self.add_interraction_item('Ennemy',
             {
                 level: game.level,
-                x: coord.x + (self.depth2 * ennemy.left)*2 - (self.depth2),
-                z: coord.z + (self.depth * ennemy.top)*2 - (self.depth),
+                x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
+                z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
                 patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
                 patrol_loop:ennemy.patrol_loop,

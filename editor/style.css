@@ -30,21 +30,21 @@
 {
     white-space:nowrap;
     font-size:0px;
-    margin-top:-57.7px;
+    margin-top:-97px;
 }
 .line-impair
 {
-    margin-left:80.6px;
+    margin-left:113px;
 }
 .hexagone
 {
     position:relative;
     display:inline-block;
-    width:113px;
-    height:91.7px;
+    width:150px;
+    height:150px;
     background:url(hexagone.png) center center no-repeat;
-    background-size:auto 100%;
-    margin:6px 24px;
+    background-size:contain;
+    margin:6px 39px;
     opacity:0.8;
 }
 .hexagone:hover
@@ -118,7 +118,7 @@
 {
     background-color:gray;
 }
-.hexagone.selected
+.selectable_item.selected
 {
     border:2px solid yellow;
 }
@@ -128,25 +128,43 @@ hr
 }
 
 .wall,
-.door,
-.door_closed
+.opened,
+.door
 {
     position:absolute;
-    top:0px
+    top:0px;
     left:0px;
     width:100%;
     height:100%;
     background:url(wall.png) center center no-repeat;
-    background-size:auto 100%;
+    background-size:contain;
     transform-origin:50% 50%;
 }
+.opened { background-image:url(opened.png); }
 .door { background-image:url(door.png); }
-.door_closed { background-image:url(door_closed.png); }
 
-.type1 { transform:rotate(180deg); }
-.type2 { transform:rotate(120deg); }
-.type3 { transform:rotate(60deg); }
-.type4 { transform:rotate(0deg); }
-.type5 { transform:rotate(-60deg); }
-.type6 { transform:rotate(-120deg); }
+.type0 { transform:rotate(180deg); }
+.type1 { transform:rotate(120deg); }
+.type2 { transform:rotate(60deg); }
+.type3 { transform:rotate(0deg); }
+.type4 { transform:rotate(-60deg); }
+.type5 { transform:rotate(-120deg); }
 
+.wall_editor
+{
+    position:relative;
+    width:170px;
+    height:200px;
+}
+.wall_editor select
+{
+    display:block;
+    position:absolute;
+
+}
+.wall_editor .type0 { bottom:0px; left:50%; transform:translateX(-50%) }
+.wall_editor .type1 { bottom:25%; right:0px;  }
+.wall_editor .type2 { top:25%; right:0px }
+.wall_editor .type3 { top:0px; left:50%; transform:translateX(-50%) }
+.wall_editor .type4 { top:25%; left:0px }
+.wall_editor .type5 { bottom:25%; left:0px }
