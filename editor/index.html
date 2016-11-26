@@ -7,14 +7,19 @@
         <div id="menu">
             <h1>Menu</h1>
             <div class="menu">
-                <button id="save">Save</button>
+                <select id="levels">
+                </select>
                 <button id="load">Load</button>
+                <br>
+                <button id="save">Save</button>
                 <button id="reset">Reset</button>
             </div>
+            <hr />
             <div class="menu">
-                <button id="edit_map">Edit Map</button>
-                <button id="mark_end">Mark end</button>
+                <button id="edit_map">Toggle cell</button>
+                <button id="mark_end">Mark end cell</button>
             </div>
+            <hr />
             <div class="submenu">
                 <button id="add_ennemy">Add ennemy</button>
                 <button id="remove"  class="selected_item_action" disabled>Remove</button>
@@ -26,11 +31,13 @@
                 </select>
                 <button id="add_patrol_point" class="ennemy_action" disabled>Add patrol point</button>
             </div>
+            <hr />
             <h1>Edit item</h1>
             <div id="edit_item"></div>
             <div><button id="edit_submit" disabled>Save</button></div>
         </div>
         <div id="editor"></div>
+        <script type="text/javascript" src="../js/levels.js"></script>
         <script type="text/javascript" src="script.js"></script>
     </body>
 </html>

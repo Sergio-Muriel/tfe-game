@@ -3,6 +3,16 @@ var editor = document.getElementById('editor');
 var selected_item=null;
 var selected_hexagone=null;
 
+var levels_container = document.getElementById('levels');
+// Build load levels list
+Levels.forEach(function(level, num)
+{
+    var opt = document.createElement('option');
+    opt.setAttribute('value',num);
+    opt.innerText= 'Level '+(num+1);
+    levels_container.appendChild(opt);
+});
+
 for(var line=0; line<30; line++)
 {
     var l = document.createElement('div');
@@ -58,6 +68,7 @@ function update_ennemy_list()
 
 function reset()
 {
+    ennemy_id=0;
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
@@ -70,49 +81,42 @@ function reset()
     });
 
 }
-function load(txt)
+function load()
 {
-    if(txt || (txt=  prompt('Level string: ')))
+    var data = Levels[levels_container.options[levels_container.selectedIndex].value];
+    if(data)
     {
-        try
+        reset();
+        if(data && data.outside_cells && data.end_cell)
         {
-            reset();
-            // Fix javascript parse format
-            txt = txt.replace(/([^{}:",]+):/g,'"$1":')
-            var data= JSON.parse(txt);
-
-            if(data && data.outside_cells && data.end_cell)
+            // Load walls
+            data.outside_cells.forEach(function(cell)
             {
-                // Load walls
-                data.outside_cells.forEach(function(cell)
+                var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
+                node.classList.remove('disabled');
+            });
+
+            // Load end cell
+            node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
+            node.classList.add('end_cell');
+
+            // Load ennemys + patrol points
+            data.ennemys.forEach(function(ennemy)
+            {
+                var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
+                var e_id = self.add_ennemy(ennemynode, ennemy.top, ennemy.left, ennemy.rotation);
+                ennemy.patrol_positions.forEach(function(patrol)
                 {
-                    var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
-                    node.classList.remove('disabled');
+                    var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
+                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
                 });
+            });
 
-                // Load end cell
-                node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
-                node.classList.add('end_cell');
-
-                // Load ennemys + patrol points
-                data.ennemys.forEach(function(ennemy)
-                {
-                    var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
-                    var e_id = self.add_ennemy(ennemynode, ennemy.top, ennemy.left, ennemy.rotation);
-                    ennemy.patrol_positions.forEach(function(patrol)
-                    {
-                        var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
-                        self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
-                    });
-                });
-
-            }
         }
-        catch(err)
-        {
-            console.error('error loading ',txt, err, this);
-            alert('Error parseing the level data : '+txt);
-        }
+    }
+    else
+    {
+        alert('No level selected');
     }
 }
 
@@ -133,6 +137,10 @@ function save()
     });
     // Add end node
     var node = document.querySelector('.end_cell');
+    if(!node){
+        alert('Error: no end cell marked');
+        return;
+    }
     map.end_cell = { x: node.getAttribute('row'), z: node.getAttribute('line') };
 
     // Add ennemys
@@ -190,7 +198,7 @@ function toggle(h, line, row, e)
         {
             var row = h.getAttribute('row');
             var line = h.getAttribute('line');
-            if(!h.classList.contains('end_cell') && (row!='0' || line!='0'))
+            if(!h.classList.contains('end_cell') && (row!='0' || line!='0') && h.children.length===0)
             {
                 h.classList.add('disabled');
             }
@@ -329,7 +337,7 @@ function build_form()
     var attributes = Array.prototype.slice.call(selected_item.attributes);
     attributes.forEach(function(attribute)
     {
-        if(attribute.name!='style')
+        if(attribute.name!='style' && attribute.name!='class' && attribute.name!='type')
         {
             var div =document.createElement('div');
             div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
@@ -382,8 +390,3 @@ function edit_submit()
     });
 }
 
-var re = /load=(.*)/;
-if(result = location.href.match(re))
-{
-    load(result[1]);
-}

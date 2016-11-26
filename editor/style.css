@@ -8,7 +8,7 @@
 #editor
 {
     font-family:sans-serif;
-    margin:150px 200px;
+    margin:150px 250px;
     transform:rotate(0deg);
     transform-origin:50% 50%;
 }
@@ -20,7 +20,7 @@
 #edit_item label
 {
     display:inline-block;
-    width:50px;
+    width:70px;
 }
 .line
 {
@@ -83,7 +83,15 @@
     color:white;
     width:1px;
     height:1px;
+    opacity:0.7;
+    cursor:pointer;
 }
+.ennemy:hover,
+.patrol_point:hover
+{
+    opacity:1;
+}
+
 .ennemy:before,
 .patrol_point:before
 {
@@ -93,7 +101,7 @@
     width:10px;
     height:15px;
     padding:15px 1px 0px 1px;
-    margin-top:-10px;
+    margin-top:-4px;
     background:url(ennemy.png) top center no-repeat;
     background-size:10px;
     transform:translateX(-50%) translateY(0%);
@@ -103,7 +111,18 @@
 {
     background-image:url(patrol_point.png);
 }
-.selected:before
+.selected:after
 {
-    border:1px solid white;
+    content:'';
+    display:block;
+    position:absolute;
+    top:-5px;
+    left:-5px;
+    width:10px;
+    height:10px;
+    border:1px solid yellow;
+}
+hr
+{
+    margin:20px 0px;
 }
