@@ -261,7 +261,7 @@ function add_patrol_point(h, e_id, top, left)
     var div = document.createElement('div');
     div.className='patrol_point';
     div.setAttribute('type','patrol_point');
-    div.innerText='E.'+e_id+' - p'+num;
+    div.innerText=e_id+'-'+num;
     h.appendChild(div);
 
 
@@ -286,7 +286,7 @@ function add_ennemy(h, top, left, rotation)
         div.className='ennemy';
         div.setAttribute('type','ennemy');
         div.setAttribute('ennemy_id', ennemy_id);
-        div.innerText='E.'+(ennemy_id);
+        div.innerText=ennemy_id;
         h.appendChild(div);
 
         var editorLeft =  editor.offsetLeft;

@@ -81,10 +81,17 @@
     font-size:9px;
     position:absolute;
     color:white;
-    width:1px;
-    height:1px;
+    width:15px;
+    height:15px;
+    left:-5px;
+    top:-5px;
+    background:red;
+    border-radius:100%;
     opacity:0.7;
     cursor:pointer;
+    line-height:15px;
+    text-align:center;
+    border:2px solid transparent;
 }
 .ennemy:hover,
 .patrol_point:hover
@@ -92,35 +99,13 @@
     opacity:1;
 }
 
-.ennemy:before,
-.patrol_point:before
+.patrol_point
 {
-    content:'';
-    display:block;
-    position:absolute;
-    width:10px;
-    height:15px;
-    padding:15px 1px 0px 1px;
-    margin-top:-4px;
-    background:url(ennemy.png) top center no-repeat;
-    background-size:10px;
-    transform:translateX(-50%) translateY(0%);
+    background-color:gray;
 }
-
-.patrol_point:before
+.selected
 {
-    background-image:url(patrol_point.png);
-}
-.selected:after
-{
-    content:'';
-    display:block;
-    position:absolute;
-    top:-5px;
-    left:-5px;
-    width:10px;
-    height:10px;
-    border:1px solid yellow;
+    border:2px solid yellow;
 }
 hr
 {
