@@ -345,7 +345,16 @@ function build_form()
         if(attribute.name!='style' && attribute.name!='class' && attribute.name!='type')
         {
             var div =document.createElement('div');
-            div.innerHTML='<label>'+attribute.name+'</label><input type="text" name="'+attribute.name+'" value="'+attribute.value+'" />';
+            var type='text';
+            var extra='';
+            switch(attribute.name)
+            {
+                case 'rotation': type = 'range'; extra='min="0" max="360"'; break; 
+                case 'left':
+                case 'top': 
+                    type = 'range'; extra='min="0" max="1" step="0.01"'; break; 
+            };
+            div.innerHTML='<label>'+attribute.name+'</label><input '+extra+' type="'+type+'" name="'+attribute.name+'" value="'+attribute.value+'" />';
             container.appendChild(div);
         }
     });
@@ -353,6 +362,7 @@ function build_form()
     {
         input.addEventListener('submit', edit_submit);
         input.addEventListener('keyup', edit_submit);
+        input.addEventListener('input', edit_submit);
     });
 }
 

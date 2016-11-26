@@ -67,6 +67,7 @@ var Ennemy = function(game, options)
 
         this.create();
 
+        console.log('here ',this.next_pos);
         if(this.next_pos)
         {
             var v = new THREE.Vector3(this.next_pos.x, this.next_pos.y, this.next_pos.z);
@@ -682,7 +683,7 @@ Ennemy.prototype.update= function(delta)
     {
         this.life_container.rotation.z += 0.03;
     }
-    if(!this.move_destination && this.options.patrol_positions)
+    if(!this.move_destination && this.options.patrol_positions.length>0)
     {
         if(!this.patrol_waiting_timer)
         {
@@ -713,6 +714,11 @@ Ennemy.prototype.update= function(delta)
 
 Ennemy.prototype.get_next_patrol_point = function()
 {
+    if(this.options.patrol_positions.length<2)
+    {
+        return null;
+    }
+
     var next_id = this.patrol_id+this.patrol_inc;
     var next_inc = this.patrol_inc;
     this.patrol_id+= next_inc
@@ -742,7 +748,6 @@ Ennemy.prototype.get_next_patrol_point = function()
     }
     this.patrol_id=next_id;
     this.patrol_inc=next_inc;
-
     return this.options.patrol_positions[next_id];
 };
 
