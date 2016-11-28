@@ -94,7 +94,7 @@ Path.prototype.add_cell = function(params)
     var self=this;
     var cell =this.create_cell(params);
 
-    params.walls.forEach(function(wall)
+    params.smallwalls.forEach(function(wall)
     {
         // Top right
         mesh = new THREE.Mesh( game.assets.smallwall1_geo);
@@ -116,14 +116,7 @@ Path.prototype.add_cell = function(params)
 
         if(game.opt.debug_level<1)
         {
-            if(mesh.type=='wall')
-            {
-                self.walls_geom.merge(mesh.geometry, mesh.matrix);
-            }
-            else
-            {
-                self.doors_geom.merge(mesh.geometry, mesh.matrix);
-            }
+            self.smallwalls_geom.merge(mesh.geometry, mesh.matrix);
         }
         self.walls_collision_geom.merge(collision_mesh.geometry, mesh.matrix);
     });
@@ -143,6 +136,7 @@ Path.prototype.build = function()
 {
     var self=this;
     this.level = Levels[game.level-1] || Levels[0];
+    console.log('level = ',this.level);
 
     if(this.options.parent)
     {
@@ -152,15 +146,16 @@ Path.prototype.build = function()
     var connected_end = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 4);
 
     // Auto add walls on outside cells
-    this.level.outside_cells.forEach(function(cell)
+    this.level.cells.forEach(function(cell)
     {
+        cell.smallwalls = [];
         cell.walls = [];
         cell.collision_doors = [];
         
         for(var i=0; i<6; i++)
         {
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
-            var search = self.level.outside_cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
+            var search = self.level.cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
 
             var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
             var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
@@ -171,11 +166,12 @@ Path.prototype.build = function()
             }
             else if(!search.length && !is_start)
             {
-                cell.walls.push(self.get_opposide_door(nearcell[2]));
+                cell.smallwalls.push(self.get_opposide_door(nearcell[2]));
             }
         }
     });
 
+    this.smallwalls_geom = new THREE.Geometry();
     this.walls_geom = new THREE.Geometry();
     this.doors_geom = new THREE.Geometry();
     this.walls_collision_geom = new THREE.Geometry();
@@ -191,7 +187,7 @@ Path.prototype.build = function()
     this.container = new THREE.Object3D();
     this.angle = Math.radians(-30);
 
-    this.level.outside_cells.forEach(function(cell)
+    this.level.cells.forEach(function(cell)
     {
         self.add_cell(cell);
     });
@@ -217,8 +213,8 @@ Path.prototype.build = function()
     this.container.add(floor);
 
 
-    var wall = new THREE.Mesh( this.walls_geom, game.assets.multi_path_wall_material);
-    wall.name='walls';
+    var wall = new THREE.Mesh( this.smallwalls_geom, game.assets.multi_path_wall_material);
+    wall.name='smallwalls';
     wall.receiveShadow=true;
     wall.castShadow=true;
     wall.receiveShadow=true;

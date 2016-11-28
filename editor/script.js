@@ -106,17 +106,17 @@ function load()
     if(data)
     {
         reset();
-        if(data && data.outside_cells && data.end_cell)
+        if(data && data.cells && data.end_cell)
         {
             // Load walls
-            data.outside_cells.forEach(function(cell)
+            data.cells.forEach(function(cell)
             {
                 var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
                 node.classList.remove('disabled');
             });
 
             // Load wall types
-            data.extracells.forEach(function(cell)
+            data.extrawalls.forEach(function(cell)
             {
                 var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
                 add_walltype(node, cell.i,  cell.type);
@@ -150,16 +150,16 @@ function save()
 {
     var map =
     {
-        outside_cells: [ ],
+        cells: [ ],
         ennemys: [],
-        extracells: [ ],
+        extrawalls: [ ],
         end_cell:  null
     };
     // Add outside cells
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
-        map.outside_cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
+        map.cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
     });
 
 
@@ -168,7 +168,7 @@ function save()
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
-        map.extracells.push({ type:node.getAttribute('type'), i:node.getAttribute('i'), x: p.getAttribute('row'), z: p.getAttribute('line') });
+        map.extrawalls.push({ type:node.getAttribute('type'), i:node.getAttribute('i'), x: p.getAttribute('row'), z: p.getAttribute('line') });
     });
 
     // Add end node
