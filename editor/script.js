@@ -494,7 +494,6 @@ function add_walltype(node,i,type)
             wall.setAttribute('i', i);
             wall.className=classname+' walltype type'+i;
 
-            console.log('add type ',type);
             // If door
             if(type=='4')
             {
