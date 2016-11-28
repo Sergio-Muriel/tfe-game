@@ -225,13 +225,11 @@ function save()
     link.href = 'data:text/plain,var Levels = '+JSON.stringify(Levels, null , '\t').replace(/"/g,'');
     link.innerText='Download';
     document.body.appendChild(link);
-    console.log('link ',link);
     link.click();
 };
 
 function toggle(h, line, row, e)
 {
-    console.log('toggle ',mode);
     if(mode=='edit_map')
     {
         if(h.classList.contains('disabled'))
@@ -283,7 +281,6 @@ function toggle(h, line, row, e)
         {
             return;
         }
-        console.log('here ');
 
         var editorLeft =  editor.offsetLeft;
         var editorTop =  editor.offsetTop;
@@ -319,7 +316,6 @@ function add_patrol_point(h, e_id, top, left)
 
     div.addEventListener('click', selectItem.bind(this, div, h), true);
     div.click();
-    console.log('added patrol point');
 }
 
 function add_ennemy(h, params)
@@ -426,17 +422,22 @@ function build_form_wall(h)
 {
     var container = document.getElementById('edit_item');
     container.innerText='';
-    console.log('build form wall');
 
     var div = document.createElement('div');
     div.className='wall_editor';
     for(var i=0; i< 6; i++)
     {
+        var current = h.querySelector('.type'+i);
+        var selectedIndex=0;
+        if(current)
+        {
+            selectedIndex = current.getAttribute('type');
+        }
         div.innerHTML+='<select class="type'+i+'" line="'+h.getAttribute('line')+'" row="'+h.getAttribute('row')+'">'+
-                '<option value="">None</option>'+
-                '<option value="1">Wall</option>'+
-                '<option value="2">Opened</option>'+
-                '<option value="3">Door</option>'+
+                '<option '+(selectedIndex=='0' ? 'selected': '')+' value="">None</option>'+
+                '<option '+(selectedIndex=='1' ? 'selected': '')+' value="1">Wall</option>'+
+                '<option '+(selectedIndex=='2' ? 'selected': '')+' value="2">Opened</option>'+
+                '<option '+(selectedIndex=='3' ? 'selected': '')+' value="3">Door</option>'+
             '</select>';
     }
     container.appendChild(div);
@@ -468,7 +469,6 @@ function edit_wall()
 
 function add_walltype(node,i,type)
 {
-    console.log('add walltype ',node, i ,type);
     if(type!='0')
     {
         var wall =  document.createElement('div');
@@ -504,13 +504,10 @@ function remove(e)
 
 function edit_submit()
 {
-    console.log('save!');
     [...document.querySelectorAll('#edit_item input')].forEach(function(input)
     {
-        console.log('here ',input);
         if(input.type=='checkbox')
         {
-            console.log('set ',(!!input.checked)+'');
             selected_item.setAttribute(input.name,(!!input.checked)+'');
         }
         else
