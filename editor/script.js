@@ -162,14 +162,14 @@ function save()
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
-        var item = { x: node.getAttribute('row'), z: node.getAttribute('line'), walls: [] };
+        var item = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10), walls: [] };
 
         // Add extra walls
         var subnodes = [...node.querySelectorAll('.walltype')];
         subnodes.forEach(function(node)
         {
             var p = node.parentElement;
-            item.walls.push({ type:node.getAttribute('type'), i:node.getAttribute('i') });
+            item.walls.push({ type:parseInt(node.getAttribute('type'),10), i:parseInt(node.getAttribute('i'),10) });
         });
         map.cells.push(item);
     });
@@ -192,14 +192,15 @@ function save()
         var e_id = node.getAttribute('ennemy_id');
         var ennemy = 
         {
-            x: p.getAttribute('row'),
-            z: p.getAttribute('line'),
-            top: node.getAttribute('top'),
-            left: node.getAttribute('left'),
+            x: parseInt(p.getAttribute('row'),10),
+            z: parseInt(p.getAttribute('line'),10),
+            top: parseFloat(node.getAttribute('top')),
+            left: parseFloat(node.getAttribute('left')),
             patrol_positions : [],
             patrol_loop : node.getAttribute('patrol_loop'),
-            patrol_wait : node.getAttribute('patrol_wait'),
-            rotation: node.getAttribute('rotation'),
+            patrol_wait : parseInt(node.getAttribute('patrol_wait'),10),
+            drops : node.getAttribute('drops'),
+            rotation: parseInt(node.getAttribute('rotation')),
         };
         var search=1;
         var found=true;
@@ -212,10 +213,10 @@ function save()
                 var parent_patrol = patrol.parentElement;
                 ennemy.patrol_positions.push(
                 {
-                    x: parent_patrol.getAttribute('row'),
-                    z: parent_patrol.getAttribute('line'),
-                    top: patrol.getAttribute('top'),
-                    left: patrol.getAttribute('left'),
+                    x: parseInt(parent_patrol.getAttribute('row'),10),
+                    z: parseInt(parent_patrol.getAttribute('line'),10),
+                    top: parseFloat(patrol.getAttribute('top')),
+                    left: parseFloat(patrol.getAttribute('left')),
                 });
             });
             found = patrols.length;
@@ -227,7 +228,7 @@ function save()
 
     var link = document.createElement('a');
     link.download = 'levels.js';
-    link.href = 'data:text/plain,var Levels = '+JSON.stringify(Levels, null , '\t').replace(/"/g,'');
+    link.href = 'data:text/plain,var Levels = '+JSON.stringify(Levels, null , '\t');
     link.innerText='Download';
     document.body.appendChild(link);
     link.click();
@@ -276,7 +277,7 @@ function toggle(h, line, row, e)
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
 
-        this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, patrol_wait: 2000});
+        this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
 
         e.stopPropagation();
     }
@@ -342,6 +343,7 @@ function add_ennemy(h, params)
         div.setAttribute('left', params.left);
         div.setAttribute('patrol_loop', !!params.patrol_loop);
         div.setAttribute('patrol_wait', params.patrol_wait);
+        div.setAttribute('drops', params.drops);
         div.setAttribute('top', params.top);
         div.style.left=(parseFloat(params.left)*100)+'%';
         div.style.top=(parseFloat(params.top)*100)+'%';
