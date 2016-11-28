@@ -491,6 +491,14 @@ function add_walltype(node,i,type)
             wall.setAttribute('type', type);
             wall.setAttribute('i', i);
             wall.className=classname+' walltype type'+i;
+
+            console.log('add type ',type);
+            // If door
+            if(type=='4')
+            {
+                var key = node.getAttribute('row')+'-'+node.getAttribute('line')+'-'+i;
+                wall.innerHTML='<span>Key '+key+'</span>';
+            }
             node.appendChild(wall);
         }
     }

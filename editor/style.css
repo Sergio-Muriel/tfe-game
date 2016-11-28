@@ -138,9 +138,20 @@ hr
     background-size:contain;
     transform-origin:50% 50%;
 }
-.smallwall { background-image:url(smallwall.png); }
+.smallwall { background-image:url(smallwallt g.png); }
 .opened { background-image:url(opened.png); }
 .door { background-image:url(door.png); }
+.door span
+{
+    position:absolute;
+    width:100%;
+    top:10%;
+    left:50%;
+    font-size:13px;
+    color:white;
+    transform:translateX(-50%);
+    text-align:center;
+}
 
 .type0 { transform:rotate(180deg); }
 .type1 { transform:rotate(120deg); }
