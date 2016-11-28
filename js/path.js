@@ -96,57 +96,58 @@ Path.prototype.add_cell = function(params)
 
     params.walls.forEach(function(wall)
     {
-        var mesh=null;
-        var collision_mesh=null;
+        var meshes=[];
+        var collision_meshes=[];
         switch(wall.type+'')
         {
             // Small wall
             case '1':
-                mesh = new THREE.Mesh( game.assets.smallwall1_geo);
-                mesh.type='smallwall';
-                collision_mesh = new THREE.Mesh( game.assets.wall_geo);
+                meshes.push(new THREE.Mesh( game.assets.smallwall1_geo));
+                collision_meshes.push(new THREE.Mesh( game.assets.wall_geo));
                 break;
             // Full wall
             case '2':
-                mesh = new THREE.Mesh( game.assets.wall1_geo);
-                mesh.type='wall';
-                collision_mesh = new THREE.Mesh( game.assets.wall_geo);
+                meshes.push(new THREE.Mesh( game.assets.wall1_geo));
+                collision_meshes.push(new THREE.Mesh( game.assets.wall_geo));
                 break;
             // Opened
             case '3':
-                mesh = new THREE.Mesh( game.assets.door1_geo);
-                mesh.type='opened';
-                collision_mesh = new THREE.Mesh( game.assets.door_geo);
+                meshes.push(new THREE.Mesh( game.assets.door1_geo));
+                collision_meshes.push(new THREE.Mesh( game.assets.door_geo));
                 break;
 
             // Door:
             // @TODO
             case '4':
-                mesh = new THREE.Mesh( game.assets.door1_geo);
-                mesh.type='door';
-                collision_mesh = new THREE.Mesh( game.assets.door_geo);
+                meshes.push(new THREE.Mesh( game.assets.door1_geo));
+                collision_meshes.push(new THREE.Mesh( game.assets.door_geo));
+                meshes.push(new THREE.Mesh( game.assets.dooropen1_geo));
+                collision_meshes.push(new THREE.Mesh( game.assets.dooropen_geo));
                 break;
         }
 
-        //cell.add(mesh);
-
-        mesh.position.x = cell.position.x;
-        mesh.position.y = cell.position.y;
-        mesh.position.z = cell.position.z;
-
-        collision_mesh.position.x = cell.position.x;
-        collision_mesh.position.y = cell.position.y;
-        collision_mesh.position.z = cell.position.z;
-
-        console.log('mesh = ',mesh, wall); 
-        self.set_mesh_orientation(mesh, wall.i);
-        self.set_mesh_orientation(collision_mesh, wall.i);
-
-        if(game.opt.debug_level<1)
+        meshes.forEach(function(mesh)
         {
-            self.smallwalls_geom.merge(mesh.geometry, mesh.matrix);
-        }
-        self.walls_collision_geom.merge(collision_mesh.geometry, mesh.matrix);
+            mesh.position.x = cell.position.x;
+            mesh.position.y = cell.position.y;
+            mesh.position.z = cell.position.z;
+
+
+            self.set_mesh_orientation(mesh, wall.i);
+            if(game.opt.debug_level<1)
+            {
+                self.walls_geom.merge(mesh.geometry, mesh.matrix);
+            }
+        });
+        collision_meshes.forEach(function(collision_mesh)
+        {
+            collision_mesh.position.x = cell.position.x;
+            collision_mesh.position.y = cell.position.y;
+            collision_mesh.position.z = cell.position.z;
+            self.set_mesh_orientation(collision_mesh, wall.i);
+            self.walls_collision_geom.merge(collision_mesh.geometry, collision_mesh.matrix);
+        });
+
     });
 
     params.collision_doors.forEach(function(door)
@@ -203,9 +204,6 @@ Path.prototype.build = function()
     });
 
     this.walls_geom = new THREE.Geometry();
-    this.smallwalls_geom = new THREE.Geometry();
-    this.walls_geom = new THREE.Geometry();
-    this.doors_geom = new THREE.Geometry();
     this.walls_collision_geom = new THREE.Geometry();
     this.floor_geom_refs = {};
     this.floor_geom = new THREE.Geometry();
@@ -246,35 +244,13 @@ Path.prototype.build = function()
 
 
     // Small walls
-    var smallwall = new THREE.Mesh( this.smallwalls_geom, game.assets.multi_path_wall_material);
-    smallwall.name='smallwalls';
-    smallwall.receiveShadow=true;
-    smallwall.castShadow=true;
-    smallwall.receiveShadow=true;
-    this.container.add(smallwall);
+    var walls = new THREE.Mesh( this.walls_geom, game.assets.multi_path_wall_material);
+    walls.name='walls';
+    walls.receiveShadow=true;
+    walls.castShadow=true;
+    walls.receiveShadow=true;
+    this.container.add(walls);
 
-    // Opened
-    var opened = new THREE.Mesh( this.wall1_geo, game.assets.multi_path_wall_material);
-    opened.name='opened';
-    opened.receiveShadow=true;
-    opened.castShadow=true;
-    opened.receiveShadow=true;
-    this.container.add(opened);
-
-    // Walls
-    var wall = new THREE.Mesh( this.walls_geom, game.assets.multi_path_wall_material);
-    wall.name='walls';
-    wall.receiveShadow=true;
-    wall.castShadow=true;
-    wall.receiveShadow=true;
-    this.container.add(wall);
-
-    var door = new THREE.Mesh( this.doors_geom, game.assets.multi_path_wall_material);
-    door.name='doors';
-    door.receiveShadow=true;
-    door.castShadow=true;
-    door.receiveShadow=true;
-    this.container.add(door);
 
     // Walls collision
     this.walls_collision = new THREE.Mesh(
