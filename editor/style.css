@@ -138,6 +138,7 @@ hr
     background-size:contain;
     transform-origin:50% 50%;
 }
+.smallwall { background-image:url(smallwall.png); }
 .opened { background-image:url(opened.png); }
 .door { background-image:url(door.png); }
 

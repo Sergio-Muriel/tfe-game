@@ -113,14 +113,17 @@ function load()
             {
                 var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
                 node.classList.remove('disabled');
+
+                if(cell.walls)
+                {
+                    // Load wall types
+                    cell.walls.forEach(function(wall)
+                    {
+                        add_walltype(node, wall.i,  wall.type);
+                    });
+                }
             });
 
-            // Load wall types
-            data.extrawalls.forEach(function(cell)
-            {
-                var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
-                add_walltype(node, cell.i,  cell.type);
-            });
 
             // Load end cell
             node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
@@ -159,17 +162,19 @@ function save()
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {
-        map.cells.push({ x: node.getAttribute('row'), z: node.getAttribute('line') });
+        var item = { x: node.getAttribute('row'), z: node.getAttribute('line'), walls: [] };
+
+        // Add extra walls
+        var subnodes = [...node.querySelectorAll('.walltype')];
+        subnodes.forEach(function(node)
+        {
+            var p = node.parentElement;
+            item.walls.push({ type:node.getAttribute('type'), i:node.getAttribute('i') });
+        });
+        map.cells.push(item);
     });
 
 
-    // Add extra walls
-    var nodes = [...document.querySelectorAll('.walltype')];
-    nodes.forEach(function(node)
-    {
-        var p = node.parentElement;
-        map.extrawalls.push({ type:node.getAttribute('type'), i:node.getAttribute('i'), x: p.getAttribute('row'), z: p.getAttribute('line') });
-    });
 
     // Add end node
     var node = document.querySelector('.end_cell');
@@ -435,9 +440,10 @@ function build_form_wall(h)
         }
         div.innerHTML+='<select class="type'+i+'" line="'+h.getAttribute('line')+'" row="'+h.getAttribute('row')+'">'+
                 '<option '+(selectedIndex=='0' ? 'selected': '')+' value="">None</option>'+
-                '<option '+(selectedIndex=='1' ? 'selected': '')+' value="1">Wall</option>'+
-                '<option '+(selectedIndex=='2' ? 'selected': '')+' value="2">Opened</option>'+
-                '<option '+(selectedIndex=='3' ? 'selected': '')+' value="3">Door</option>'+
+                '<option '+(selectedIndex=='1' ? 'selected': '')+' value="1">Small wall</option>'+
+                '<option '+(selectedIndex=='2' ? 'selected': '')+' value="2">Wall</option>'+
+                '<option '+(selectedIndex=='3' ? 'selected': '')+' value="3">Opened</option>'+
+                '<option '+(selectedIndex=='4' ? 'selected': '')+' value="4">Door</option>'+
             '</select>';
     }
     container.appendChild(div);
@@ -456,7 +462,7 @@ function edit_wall()
     var select = document.querySelector('#edit_item select');
     var node = document.querySelector('.hexagone[row="'+select.getAttribute('row')+'"][line="'+select.getAttribute('line')+'"]');
 
-    [...node.querySelectorAll('.wall,.opened,.door')].forEach(function(wall)
+    [...node.querySelectorAll('.smallwall,.wall,.opened,.door')].forEach(function(wall)
     {
         wall.parentElement.removeChild(wall);
     });
@@ -475,9 +481,10 @@ function add_walltype(node,i,type)
         var classname='';
         switch(type+'')
         {
-            case '1': classname = 'wall';break;
-            case '2': classname = 'opened'; break;
-            case '3': classname = 'door'; break;
+            case '1': classname = 'smallwall'; break;
+            case '2': classname = 'wall'; break;
+            case '3': classname = 'opened'; break;
+            case '4': classname = 'door'; break;
         }
         if(classname)
         {
