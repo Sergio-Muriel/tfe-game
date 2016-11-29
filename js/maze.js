@@ -1127,7 +1127,7 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
     if(extra_door=='end'){
         action = 'leave_maze_from_end';
     }
-    line.walk_through_callback=this.changeCellEvent.bind(this, cellid, action);
+    line.walk_through_callback= game.enterType.bind(game, this);
 
     line.enter_leave_door = !!extra;
     line.outside_door = outside_door;
@@ -1247,37 +1247,6 @@ Maze.prototype.getOutsideCollisionCallbacks = function()
     return this.outside_separators;
 };
 
-
-Maze.prototype.changeCellEvent = function(cellid, action)
-{
-    if(cellid != this.current_cellid)
-    {
-        this.current_cellid = cellid;
-        if(cellid!='outside')
-        {
-            this.changeCell(cellid);
-        }
-
-        if(action=='leave_maze_from_start')
-        {
-            game.enterType(this.options.parent);
-        }
-        else if(action=='leave_maze_from_end')
-        {
-            console.log('leave maze from end');
-            game.enterType(this.next_item);
-        }
-        game.updateCollisionsCache();
-    }
-};
-
-Maze.prototype.changeCell= function(cellid)
-{
-    console.log('entering cell here ',cellid);
-    game.enterType(this);
-    game.focus_perso.current_cell=cellid;
-    var cell = this.cells[cellid];
-};
 
 Maze.prototype.build = function(load_data)
 {

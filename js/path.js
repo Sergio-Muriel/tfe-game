@@ -13,13 +13,14 @@ var Path = function(game, options)
     this.ambient_light_color = 0xffffff;
     this.ambient_light_intensity = 0.20;
 
-    this.nextType='Maze';
+    this.nextType='Path';
 
     this.num_items_line=2;
     this.width = 2;
     this.height = 2;
     this.id = game.getNewId();
     this.generated_doors = {};
+    this.outside_separators = [];
 
     this.interraction_items=[];
     this.all_interraction_items=[];
@@ -177,7 +178,6 @@ Path.prototype.build = function()
     // Auto add walls on outside cells
     this.level.cells.forEach(function(cell)
     {
-        
         cell.collision_doors = [];
 
         for(var i=0; i<6; i++)
@@ -202,6 +202,7 @@ Path.prototype.build = function()
             }
         }
     });
+
 
     this.walls_geom = new THREE.Geometry();
     this.walls_collision_geom = new THREE.Geometry();
@@ -229,6 +230,12 @@ Path.prototype.build = function()
     {
         this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
     }
+
+    // Start doors separation line
+    var params = { x: 0, z: 0, real_x:'outside',real_z:'outside'};
+    var cell = this.cells[0];
+    this.create_separation_line(cell,params, 4,false, true);
+        
 
 
     this.container.position.x = current_x;
