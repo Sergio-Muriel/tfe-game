@@ -1366,6 +1366,10 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     options.ai = true;
     options.parentStructure = this;
     options.game = game;
+    if(!window[type])
+    {
+        return console.error('Cannot create interraction item ',type);
+    }
     var item = new window[type](game,  options);
 
     item.build();

@@ -67,7 +67,6 @@ var Ennemy = function(game, options)
 
         this.create();
 
-        console.log('here ',this.next_pos);
         if(this.next_pos)
         {
             var v = new THREE.Vector3(this.next_pos.x, this.next_pos.y, this.next_pos.z);

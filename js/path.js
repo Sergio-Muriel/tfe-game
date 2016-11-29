@@ -165,7 +165,6 @@ Path.prototype.build = function()
 {
     var self=this;
     this.level = Levels[game.level-1] || Levels[0];
-    console.log('level = ',this.level);
 
     if(this.options.parent)
     {
@@ -277,7 +276,6 @@ Path.prototype.build = function()
 Path.prototype.add_ennemys = function()
 {
     var self=this;
-    console.log('this level ',this.level);
     if(this.level.ennemys)
     {
         this.level.ennemys.forEach(function(ennemy)
