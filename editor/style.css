@@ -115,6 +115,10 @@
     left:calc(50% - 1px);
     background:#c4c04e;
 }
+.chest:before
+{
+    height:15px;
+}
 .ennemy:hover,
 .chest:hover,
 .patrol_point:hover
