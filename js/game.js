@@ -18,7 +18,7 @@ var Game = function(opt)
     if(opt.debug_level>1)
     {
         camera_decal_x = 0;
-        camera_decal_y = 800;
+        camera_decal_y = 200;
         camera_decal_z = 80;
     }
 
@@ -401,7 +401,8 @@ var Game = function(opt)
 
                 if(collisionResults.length===0)
                 {
-                    window.setTimeout(self.current_item.add_interraction_item.bind(self.current_item,item.type, item.params, true), delay);
+                    var type = item.type.substr(0,1).toUpperCase()+item.type.substr(1).toLowerCase();
+                    window.setTimeout(self.current_item.add_interraction_item.bind(self.current_item,type , item.params, true), delay);
                 }
                 distance+=Math.radians(20+Math.floor(Math.random()*180));
                 if(distance>Math.radians(360))

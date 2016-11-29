@@ -498,7 +498,7 @@ function add_walltype(node,i,type)
             if(type=='4')
             {
                 var key = node.getAttribute('row')+'-'+node.getAttribute('line')+'-'+i;
-                wall.innerHTML='<span>Key '+key+'</span>';
+                wall.innerHTML='<span>key'+key+'</span>';
             }
             node.appendChild(wall);
         }

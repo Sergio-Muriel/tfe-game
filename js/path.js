@@ -302,6 +302,16 @@ Path.prototype.add_ennemys = function()
                     z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size
                 });
             });
+            var drops = [];
+            ennemy.drops.split(/\s+/).forEach(function(drop)
+            {
+                drops.push(
+                {
+                    type:drop,
+                    params:{
+                    }
+                });
+            });
             self.add_interraction_item('Ennemy',
             {
                 level: game.level,
@@ -310,22 +320,7 @@ Path.prototype.add_ennemys = function()
                 patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
                 patrol_loop:ennemy.patrol_loop,
-                drops: [
-                    {
-                        type:'Stick',
-                        params:{
-                            walk_through_callback: function(){},
-                            type:'stick'
-                        }
-                    },
-                    {
-                        type:'Potion',
-                        params:{
-                            walk_through_callback: function(){},
-                            type:'potion'
-                        }
-                    }
-                ],
+                drops: drops,
                 patrol_wait: ennemy.patrol_wait
             });
         });
