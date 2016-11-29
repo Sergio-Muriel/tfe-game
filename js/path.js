@@ -194,7 +194,6 @@ Path.prototype.build = function()
             var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
             var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
 
-
             if(is_end)
             {
                 cell.collision_doors.push(1);

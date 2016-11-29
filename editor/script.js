@@ -41,6 +41,7 @@ document.getElementById('reset').addEventListener('click',function() { if(confir
 document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(this,'edit_map'), false);
 document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
 document.getElementById('mark_end').addEventListener('click',toggle_mode.bind(this,'mark_end'), false);
+document.getElementById('mark_next').addEventListener('click',toggle_mode.bind(this,'mark_next'), false);
 document.getElementById('add_ennemy').addEventListener('click',toggle_mode.bind(this,'add_ennemy'), false);
 document.getElementById('add_chest').addEventListener('click',toggle_mode.bind(this,'add_chest'), false);
 document.getElementById('add_patrol_point').addEventListener('click',toggle_mode.bind(this,'add_patrol_point'), false);
@@ -110,6 +111,7 @@ function reset()
         {
             node.classList.add('disabled');
             node.classList.remove('end_cell');
+            node.classList.remove('next_cell');
             node.innerText='';
         }
     });
@@ -121,7 +123,7 @@ function load()
     if(data)
     {
         reset();
-        if(data && data.cells && data.end_cell)
+        if(data && data.cells)
         {
             // Load walls
             data.cells.forEach(function(cell)
@@ -143,6 +145,11 @@ function load()
             // Load end cell
             node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
             node.classList.add('end_cell');
+            if(data.next_cell)
+            {
+                node = document.querySelector('.hexagone[row="'+data.next_cell.x+'"][line="'+data.next_cell.z+'"]');
+                node.classList.add('next_cell');
+            }
 
             // Load ennemys + patrol points
             data.ennemys.forEach(function(ennemy)
@@ -182,7 +189,8 @@ function save()
         ennemys: [],
         chests: [],
         extrawalls: [ ],
-        end_cell:  null
+        end_cell:  null,
+        next_cell:  null
     };
     // Add outside cells
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
@@ -209,6 +217,13 @@ function save()
         return;
     }
     map.end_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
+
+    node = document.querySelector('.next_cell');
+    if(!node){
+        alert('Error: no next cell marked');
+        return;
+    }
+    map.next_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
     // Add ennemys
     var nodes = [...document.querySelectorAll('.ennemy')];
@@ -310,6 +325,16 @@ function toggle(h, line, row, e)
         });
         h.classList.add('end_cell');
         h.classList.remove('disabled');
+    }
+    else if(mode=='mark_next')
+    {
+        var nodes = [...document.querySelectorAll('.hexagone')];
+        nodes.forEach(function(node)
+        {
+            node.classList.remove('next_cell');
+        });
+        h.classList.add('next_cell');
+        h.classList.add('disabled');
     }
     else if(mode=='add_ennemy')
     {
