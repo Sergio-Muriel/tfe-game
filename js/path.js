@@ -165,8 +165,12 @@ Path.prototype.add_cell = function(params)
 Path.prototype.build = function()
 {
     var self=this;
-    this.level = Levels[game.level-1] || Levels[0];
-    console.log('level ',game.level-1);
+    this.level = Levels[game.level-1];
+    if(!this.level)
+    {
+        console.error('Next level does not exist.');
+        return false;
+    }
 
     if(this.options.parent)
     {
@@ -192,17 +196,17 @@ Path.prototype.build = function()
             var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
             var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
 
+
             if(is_end)
             {
                 cell.collision_doors.push(1);
             }
-            else if(!has_neighbor && !has_already_wall && !is_start)
+            else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
             {
-                cell.walls.push({ type: '1', i: self.get_opposide_door(nearcell[2])});
+                cell.walls.push({ type: '1', i: i});
             }
         }
     });
-
 
     this.walls_geom = new THREE.Geometry();
     this.walls_collision_geom = new THREE.Geometry();
