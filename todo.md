@@ -1,3 +1,4 @@
+- Editor: custom music / ambient / light
 - open door animation ( clickable door - click to open if key)
 - add snow like / blizzard particles
 - zoom level depending on maze / path
