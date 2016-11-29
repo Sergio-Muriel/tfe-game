@@ -42,6 +42,7 @@ document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(th
 document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
 document.getElementById('mark_end').addEventListener('click',toggle_mode.bind(this,'mark_end'), false);
 document.getElementById('add_ennemy').addEventListener('click',toggle_mode.bind(this,'add_ennemy'), false);
+document.getElementById('add_chest').addEventListener('click',toggle_mode.bind(this,'add_chest'), false);
 document.getElementById('add_patrol_point').addEventListener('click',toggle_mode.bind(this,'add_patrol_point'), false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
@@ -49,6 +50,7 @@ document.getElementById('remove').addEventListener('click',remove, false);
 
 
 var ennemy_id = 0;
+var chest_id = 0;
 var has_ennemy = false;
 
 function toggle_mode(_mode)
@@ -154,6 +156,16 @@ function load()
                 });
             });
 
+            // Load chests
+            if(data.chests)
+            {
+                data.chests.forEach(function(chest)
+                {
+                    var chestnode = document.querySelector('.hexagone[row="'+chest.x+'"][line="'+chest.z+'"]');
+                    self.add_chest(chestnode, chest);
+                });
+            }
+
         }
     }
     else
@@ -168,6 +180,7 @@ function save()
     {
         cells: [ ],
         ennemys: [],
+        chests: [],
         extrawalls: [ ],
         end_cell:  null
     };
@@ -237,6 +250,25 @@ function save()
         }
         map.ennemys.push(ennemy);
     });
+
+    // Add Chests
+    var nodes = [...document.querySelectorAll('.chest')];
+    nodes.forEach(function(node)
+    {
+        var p = node.parentElement;
+        var c_id = node.getAttribute('chest_id');
+        var chest = 
+        {
+            x: parseInt(p.getAttribute('row'),10),
+            z: parseInt(p.getAttribute('line'),10),
+            top: parseFloat(node.getAttribute('top')),
+            left: parseFloat(node.getAttribute('left')),
+            drops : node.getAttribute('drops'),
+            rotation: parseInt(node.getAttribute('rotation')),
+        };
+        map.chests.push(chest);
+    });
+
     Levels[levels_container.options[levels_container.selectedIndex].value] =  map;
 
     var link = document.createElement('a');
@@ -291,6 +323,21 @@ function toggle(h, line, row, e)
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
 
         this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
+
+        e.stopPropagation();
+    }
+    else if(mode=='add_chest')
+    {
+        if(h.classList.contains('disabled'))
+        {
+            return;
+        }
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+
+        this.add_chest(h, { top: top, left:left, rotation:0, drops:''});
 
         e.stopPropagation();
     }
@@ -365,6 +412,33 @@ function add_ennemy(h, params)
         div.click();
         update_ennemy_list();
         return ennemy_id;
+}
+
+function add_chest(h, params)
+{
+        chest_id++;
+
+        var div = document.createElement('div');
+        div.className='chest selectable_item';
+        div.setAttribute('type','chest');
+        div.setAttribute('chest_id', chest_id);
+        div.innerText=chest_id;
+        h.appendChild(div);
+
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        
+        div.setAttribute('rotation',params.rotation);
+        div.style.transform='rotate('+params.rotation+'deg)';
+        div.setAttribute('left', params.left);
+        div.setAttribute('drops', params.drops);
+        div.setAttribute('top', params.top);
+        div.style.left=(parseFloat(params.left)*100)+'%';
+        div.style.top=(parseFloat(params.top)*100)+'%';
+
+        div.addEventListener('click', selectItem.bind(this, div, h), true);
+        div.click();
+        return chest_id;
 }
 
 function selectItem(div, hexagone, e)

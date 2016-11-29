@@ -279,6 +279,7 @@ Path.prototype.build = function()
     this.container.add(this.walls_collision);
 
     this.add_ennemys();
+    this.add_chests();
 
     game.scene.add(this.container);
 };
@@ -330,6 +331,41 @@ Path.prototype.add_ennemys = function()
                 patrol_loop:ennemy.patrol_loop,
                 drops: drops,
                 patrol_wait: ennemy.patrol_wait
+            });
+        });
+    }
+};
+
+Path.prototype.add_chests = function()
+{
+    var self=this;
+    if(this.level.chests)
+    {
+        this.level.chests.forEach(function(chest)
+        {
+            console.log('add chest ',chest);
+            var coord = self.get_cell_pos_params({ x: chest.x, z: chest.z });
+
+            var drops = [];
+            chest.drops.split(/\s+/).forEach(function(drop)
+            {
+                drops.push(
+                {
+                    type:drop,
+                    params:{
+                    }
+                });
+            });
+            self.add_interraction_item('Chest',{
+                level: game.level,
+                mazeid: self.id,
+                type: 'chest',
+                callback: function() { },
+                rotate: Math.radians(chest.rotation -90),
+                drops: drops,
+                x: coord.x + (game.opt.door_size * chest.left)*2 - (game.opt.door_size),
+                y: 1,
+                z: coord.z + (game.opt.door_size * chest.top)*2 - (game.opt.door_size),
             });
         });
     }

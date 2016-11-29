@@ -80,6 +80,7 @@
     transform:translateX(-50%) translateY(-50%);
 }
 .ennemy,
+.chest,
 .patrol_point
 {
     font-size:9px;
@@ -97,6 +98,12 @@
     text-align:center;
     border:2px solid transparent;
 }
+.chest
+{
+    background:#c4c04e;
+}
+
+.chest:before,
 .ennemy:before
 {
     content:'';
@@ -106,9 +113,10 @@
     position:absolute;
     top:100%;
     left:calc(50% - 1px);
-    background:red;
+    background:#c4c04e;
 }
 .ennemy:hover,
+.chest:hover,
 .patrol_point:hover
 {
     opacity:1;
