@@ -4,8 +4,6 @@ var Path = function(game, options)
 
     this.options = options;
 
-    this.path_length = game.opt.debug_level>1 ? 2 : 3;
-
     this.music = game.assets.path_sound;
     this.ambient = game.assets.blizzard_sound;
     this.floor_material = game.assets.path_floor_material;
@@ -248,7 +246,7 @@ Path.prototype.build = function()
     this.container.rotation.x = Math.radians(0);
 
     this.floor_geom.computeVertexNormals();
-    var floor = new THREE.Mesh( this.floor_geom, game.assets.path_floor_material);
+    var floor = new THREE.Mesh( this.floor_geom, this.floor_material);
     floor.receiveShadow=true;
     floor.castShadow=true;
     this.container.add(floor);
