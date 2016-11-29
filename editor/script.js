@@ -36,6 +36,7 @@ for(var line=0; line<30; line++)
 
 var mode='edit_map';
 
+document.getElementById('new').addEventListener('click',function() { if(confirm('Are you sure you want to create a new map?')) { create_new(); }}, false);
 document.getElementById('reset').addEventListener('click',function() { if(confirm('Are you sure you want to reset the map?')) { reset(); }}, false);
 document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(this,'edit_map'), false);
 document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
@@ -86,8 +87,20 @@ function update_ennemy_list()
     });
 }
 
+function create_new()
+{
+    reset();
+    var num = levels_container.options.length;
+    var opt = document.createElement('option');
+    opt.setAttribute('value',num);
+    opt.innerText= 'Level '+(num+1);
+    levels_container.appendChild(opt);
+    levels_container.selectedIndex = num;
+}
+
 function reset()
-{ ennemy_id=0;
+{
+    ennemy_id=0;
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
     nodes.forEach(function(node)
     {

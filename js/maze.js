@@ -1395,9 +1395,9 @@ Maze.prototype.update= function(delta)
 
 Maze.prototype.buildNext = function()
 {
-    game.level++;
     if(!this.next_item)
     {
+        game.level++;
         var pos = this.get_end_pos();
         var next_door = this.get_coord_next_door(pos.x ,pos.z, 1); 
 

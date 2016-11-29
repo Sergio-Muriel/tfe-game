@@ -165,6 +165,7 @@ Path.prototype.build = function()
 {
     var self=this;
     this.level = Levels[game.level-1] || Levels[0];
+    console.log('level ',game.level-1);
 
     if(this.options.parent)
     {
