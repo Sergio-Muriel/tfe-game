@@ -182,7 +182,7 @@ function save()
         alert('Error: no end cell marked');
         return;
     }
-    map.end_cell = { x: node.getAttribute('row'), z: node.getAttribute('line') };
+    map.end_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
     // Add ennemys
     var nodes = [...document.querySelectorAll('.ennemy')];
