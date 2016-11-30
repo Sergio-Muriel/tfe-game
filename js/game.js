@@ -438,7 +438,6 @@ var Game = function(opt)
         params.size= game.config.text_hit_size;
         params.color= game.config.text_hit_color;
         params.anim_time = 1000;
-        console.log(' params ',params);
 
         return this.add_fadeout_text(params);
     };

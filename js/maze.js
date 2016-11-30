@@ -509,18 +509,19 @@ Maze.prototype.ennemy_patrol_round = function(cellid, start_angle, num_steps, si
     return patrol_positions;
 };
 
-Maze.prototype.openDoor = function(closed_door, i, opposite_cell, opposite_i)
+Maze.prototype.openDoor = function(x, z, i)
 {
+    console.log('open door!', x, z, i);
+    var door = this.doors[x+'-'+z+'-'+i];
+    door.opened=true;
+    var closed_door_mesh = door.mesh;
+    var closed_door_mesh_col = door.collision;
+
     play_multiple(game.assets.door_open_sound);
-    var closed_door_id = this.get_closed_door_id(closed_door.params, i);
-    var closed_door_mesh = this.closed_doors[closed_door_id];
-    var closed_door_mesh_col = this.closed_doors_collision[closed_door_id];
     if(closed_door_mesh)
     {
         closed_door_mesh.material.visible=false;
         closed_door_mesh_col.material.visible=false;
-        delete this.closed_doors[closed_door_id];
-        delete this.closed_doors_collision[closed_door_id];
     }
 }
 Maze.prototype.get_closed_door_id=  function(params,i)
@@ -1150,7 +1151,10 @@ Maze.prototype.getStaticObstacles = function()
     {
         for(var i in this.doors)
         {
-            obstacles.push(this.doors[i].collision);
+            if(!this.doors[i].opened)
+            {
+                obstacles.push(this.doors[i].collision);
+            }
         }
     }
     this.interraction_items.forEach(function(item)
@@ -1336,6 +1340,14 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     options.ai = true;
     options.parentStructure = this;
     options.game = game;
+
+    var reg = new RegExp('Key(\\d+)\-(\\d+)\-(\\d+)','i');
+    var result;
+    if(result = type.match(reg))
+    {
+        options.walk_through_callback= this.openDoor.bind(this, result[1], result[2], result[3]);
+        type='Key';
+    }
     if(!window[type])
     {
         return console.error('Cannot create interraction item ',type);

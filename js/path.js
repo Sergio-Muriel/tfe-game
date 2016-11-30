@@ -138,7 +138,6 @@ Path.prototype.add_cell = function(params)
                 self.container.add(door.mesh);
                 self.container.add(door.collision);
 
-
                 break;
         }
 
