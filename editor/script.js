@@ -346,6 +346,8 @@ function toggle(h, line, row, e)
         var editorTop =  editor.offsetTop;
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        if(left<0) { left=0.5; }
+        if(top<0) { top=0.5; }
 
         this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
 
@@ -361,6 +363,8 @@ function toggle(h, line, row, e)
         var editorTop =  editor.offsetTop;
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        if(left<0) { left=0.5; }
+        if(top<0) { top=0.5; }
 
         this.add_chest(h, { top: top, left:left, rotation:0, drops:''});
 
@@ -377,6 +381,8 @@ function toggle(h, line, row, e)
         var editorTop =  editor.offsetTop;
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        if(left<0) { left=0.5; }
+        if(top<0) { top=0.5; }
 
         var c = document.getElementById('ennemy_list');
         var e_id =  c.options[c.selectedIndex].value;
