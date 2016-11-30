@@ -1392,6 +1392,7 @@ Maze.prototype.stop_step = function()
 
 Maze.prototype.unload = function()
 {
+    this.options.parent=null;
     this.next_item.options.parent = null;
     this.all_interraction_items.forEach(function(item)
     {
