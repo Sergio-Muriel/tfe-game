@@ -18,6 +18,7 @@ var Path = function(game, options)
     this.height = 2;
     this.id = game.getNewId();
     this.generated_doors = {};
+    this.doors = {};
     this.outside_separators = [];
 
     this.interraction_items=[];
@@ -117,10 +118,27 @@ Path.prototype.add_cell = function(params)
             // Door:
             // @TODO
             case '4':
+                // Opened wall
                 meshes.push(new THREE.Mesh( game.assets.door1_geo));
                 collision_meshes.push(new THREE.Mesh( game.assets.door_geo));
-                meshes.push(new THREE.Mesh( game.assets.dooropen1_geo));
-                collision_meshes.push(new THREE.Mesh( game.assets.dooropen_geo));
+
+                // Collision door
+                var door =  { mesh : new THREE.Mesh( game.assets.dooropen1_geo), collision: new THREE.Mesh( game.assets.dooropen_geo)};
+                self.doors[params.x+'-'+params.z+'-'+wall.i] = door;
+
+                door.mesh.position.x = cell.position.x;
+                door.mesh.position.y = cell.position.y;
+                door.mesh.position.z = cell.position.z;
+                door.collision.position.x = cell.position.x;
+                door.collision.position.y = cell.position.y;
+                door.collision.position.z = cell.position.z;
+
+                self.set_mesh_orientation(door.mesh, wall.i);
+                self.set_mesh_orientation(door.collision, wall.i);
+                self.container.add(door.mesh);
+                self.container.add(door.collision);
+
+
                 break;
         }
 
@@ -147,16 +165,6 @@ Path.prototype.add_cell = function(params)
         });
 
     });
-
-    params.collision_doors.forEach(function(door)
-    {
-        collision_mesh = new THREE.Mesh( game.assets.door_geo);
-        collision_mesh.position.x = cell.position.x;
-        collision_mesh.position.y = cell.position.y;
-        collision_mesh.position.z = cell.position.z;
-        self.set_mesh_orientation(collision_mesh, door);
-        self.walls_collision_geom.merge(collision_mesh.geometry, collision_mesh.matrix);
-    });
 };
 
 Path.prototype.build = function()
@@ -180,8 +188,6 @@ Path.prototype.build = function()
     // Auto add walls on outside cells
     this.level.cells.forEach(function(cell)
     {
-        cell.collision_doors = [];
-
         for(var i=0; i<6; i++)
         {
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
@@ -200,7 +206,6 @@ Path.prototype.build = function()
             if(is_end)
             {
                 self.level.next_maze.i = i;
-                cell.collision_doors.push(1);
                 cell.walls.push({ type: '3', i: i});
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)

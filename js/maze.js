@@ -1146,11 +1146,11 @@ Maze.prototype.reload = function()
 Maze.prototype.getStaticObstacles = function()
 {
     var obstacles = [this.walls_collision];
-    if(this.closed_doors)
+    if(this.doors)
     {
-        for(var i in this.closed_doors)
+        for(var i in this.doors)
         {
-            obstacles.push(this.closed_doors[i]);
+            obstacles.push(this.doors[i].collision);
         }
     }
     this.interraction_items.forEach(function(item)
