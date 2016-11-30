@@ -1,3 +1,12 @@
+*
+{
+    font-family:sans-serif;
+}
+
+h1
+{
+    text-align:center;
+}
 #menu
 {
     position:fixed;
@@ -12,10 +21,17 @@
     transform:rotate(0deg);
     transform-origin:50% 50%;
 }
-#menu *
+#menu *,
+#menu select
 {
     font-size:10px;
     padding:0px 3px;
+    margin:2px;
+}
+#menu select
+{
+    margin:2px;
+    display:inline-block;
 }
 .mode.selected
 {
@@ -39,6 +55,7 @@
 .hexagone
 {
     position:relative;
+    cursor:pointer;
     display:inline-block;
     width:150px;
     height:150px;
@@ -48,16 +65,23 @@
     opacity:0.8;
 }
 .hexagone:hover
- {
-     z-index:10;
+{
+    z-index:10;
     opacity:1;
+}
+.hexagone.disabled:hover
+{
+    z-index:10;
+    opacity:0.3;
 }
 .hexagone.disabled
 {
     opacity:0.1;
 }
 .hexagone.end_cell { background-image:url(end.png); }
+.hexagone.end_cell:hover { opacity:1; }
 .hexagone.next_maze { opacity:1; background-image:url(next_maze.png); }
+.hexagone.next_maze:hover { opacity:1; }
 
 .hexagone.start_cell:before
 {
@@ -142,9 +166,10 @@
 {
     border:2px solid yellow;
 }
-hr
+#menu hr
 {
-    margin:20px 0px;
+    margin:7px 0px;
+    border:1px solid #eee;
 }
 
 .walltype

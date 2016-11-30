@@ -1,6 +1,24 @@
 var editor = document.getElementById('editor');
 
 var selected_item=null;
+var moving_item = null;
+var moving_hexa = null;
+
+        document.addEventListener('mousemove', function(e)
+        {
+            if(moving_item)
+            {
+                var pos = get_pos(e, moving_hexa);
+                update_pos(moving_item, pos);
+                console.log('mouse move');
+            }
+        });
+        document.addEventListener('mouseup', function()
+        {
+            moving_item=null;
+            moving_hexa=null;
+        });
+
 
 var levels_container = document.getElementById('levels');
 // Build load levels list
@@ -60,7 +78,7 @@ function toggle_mode(_mode)
     container.innerText='';
 
     mode = _mode;
-    var nodes = [...document.querySelectorAll('.mode')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.mode'));
     nodes.forEach(function(node)
     {
         if(node.id!==_mode)
@@ -79,7 +97,7 @@ function update_ennemy_list()
     has_ennemy=false;
     var c = document.getElementById('ennemy_list');
     c.innerText='';
-    var nodes = [...document.querySelectorAll('.ennemy')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
     nodes.forEach(function(node)
     {
         has_ennemy=true;
@@ -104,7 +122,8 @@ function create_new()
 function reset()
 {
     ennemy_id=0;
-    var nodes = [...document.querySelectorAll('.hexagone')];
+    var list = document.querySelectorAll('.hexagone');
+    var nodes = Array.prototype.slice.call(list);
     nodes.forEach(function(node)
     {
         if(node.getAttribute('row')!=="0" || node.getAttribute('line')!=="0")
@@ -193,13 +212,13 @@ function save()
         next_maze:  null
     };
     // Add outside cells
-    var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone:not(.disabled)'));
     nodes.forEach(function(node)
     {
         var item = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10), walls: [] };
 
         // Add extra walls
-        var subnodes = [...node.querySelectorAll('.walltype')];
+        var subnodes = Array.prototype.slice.call(node.querySelectorAll('.walltype'));
         subnodes.forEach(function(node)
         {
             var p = node.parentElement;
@@ -226,7 +245,7 @@ function save()
     map.next_maze = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
     // Add ennemys
-    var nodes = [...document.querySelectorAll('.ennemy')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
@@ -248,7 +267,7 @@ function save()
         while(found)
         {
             // Add patrol positions if any
-            var patrols = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"][patrol_id="'+search+'"')];
+            var patrols = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"][patrol_id="'+search+'"'));
             patrols.forEach(function(patrol)
             {
                 var parent_patrol = patrol.parentElement;
@@ -267,7 +286,7 @@ function save()
     });
 
     // Add Chests
-    var nodes = [...document.querySelectorAll('.chest')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.chest'));
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
@@ -318,7 +337,7 @@ function toggle(h, line, row, e)
     }
     else if(mode=='mark_end')
     {
-        var nodes = [...document.querySelectorAll('.hexagone')];
+        var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone'));
         nodes.forEach(function(node)
         {
             node.classList.remove('end_cell');
@@ -328,7 +347,7 @@ function toggle(h, line, row, e)
     }
     else if(mode=='mark_next')
     {
-        var nodes = [...document.querySelectorAll('.hexagone')];
+        var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone'));
         nodes.forEach(function(node)
         {
             node.classList.remove('next_maze');
@@ -342,16 +361,8 @@ function toggle(h, line, row, e)
         {
             return;
         }
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
-        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
-        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        if(left<0) {  
-            left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
-            top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
-        }
-
-        this.add_ennemy(h, { top: top, left:left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
+        var pos = get_pos(e,h);
+        this.add_ennemy(h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
 
         e.stopPropagation();
     }
@@ -361,16 +372,8 @@ function toggle(h, line, row, e)
         {
             return;
         }
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
-        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
-        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        if(left<0) {  
-            left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
-            top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
-        }
-
-        this.add_chest(h, { top: top, left:left, rotation:0, drops:''});
+        var pos = get_pos(e,h);
+        this.add_chest(h, { top: pos.top, left:pos.left, rotation:0, drops:''});
 
         e.stopPropagation();
     }
@@ -401,13 +404,18 @@ function toggle(h, line, row, e)
 
 function add_patrol_point(h, e_id, top, left)
 {
-    var num = [...document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')].length+1;
+    var num = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')).length+1;
     var div = document.createElement('div');
     div.className='patrol_point selectable_item';
     div.setAttribute('type','patrol_point');
     div.innerText=e_id+'-'+num;
     h.appendChild(div);
 
+    div.addEventListener('mousedown', function()
+    {
+        moving_item=div;
+        moving_hexa=h;
+    });
 
     div.setAttribute('rotation','0');
     div.setAttribute('left', left);
@@ -421,6 +429,28 @@ function add_patrol_point(h, e_id, top, left)
     div.click();
 }
 
+function get_pos(e, h)
+{
+        var editorLeft =  editor.offsetLeft;
+        var editorTop =  editor.offsetTop;
+        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
+        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
+        if(left<0) {  
+            left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
+            top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
+        }
+    return { top: top, left: left};
+}
+function update_pos(div, params)
+{
+    div.setAttribute('left', params.left);
+    div.setAttribute('top', params.top);
+    div.style.left=(parseFloat(params.left)*100)+'%';
+    div.style.top=(parseFloat(params.top)*100)+'%';
+
+}
+
+
 function add_ennemy(h, params)
 {
         ennemy_id++;
@@ -432,20 +462,20 @@ function add_ennemy(h, params)
         div.innerText=ennemy_id;
         h.appendChild(div);
 
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
-        
         div.setAttribute('rotation',params.rotation);
         div.style.transform='rotate('+params.rotation+'deg)';
-        div.setAttribute('left', params.left);
         div.setAttribute('patrol_loop', !!params.patrol_loop);
         div.setAttribute('patrol_wait', params.patrol_wait);
         div.setAttribute('drops', params.drops);
-        div.setAttribute('top', params.top);
-        div.style.left=(parseFloat(params.left)*100)+'%';
-        div.style.top=(parseFloat(params.top)*100)+'%';
+
+        update_pos(div, params);
 
         div.addEventListener('click', selectItem.bind(this, div, h), true);
+        div.addEventListener('mousedown', function()
+        {
+            moving_item=div;
+            moving_hexa=h;
+        });
         div.click();
         update_ennemy_list();
         return ennemy_id;
@@ -462,16 +492,17 @@ function add_chest(h, params)
         div.innerText=chest_id;
         h.appendChild(div);
 
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
-        
+        div.addEventListener('mousedown', function()
+        {
+            moving_item=div;
+            moving_hexa=h;
+        });
+
         div.setAttribute('rotation',params.rotation);
         div.style.transform='rotate('+params.rotation+'deg)';
-        div.setAttribute('left', params.left);
         div.setAttribute('drops', params.drops);
-        div.setAttribute('top', params.top);
-        div.style.left=(parseFloat(params.left)*100)+'%';
-        div.style.top=(parseFloat(params.top)*100)+'%';
+
+        update_pos(div, params);
 
         div.addEventListener('click', selectItem.bind(this, div, h), true);
         div.click();
@@ -487,14 +518,14 @@ function selectItem(div, hexagone, e)
     selected_item=div;
     selected_item.classList.add('selected');
 
-    var nodes = [...document.querySelectorAll('.selected_item_action')];
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.selected_item_action'));
     nodes.forEach(function(node)
     {
         node.removeAttribute('disabled');
     });
     if(selected_item.classList.contains('ennemy'))
     {
-        var nodes = [...document.querySelectorAll('.ennemy_action')];
+        var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy_action'));
         nodes.forEach(function(node)
         {
             node.removeAttribute('disabled');
@@ -540,7 +571,7 @@ function build_form_item()
             container.appendChild(div);
         }
     });
-    [...document.querySelectorAll('#edit_item input')].forEach(function(input)
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item input')).forEach(function(input)
     {
         input.addEventListener('submit', edit_submit);
         input.addEventListener('keyup', edit_submit);
@@ -574,7 +605,7 @@ function build_form_wall(h)
     }
     container.appendChild(div);
 
-    [...document.querySelectorAll('#edit_item select')].forEach(function(select)
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item select')).forEach(function(select)
     {
         select.addEventListener('submit', edit_wall);
         select.addEventListener('keyup', edit_wall);
@@ -588,7 +619,7 @@ function edit_wall()
     var select = document.querySelector('#edit_item select');
     var node = document.querySelector('.hexagone[row="'+select.getAttribute('row')+'"][line="'+select.getAttribute('line')+'"]');
 
-    [...node.querySelectorAll('.smallwall,.wall,.opened,.door')].forEach(function(wall)
+    Array.prototype.slice.call(node.querySelectorAll('.smallwall,.wall,.opened,.door')).forEach(function(wall)
     {
         wall.parentElement.removeChild(wall);
     });
@@ -644,7 +675,7 @@ function remove(e)
 
 function edit_submit()
 {
-    [...document.querySelectorAll('#edit_item input')].forEach(function(input)
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item input')).forEach(function(input)
     {
         if(input.type=='checkbox')
         {
