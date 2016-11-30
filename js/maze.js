@@ -1304,12 +1304,13 @@ Maze.prototype.enter = function()
             this.close_mesh.position.x = cell.position.x;
             this.close_mesh.position.y = cell.position.y;
             this.close_mesh.position.z = cell.position.z;
-            this.set_mesh_orientation(this.close_mesh, this.start_i);
+            console.log('enter cell ',this.level);
+            this.set_mesh_orientation(this.close_mesh, this.level.start_cell.i);
 
             close_mesh1.position.x = cell.position.x;
             close_mesh1.position.y = cell.position.y;
             close_mesh1.position.z = cell.position.z;
-            this.set_mesh_orientation(close_mesh1, this.start_i);
+            this.set_mesh_orientation(close_mesh1, this.level.start_cell.i);
         }
     }
     this.buildNext();

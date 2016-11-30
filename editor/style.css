@@ -57,7 +57,7 @@
     opacity:0.1;
 }
 .hexagone.end_cell { background-image:url(end.png); }
-.hexagone.next_cell { opacity:1; background-image:url(next_cell.png); }
+.hexagone.next_maze { opacity:1; background-image:url(next_maze.png); }
 
 .hexagone.start_cell:before
 {
@@ -78,7 +78,7 @@
     left:50%;
     transform:translateX(-50%) translateY(-50%);
 }
-.hexagone.next_cell:before
+.hexagone.next_maze:before
 {
     content:'Next maze';
     position:absolute;

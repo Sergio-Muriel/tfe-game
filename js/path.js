@@ -46,8 +46,7 @@ Path.prototype.update = function(delta)
 
 Path.prototype.get_end_pos = function()
 {
-    var next_door = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 1); 
-    return this.get_cell_pos_params({x: next_door[0], z:next_door[1] });
+    return this.get_cell_pos_params(this.level.next_maze);
 };
 
 Path.prototype.get_cell_pos_params = function(params)
@@ -164,6 +163,7 @@ Path.prototype.build = function()
 {
     var self=this;
     this.level = Levels[game.level-1];
+
     if(!this.level)
     {
         console.error('Next level does not exist.');
@@ -172,7 +172,7 @@ Path.prototype.build = function()
 
     if(this.options.parent)
     {
-        this.level.start_cell= { x: 0 , z: 0};
+        this.level.start_cell= { x: 0 , z: 0, i : this.get_opposide_door(this.options.parent.level.next_maze.i) };
     }
 
     var connected_end = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 4);
@@ -191,11 +191,15 @@ Path.prototype.build = function()
             has_already_wall = cell.walls.filter(function(wall) { return wall.i === i ; }).length>0;
 
 
-            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===4) : false;
-            var is_end = cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z && i===1;
+            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===self.level.start_cell.i) : false;
+            var is_end = (
+                       cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z &&
+                        nearcell[0]== self.level.next_maze.x && nearcell[1] == self.level.next_maze.z
+            );
 
             if(is_end)
             {
+                self.level.next_maze.i = i;
                 cell.collision_doors.push(1);
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
@@ -232,10 +236,13 @@ Path.prototype.build = function()
         this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
     }
 
-    // Start doors separation line
-    var params = { x: 0, z: 0, real_x:'outside',real_z:'outside'};
-    var cell = this.cells[0];
-    this.create_separation_line(cell,params, 4,false, true);
+    if(this.level.start_cell)
+    {
+        // Start doors separation line
+        var params = { x: 0, z: 0, real_x:'outside',real_z:'outside'};
+        var cell = this.cells[0];
+        this.create_separation_line(cell,params, this.level.start_cell.i,false, true);
+    }
         
 
 

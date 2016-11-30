@@ -104,14 +104,14 @@ function create_new()
 function reset()
 {
     ennemy_id=0;
-    var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
+    var nodes = [...document.querySelectorAll('.hexagone')];
     nodes.forEach(function(node)
     {
         if(node.getAttribute('row')!=="0" || node.getAttribute('line')!=="0")
         {
             node.classList.add('disabled');
             node.classList.remove('end_cell');
-            node.classList.remove('next_cell');
+            node.classList.remove('next_maze');
             node.innerText='';
         }
     });
@@ -145,10 +145,10 @@ function load()
             // Load end cell
             node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');
             node.classList.add('end_cell');
-            if(data.next_cell)
+            if(data.next_maze)
             {
-                node = document.querySelector('.hexagone[row="'+data.next_cell.x+'"][line="'+data.next_cell.z+'"]');
-                node.classList.add('next_cell');
+                node = document.querySelector('.hexagone[row="'+data.next_maze.x+'"][line="'+data.next_maze.z+'"]');
+                node.classList.add('next_maze');
             }
 
             // Load ennemys + patrol points
@@ -190,7 +190,7 @@ function save()
         chests: [],
         extrawalls: [ ],
         end_cell:  null,
-        next_cell:  null
+        next_maze:  null
     };
     // Add outside cells
     var nodes = [...document.querySelectorAll('.hexagone:not(.disabled)')];
@@ -218,12 +218,12 @@ function save()
     }
     map.end_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
-    node = document.querySelector('.next_cell');
+    node = document.querySelector('.next_maze');
     if(!node){
         alert('Error: no next cell marked');
         return;
     }
-    map.next_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
+    map.next_maze = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
     // Add ennemys
     var nodes = [...document.querySelectorAll('.ennemy')];
@@ -331,9 +331,9 @@ function toggle(h, line, row, e)
         var nodes = [...document.querySelectorAll('.hexagone')];
         nodes.forEach(function(node)
         {
-            node.classList.remove('next_cell');
+            node.classList.remove('next_maze');
         });
-        h.classList.add('next_cell');
+        h.classList.add('next_maze');
         h.classList.add('disabled');
     }
     else if(mode=='add_ennemy')
