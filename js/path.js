@@ -201,6 +201,7 @@ Path.prototype.build = function()
             {
                 self.level.next_maze.i = i;
                 cell.collision_doors.push(1);
+                cell.walls.push({ type: '3', i: i});
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
             {
