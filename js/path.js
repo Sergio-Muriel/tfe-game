@@ -123,7 +123,10 @@ Path.prototype.add_cell = function(params)
                 collision_meshes.push(new THREE.Mesh( game.assets.door_geo));
 
                 // Collision door
-                var door =  { mesh : new THREE.Mesh( game.assets.dooropen1_geo), collision: new THREE.Mesh( game.assets.dooropen_geo)};
+                var door =  {
+                    mesh : new THREE.Mesh( game.assets.dooropen1_geo, game.assets.multi_path_wall_material.clone()),
+                    collision: new THREE.Mesh( game.assets.dooropen_geo, game.assets.transparent_material)
+                };
                 self.doors[params.x+'-'+params.z+'-'+wall.i] = door;
 
                 door.mesh.position.x = cell.position.x;

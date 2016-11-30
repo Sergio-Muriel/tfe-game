@@ -95,6 +95,10 @@ var Assets = function(opt)
     this.loaded= function()
     {
         console.log('loaded', this);
+
+        // transparent material
+        this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
+
         // Add floor
         var path_floor_texture = game.assets.path_floor_texture;
         path_floor_texture.repeat.set(0.00001, 0.00001);
