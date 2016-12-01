@@ -6,7 +6,7 @@
     <body>
         <h1>Level Editor</h1>
         <div id="menu">
-            <div class="menu">
+            <div class="submenu">
                 <select id="levels">
                 </select>
                 <button id="load">Load</button>
@@ -15,8 +15,15 @@
                 <button id="save">Save current level</button>
                 <button id="reset">Reset</button>
             </div>
+            <hr>
+            <div class="submenu">
+                Level type: <select id="level_type">
+                    <option value="outside">Outside </option>
+                    <option value="indoor">Indoor </option>
+                </select>
+            </div>
             <hr />
-            <div class="menu">
+            <div class="submenu">
                 <button id="edit_map" class="mode">Toggle cell</button><br>
                 <button id="wall_properties" class="mode">Wall properties</button><br>
                 <button id="mark_end" class="mode">Mark end cell</button>

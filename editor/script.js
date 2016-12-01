@@ -139,9 +139,19 @@ function reset()
 function load()
 {
     var data = Levels[levels_container.options[levels_container.selectedIndex].value];
+
     if(data)
     {
         reset();
+
+        var c = document.getElementById('level_type');
+        var level_type =  c.options[c.selectedIndex].value;
+        switch(data.type)
+        {
+            case 'outside':  c.selectedIndex=0; break;
+            case 'indoor':  c.selectedIndex=1; break;
+        }
+
         if(data && data.cells)
         {
             // Load walls
@@ -202,8 +212,12 @@ function load()
 
 function save()
 {
+    var c = document.getElementById('level_type');
+    var level_type =  c.options[c.selectedIndex].value;
+
     var map =
     {
+        type:  level_type,
         cells: [ ],
         ennemys: [],
         chests: [],

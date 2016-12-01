@@ -4,13 +4,6 @@ var Path = function(game, options)
 
     this.options = options;
 
-    this.music = game.assets.path_sound;
-    this.ambient = game.assets.blizzard_sound;
-    this.floor_material = game.assets.path_floor_material;
-
-    this.ambient_light_color = 0xffffff;
-    this.ambient_light_intensity = 0.20;
-
     this.nextType='Path';
 
     this.num_items_line=2;
@@ -180,6 +173,26 @@ Path.prototype.build = function()
         return false;
     }
 
+    switch(this.level.type)
+    {
+        case 'indoor':
+            this.music = game.assets.maze_sound;
+            this.ambient = game.assets.cave_sound;
+            this.floor_material = game.assets.maze_floor_material;
+            this.ambient_light_color =  0xd9cba2;
+            this.ambient_light_intensity =  0.20;
+            break;
+
+        case 'outside':
+            this.music = game.assets.path_sound;
+            this.ambient = game.assets.blizzard_sound;
+            this.floor_material = game.assets.path_floor_material;
+            this.ambient_light_color = 0xffffff;
+            this.ambient_light_intensity = 0.20;
+            break;
+    }
+
+
     if(this.options.parent)
     {
         this.level.start_cell= { x: 0 , z: 0, i : this.get_opposide_door(this.options.parent.level.next_maze.i) };
@@ -212,7 +225,14 @@ Path.prototype.build = function()
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
             {
-                cell.walls.push({ type: '1', i: i});
+                if(self.level.type=='outside')
+                {
+                    cell.walls.push({ type: '1', i: i});
+                }
+                else
+                {
+                    cell.walls.push({ type: '2', i: i});
+                }
             }
         }
     });
