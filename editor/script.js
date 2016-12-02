@@ -12,6 +12,14 @@ var objects={
     'add_potion' : 'Potion',
     'add_chest' : 'Chest'
 };
+var hidden_fields =
+[
+    'style',
+    'type',
+    'class',
+    'object_id',
+    'patrol_id'
+];
 
         document.addEventListener('mousemove', function(e)
         {
@@ -234,14 +242,22 @@ function load()
                 });
             });
 
-            // Load chests
-            if(data.chests)
+            // Add other objects
+            for (var key in objects)
             {
-                data.chests.forEach(function(chest)
+                var type = key.replace('add_','');
+                if(type!='ennemy')
                 {
-                    var chestnode = document.querySelector('.hexagone[row="'+chest.x+'"][line="'+chest.z+'"]');
-                    self.add_object('chest',chestnode, chest);
-                });
+                    // Load chests
+                    if(data[type])
+                    {
+                        data[type].forEach(function(object)
+                        {
+                            var objectnode = document.querySelector('.hexagone[row="'+object.x+'"][line="'+object.z+'"]');
+                            self.add_object(type,objectnode, object);
+                        });
+                    }
+                }
             }
 
         }
@@ -262,7 +278,6 @@ function save()
         type:  level_type,
         cells: [ ],
         ennemys: [],
-        chests: [],
         extrawalls: [ ],
         end_cell:  null,
         next_maze:  null
@@ -341,23 +356,41 @@ function save()
         map.ennemys.push(ennemy);
     });
 
-    // Add Chests
-    var nodes = Array.prototype.slice.call(document.querySelectorAll('.chest'));
-    nodes.forEach(function(node)
+    for (var key in objects)
     {
-        var p = node.parentElement;
-        var c_id = node.getAttribute('chest_id');
-        var chest = 
+        var type = key.replace('add_','');
+        if(type!='ennemy')
         {
-            x: parseInt(p.getAttribute('row'),10),
-            z: parseInt(p.getAttribute('line'),10),
-            top: parseFloat(node.getAttribute('top')),
-            left: parseFloat(node.getAttribute('left')),
-            drops : node.getAttribute('drops'),
-            rotation: parseInt(node.getAttribute('rotation')),
-        };
-        map.chests.push(chest);
-    });
+            // Add type (chest/potion/etc)
+            var nodes = Array.prototype.slice.call(document.querySelectorAll('.'+type));
+            nodes.forEach(function(node)
+            {
+                var p = node.parentElement;
+                var c_id = node.getAttribute('object_id');
+                var attributes = Array.prototype.slice.call(node.attributes);
+                var obj = 
+                {
+                    x: parseInt(p.getAttribute('row'),10),
+                    z: parseInt(p.getAttribute('line'),10),
+                    top: parseFloat(node.getAttribute('top')),
+                    left: parseFloat(node.getAttribute('left')),
+                    rotation: parseInt(node.getAttribute('rotation')),
+                };
+                attributes.forEach(function(attribute)
+                {
+                    if(hidden_fields.indexOf(attribute.name)===-1)
+                    {
+                        if(attribute.name!='left' && attribute.name!='top' && attribute.name!='row' && attribute.name!='line')
+                        {
+                            obj[attribute.name] = attribute.value
+                        }
+                    }
+                });
+                if(!map[type]) { map[type]=  []; }
+                map[type].push(obj);
+            });
+        }
+    }
 
     Levels[levels_container.options[levels_container.selectedIndex].value] =  map;
 
@@ -430,7 +463,7 @@ function toggle(h, line, row, e)
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        this.add_chest(h, { top: pos.top, left:pos.left, rotation:0, drops:''});
+        this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});
         e.stopPropagation();
     }
     else
@@ -514,7 +547,8 @@ function add_object(type,h, params)
         {
             if(param!='left' && param!='top' && param!='rotation')
             {
-                div.setAttribute('drops', params.drops);
+                console.log('set ',param , params[param]);
+                div.setAttribute(param, params[param]);
             }
         }
         update_pos(div, params);
@@ -557,14 +591,6 @@ function build_form_item()
 {
     var container = document.getElementById('edit_item');
     var attributes = Array.prototype.slice.call(selected_item.attributes);
-    var hidden_fields =
-    [
-        'style',
-        'type',
-        'class',
-        'object_id',
-        'patrol_id'
-    ];
     container.innerText='Type '+selected_item.getAttribute('type');
     attributes.forEach(function(attribute)
     {

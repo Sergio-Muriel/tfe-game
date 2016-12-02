@@ -313,7 +313,7 @@ Path.prototype.build = function()
     this.container.add(this.walls_collision);
 
     this.add_ennemys();
-    this.add_chests();
+    this.add_objects();
 
     game.scene.add(this.container);
 };
@@ -370,39 +370,47 @@ Path.prototype.add_ennemys = function()
     }
 };
 
-Path.prototype.add_chests = function()
+Path.prototype.add_objects = function()
 {
     var self=this;
-    if(this.level.chests)
-    {
-        this.level.chests.forEach(function(chest)
-        {
-            console.log('add chest ',chest);
-            var coord = self.get_cell_pos_params({ x: chest.x, z: chest.z });
 
-            var drops = [];
-            chest.drops.split(/\s+/).forEach(function(drop)
+    var objects = [ 'stick','hammer','potion','chest' ];
+    objects.forEach(function(type)
+    {
+        var classtype = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase()
+        if(self.level[type])
+        {
+            self.level[type].forEach(function(object)
             {
-                drops.push(
+                var coord = self.get_cell_pos_params({ x: object.x, z: object.z });
+
+                if(object.drops)
                 {
-                    type:drop,
-                    params:{
-                    }
+                    var drops = [];
+                    object.drops.split(/\s+/).forEach(function(drop)
+                    {
+                        drops.push(
+                        {
+                            type:drop,
+                            params:{
+                            }
+                        });
+                    });
+                }
+                self.add_interraction_item(classtype,{
+                    level: game.level,
+                    mazeid: self.id,
+                    type: type,
+                    callback: function() { },
+                    rotate: Math.radians(-object.rotation),
+                    drops: drops,
+                    x: coord.x + (game.opt.door_size * object.left)*2 - (game.opt.door_size),
+                    y: 1,
+                    z: coord.z + (game.opt.door_size * object.top)*2 - (game.opt.door_size),
                 });
             });
-            self.add_interraction_item('Chest',{
-                level: game.level,
-                mazeid: self.id,
-                type: 'chest',
-                callback: function() { },
-                rotate: Math.radians(-chest.rotation),
-                drops: drops,
-                x: coord.x + (game.opt.door_size * chest.left)*2 - (game.opt.door_size),
-                y: 1,
-                z: coord.z + (game.opt.door_size * chest.top)*2 - (game.opt.door_size),
-            });
-        });
-    }
+        }
+    });
 };
 
 
