@@ -115,6 +115,8 @@ h1
     left:50%;
     transform:translateX(-50%) translateY(-50%);
 }
+
+.object,
 .ennemy,
 .chest,
 .patrol_point
@@ -127,13 +129,16 @@ h1
     height:15px;
     margin-left:-7.5px;
     margin-top:-7.5px;
-    background:red;
     border-radius:100%;
     opacity:0.7;
     cursor:pointer;
     line-height:15px;
     text-align:center;
     border:2px solid transparent;
+}
+.ennemy
+{
+    background:red;
 }
 .chest
 {

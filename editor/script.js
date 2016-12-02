@@ -4,6 +4,15 @@ var selected_item=null;
 var moving_item = null;
 var moving_hexa = null;
 
+var objects={
+    'add_ennemy' : 'Ennemy',
+
+    'add_stick' : 'Stick',
+    'add_hammer' : 'Hammer',
+    'add_potion' : 'Potion',
+    'add_chest' : 'Chest'
+};
+
         document.addEventListener('mousemove', function(e)
         {
             if(moving_item)
@@ -67,8 +76,8 @@ document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('remove').addEventListener('click',remove, false);
 
 
-var ennemy_id = 0;
 var chest_id = 0;
+var object_id = 0;
 var has_ennemy = false;
 
 function toggle_mode(_mode)
@@ -120,10 +129,6 @@ function update_lists()
     var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
 
     var opt;
-    var objects={
-        'add_ennemy' : 'Ennemy',
-        'add_chest' : 'Chest'
-    };
     for(var key in objects)
     {
         opt = document.createElement('option');
@@ -137,9 +142,9 @@ function update_lists()
     {
         has_ennemy=true;
         opt = document.createElement('option');
-        var key = 'add_patrol_point_'+node.getAttribute('ennemy_id');
+        var key = 'add_patrol_point_'+node.getAttribute('object_id');
         opt.setAttribute('value', key);
-        opt.innerText =  'Patrol point - Ennemy '+node.getAttribute('ennemy_id');
+        opt.innerText =  'Patrol point - Ennemy '+node.getAttribute('object_id');
         object_list.appendChild(opt);
         if(mode==key) { opt.setAttribute('add_patrol_point',true) }
     });
@@ -158,7 +163,7 @@ function create_new()
 
 function reset()
 {
-    ennemy_id=0;
+    object_id=0;
     var list = document.querySelectorAll('.hexagone');
     var nodes = Array.prototype.slice.call(list);
     nodes.forEach(function(node)
@@ -221,7 +226,7 @@ function load()
             data.ennemys.forEach(function(ennemy)
             {
                 var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
-                var e_id = self.add_ennemy(ennemynode, ennemy);
+                var e_id = self.add_object('ennemy',ennemynode, ennemy);
                 ennemy.patrol_positions.forEach(function(patrol)
                 {
                     var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
@@ -235,7 +240,7 @@ function load()
                 data.chests.forEach(function(chest)
                 {
                     var chestnode = document.querySelector('.hexagone[row="'+chest.x+'"][line="'+chest.z+'"]');
-                    self.add_chest(chestnode, chest);
+                    self.add_object('chest',chestnode, chest);
                 });
             }
 
@@ -300,7 +305,7 @@ function save()
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
-        var e_id = node.getAttribute('ennemy_id');
+        var e_id = node.getAttribute('object_id');
         var ennemy = 
         {
             x: parseInt(p.getAttribute('row'),10),
@@ -318,7 +323,7 @@ function save()
         while(found)
         {
             // Add patrol positions if any
-            var patrols = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"][patrol_id="'+search+'"'));
+            var patrols = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[object_id="'+e_id+'"][patrol_id="'+search+'"'));
             patrols.forEach(function(patrol)
             {
                 var parent_patrol = patrol.parentElement;
@@ -406,55 +411,41 @@ function toggle(h, line, row, e)
         h.classList.add('next_maze');
         h.classList.add('disabled');
     }
-    else if(mode=='add_ennemy')
-    {
-        if(h.classList.contains('disabled'))
-        {
-            return;
-        }
-        var pos = get_pos(e,h);
-        this.add_ennemy(h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
-
-        e.stopPropagation();
-    }
-    else if(mode=='add_chest')
-    {
-        if(h.classList.contains('disabled'))
-        {
-            return;
-        }
-        var pos = get_pos(e,h);
-        this.add_chest(h, { top: pos.top, left:pos.left, rotation:0, drops:''});
-
-        e.stopPropagation();
-    }
     else if(mode=='add_patrol_point')
     {
-        console.log('here ');
-        if(h.classList.contains('disabled') || !has_ennemy)
-        {
-            return;
-        }
-        console.log('here2');
-
-        var editorLeft =  editor.offsetLeft;
-        var editorTop =  editor.offsetTop;
-        var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
-        var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        if(left<0) {  
-            left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
-            top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
-        }
-
-        self.add_patrol_point(h, mode_param, top, left);
-
+        if(h.classList.contains('disabled') || !has_ennemy) { return; }
+        var pos = get_pos(e,h);
+        self.add_patrol_point(h, mode_param, pos.top, pos.left);
         e.stopPropagation();
     }
+    else if(mode=='add_ennemy')
+    {
+        if(h.classList.contains('disabled')) { return; }
+        var pos = get_pos(e,h);
+        this.add_ennemy(h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
+        e.stopPropagation();
+    }
+
+    else if(mode=='add_chest')
+    {
+        if(h.classList.contains('disabled')) { return; }
+        var pos = get_pos(e,h);
+        this.add_chest(h, { top: pos.top, left:pos.left, rotation:0, drops:''});
+        e.stopPropagation();
+    }
+    else
+    {
+        if(h.classList.contains('disabled')) { return; }
+        var pos = get_pos(e,h);
+        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 });
+        e.stopPropagation();
+    }
+
 }
 
 function add_patrol_point(h, e_id, top, left)
 {
-    var num = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[ennemy_id="'+e_id+'"]')).length+1;
+    var num = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[object_id="'+e_id+'"]')).length+1;
     var div = document.createElement('div');
     div.className='patrol_point selectable_item';
     div.setAttribute('type','patrol_point');
@@ -468,7 +459,7 @@ function add_patrol_point(h, e_id, top, left)
     });
 
     div.setAttribute('left', left);
-    div.setAttribute('ennemy_id', e_id);
+    div.setAttribute('object_id', e_id);
     div.setAttribute('patrol_id', num);
     div.setAttribute('top', top);
     div.style.left=(left*100)+'%';
@@ -500,63 +491,40 @@ function update_pos(div, params)
 }
 
 
-function add_ennemy(h, params)
+function add_object(type,h, params)
 {
-        ennemy_id++;
+        object_id++;
 
         var div = document.createElement('div');
-        div.className='ennemy selectable_item';
-        div.setAttribute('type','ennemy');
-        div.setAttribute('ennemy_id', ennemy_id);
-        div.innerText=ennemy_id;
+        div.className=type+' object selectable_item';
+        div.setAttribute('type',type);
+        div.setAttribute('object_id', object_id);
+        div.innerText=object_id;
         h.appendChild(div);
 
-        div.setAttribute('rotation',params.rotation);
-        div.style.transform='rotate('+params.rotation+'deg)';
-        div.setAttribute('patrol_loop', !!params.patrol_loop);
-        div.setAttribute('patrol_wait', params.patrol_wait);
-        div.setAttribute('drops', params.drops);
-
-        update_pos(div, params);
-
-        div.addEventListener('click', selectItem.bind(this, div, h), true);
         div.addEventListener('mousedown', function()
         {
             moving_item=div;
             moving_hexa=h;
         });
+
+        div.setAttribute('rotation',params.rotation);
+        div.style.transform='rotate('+params.rotation+'deg)';
+        for(var param in params)
+        {
+            if(param!='left' && param!='top' && param!='rotation')
+            {
+                div.setAttribute('drops', params.drops);
+            }
+        }
+        update_pos(div, params);
+
+        div.addEventListener('click', selectItem.bind(this, div, h), true);
         div.click();
         update_lists();
-        return ennemy_id;
+        return object_id;
 }
 
-function add_chest(h, params)
-{
-        chest_id++;
-
-        var div = document.createElement('div');
-        div.className='chest selectable_item';
-        div.setAttribute('type','chest');
-        div.setAttribute('chest_id', chest_id);
-        div.innerText=chest_id;
-        h.appendChild(div);
-
-        div.addEventListener('mousedown', function()
-        {
-            moving_item=div;
-            moving_hexa=h;
-        });
-
-        div.setAttribute('rotation',params.rotation);
-        div.style.transform='rotate('+params.rotation+'deg)';
-        div.setAttribute('drops', params.drops);
-
-        update_pos(div, params);
-
-        div.addEventListener('click', selectItem.bind(this, div, h), true);
-        div.click();
-        return chest_id;
-}
 
 function selectItem(div, hexagone, e)
 {
@@ -588,16 +556,16 @@ function selectItem(div, hexagone, e)
 function build_form_item()
 {
     var container = document.getElementById('edit_item');
-    container.innerText='';
     var attributes = Array.prototype.slice.call(selected_item.attributes);
     var hidden_fields =
     [
         'style',
         'type',
         'class',
-        'ennemy_id',
+        'object_id',
         'patrol_id'
     ];
+    container.innerText='Type '+selected_item.getAttribute('type');
     attributes.forEach(function(attribute)
     {
         if(hidden_fields.indexOf(attribute.name)===-1)
