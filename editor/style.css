@@ -120,6 +120,7 @@ h1
 {
     font-size:9px;
     position:absolute;
+    z-index:5;
     color:white;
     width:15px;
     height:15px;
