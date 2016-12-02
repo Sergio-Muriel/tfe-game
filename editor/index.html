@@ -7,10 +7,10 @@
         <h1>Level Editor</h1>
         <div id="menu">
             <div class="submenu">
+                <button id="new">New</button>
                 <select id="levels">
                 </select>
                 <button id="load">Load</button>
-                <button id="new">New</button>
                 <br>
                 <button id="save">Save current level</button>
                 <button id="reset">Reset</button>
@@ -24,23 +24,19 @@
             </div>
             <hr />
             <div class="submenu">
-                <button id="edit_map" class="mode">Toggle cell</button><br>
+                <button id="edit_map" class="mode">Toggle cell</button>
                 <button id="wall_properties" class="mode">Wall properties</button><br>
                 <button id="mark_end" class="mode">Mark end cell</button>
                 <button id="mark_next" class="mode">Mark next maze</button>
             </div>
             <hr />
             <div class="submenu">
-                <button id="add_ennemy" class="mode">Add ennemy</button>
-                <button id="add_chest" class="mode">Add Chest</button>
-            </div>
-            <div class="submenu">
-                <select id="ennemy_list">
-                </select>
-                <button id="add_patrol_point" class="mode">Add patrol point</button>
+                <select id="object_list">
+                </select> <button id="add_object" class="mode">Add</button>
+                <button id="remove"  class="selected_item_action">Delete</button>
+                <br>
             </div>
             <hr />
-            <button id="remove"  class="selected_item_action">Remove selected</button>
             <h1>Edit item</h1>
             <div id="edit_item"></div>
         </div>

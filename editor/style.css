@@ -16,6 +16,7 @@ h1
     z-index:10;
     background:#eee;
     padding:30px 0px;
+    overflow-y:scroll;
 }
 #editor
 {

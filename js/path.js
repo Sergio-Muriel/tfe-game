@@ -395,7 +395,7 @@ Path.prototype.add_chests = function()
                 mazeid: self.id,
                 type: 'chest',
                 callback: function() { },
-                rotate: Math.radians(chest.rotation -90),
+                rotate: Math.radians(-chest.rotation),
                 drops: drops,
                 x: coord.x + (game.opt.door_size * chest.left)*2 - (game.opt.door_size),
                 y: 1,

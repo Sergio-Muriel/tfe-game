@@ -53,6 +53,7 @@ for(var line=0; line<30; line++)
 
 
 var mode='edit_map';
+var mode_param=null;
 
 document.getElementById('new').addEventListener('click',function() { if(confirm('Are you sure you want to create a new map?')) { create_new(); }}, false);
 document.getElementById('reset').addEventListener('click',function() { if(confirm('Are you sure you want to reset the map?')) { reset(); }}, false);
@@ -60,9 +61,7 @@ document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(th
 document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
 document.getElementById('mark_end').addEventListener('click',toggle_mode.bind(this,'mark_end'), false);
 document.getElementById('mark_next').addEventListener('click',toggle_mode.bind(this,'mark_next'), false);
-document.getElementById('add_ennemy').addEventListener('click',toggle_mode.bind(this,'add_ennemy'), false);
-document.getElementById('add_chest').addEventListener('click',toggle_mode.bind(this,'add_chest'), false);
-document.getElementById('add_patrol_point').addEventListener('click',toggle_mode.bind(this,'add_patrol_point'), false);
+document.getElementById('add_object').addEventListener('click',add_object_toggle, false);
 document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('remove').addEventListener('click',remove, false);
@@ -81,7 +80,7 @@ function toggle_mode(_mode)
     var nodes = Array.prototype.slice.call(document.querySelectorAll('.mode'));
     nodes.forEach(function(node)
     {
-        if(node.id!==_mode)
+        if(node.id.indexOf(_mode)===-1)
         {
             node.classList.remove('selected');
         }
@@ -92,19 +91,57 @@ function toggle_mode(_mode)
     });
 
 }
-function update_ennemy_list()
+function add_object_toggle()
+{
+    var c = document.getElementById('object_list');
+    var add_type =  c.options[c.selectedIndex].value;
+
+    var regex = new RegExp('add_patrol_point_(\\d+)');
+    var result;
+    if(result = add_type.match(regex))
+    {
+        console.log('set mode ad_patrol point');
+        toggle_mode('add_patrol_point');
+        mode_param = result[1];
+    }
+    else
+    {
+        toggle_mode(add_type);
+    }
+    console.log('add type ',add_type);
+}
+
+function update_lists()
 {
     has_ennemy=false;
-    var c = document.getElementById('ennemy_list');
-    c.innerText='';
+    var object_list = document.getElementById('object_list');
+
+    object_list.innerText='';
     var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
+
+    var opt;
+    var objects={
+        'add_ennemy' : 'Ennemy',
+        'add_chest' : 'Chest'
+    };
+    for(var key in objects)
+    {
+        opt = document.createElement('option');
+        opt.setAttribute('value', key);
+        opt.innerText =  objects[key];
+        object_list.appendChild(opt);
+        if(mode==key) { opt.setAttribute('selected',true) }
+    }
+
     nodes.forEach(function(node)
     {
         has_ennemy=true;
-        var opt = document.createElement('option');
-        opt.setAttribute('value', node.getAttribute('ennemy_id'));
-        opt.innerText =  node.innerText;
-        c.appendChild(opt);
+        opt = document.createElement('option');
+        var key = 'add_patrol_point_'+node.getAttribute('ennemy_id');
+        opt.setAttribute('value', key);
+        opt.innerText =  'Patrol point - Ennemy '+node.getAttribute('ennemy_id');
+        object_list.appendChild(opt);
+        if(mode==key) { opt.setAttribute('add_patrol_point',true) }
     });
 }
 
@@ -393,10 +430,12 @@ function toggle(h, line, row, e)
     }
     else if(mode=='add_patrol_point')
     {
+        console.log('here ');
         if(h.classList.contains('disabled') || !has_ennemy)
         {
             return;
         }
+        console.log('here2');
 
         var editorLeft =  editor.offsetLeft;
         var editorTop =  editor.offsetTop;
@@ -407,10 +446,7 @@ function toggle(h, line, row, e)
             top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
         }
 
-        var c = document.getElementById('ennemy_list');
-        var e_id =  c.options[c.selectedIndex].value;
-
-        self.add_patrol_point(h, e_id, top, left);
+        self.add_patrol_point(h, mode_param, top, left);
 
         e.stopPropagation();
     }
@@ -431,7 +467,6 @@ function add_patrol_point(h, e_id, top, left)
         moving_hexa=h;
     });
 
-    div.setAttribute('rotation','0');
     div.setAttribute('left', left);
     div.setAttribute('ennemy_id', e_id);
     div.setAttribute('patrol_id', num);
@@ -491,7 +526,7 @@ function add_ennemy(h, params)
             moving_hexa=h;
         });
         div.click();
-        update_ennemy_list();
+        update_lists();
         return ennemy_id;
 }
 
@@ -684,7 +719,7 @@ function remove(e)
     selected_item=null;
 
     e.stopPropagation();
-    update_ennemy_list();
+    update_lists();
 }
 
 function edit_submit()
