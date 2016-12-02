@@ -27,7 +27,6 @@ var hidden_fields =
             {
                 var pos = get_pos(e, moving_hexa);
                 update_pos(moving_item, pos);
-                console.log('mouse move');
             }
         });
         document.addEventListener('mouseup', function()
@@ -83,6 +82,10 @@ document.getElementById('save').addEventListener('click',save, false);
 document.getElementById('load').addEventListener('click',load, false);
 document.getElementById('remove').addEventListener('click',remove, false);
 
+document.getElementById('object_list').addEventListener('click',add_object_toggle, false);
+document.getElementById('object_list').addEventListener('change',add_object_toggle, false);
+document.getElementById('object_list').addEventListener('keyup',add_object_toggle, false);
+
 
 var chest_id = 0;
 var object_id = 0;
@@ -106,6 +109,10 @@ function toggle_mode(_mode)
             node.classList.add('selected');
         }
     });
+    if(/add_/.test(_mode))
+    {
+        document.getElementById('add_object').classList.add('selected');
+    }
 
 }
 function add_object_toggle()
@@ -117,7 +124,6 @@ function add_object_toggle()
     var result;
     if(result = add_type.match(regex))
     {
-        console.log('set mode ad_patrol point');
         toggle_mode('add_patrol_point');
         mode_param = result[1];
     }
@@ -125,7 +131,6 @@ function add_object_toggle()
     {
         toggle_mode(add_type);
     }
-    console.log('add type ',add_type);
 }
 
 function update_lists()
@@ -455,7 +460,7 @@ function toggle(h, line, row, e)
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        this.add_ennemy(h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
+        this.add_object('ennemy',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
         e.stopPropagation();
     }
 
@@ -547,7 +552,6 @@ function add_object(type,h, params)
         {
             if(param!='left' && param!='top' && param!='rotation')
             {
-                console.log('set ',param , params[param]);
                 div.setAttribute(param, params[param]);
             }
         }
@@ -744,3 +748,4 @@ function edit_submit()
     });
 }
 
+update_lists();
