@@ -374,7 +374,7 @@ Path.prototype.add_objects = function()
 {
     var self=this;
 
-    var objects = [ 'stick','hammer','potion','chest' ];
+    var objects = [ 'stick','hammer','potion','chest','key' ];
     objects.forEach(function(type)
     {
         var classtype = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase()
@@ -383,6 +383,10 @@ Path.prototype.add_objects = function()
             self.level[type].forEach(function(object)
             {
                 var coord = self.get_cell_pos_params({ x: object.x, z: object.z });
+                if(object.key)
+                {
+                    classtype = object.key;
+                }
 
                 if(object.drops)
                 {
@@ -400,7 +404,7 @@ Path.prototype.add_objects = function()
                 self.add_interraction_item(classtype,{
                     level: game.level,
                     mazeid: self.id,
-                    type: type,
+                    type: object.key || type,
                     callback: function() { },
                     rotate: Math.radians(-object.rotation),
                     drops: drops,

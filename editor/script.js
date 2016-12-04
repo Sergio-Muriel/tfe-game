@@ -10,7 +10,8 @@ var objects={
     'add_stick' : 'Stick',
     'add_hammer' : 'Hammer',
     'add_potion' : 'Potion',
-    'add_chest' : 'Chest'
+    'add_chest' : 'Chest',
+    'add_key' : 'Key'
 };
 var hidden_fields =
 [
@@ -139,8 +140,6 @@ function update_lists()
     var object_list = document.getElementById('object_list');
 
     object_list.innerText='';
-    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
-
     var opt;
     for(var key in objects)
     {
@@ -151,6 +150,7 @@ function update_lists()
         if(mode==key) { opt.setAttribute('selected',true) }
     }
 
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
     nodes.forEach(function(node)
     {
         has_ennemy=true;
@@ -469,6 +469,13 @@ function toggle(h, line, row, e)
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
         this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});
+        e.stopPropagation();
+    }
+    else if(mode=='add_key')
+    {
+        if(h.classList.contains('disabled')) { return; }
+        var pos = get_pos(e,h);
+        this.add_object('key',h, { top: pos.top, left:pos.left, key: '',rotation:0 });
         e.stopPropagation();
     }
     else
