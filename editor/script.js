@@ -333,7 +333,7 @@ function save()
             top: parseFloat(node.getAttribute('top')),
             left: parseFloat(node.getAttribute('left')),
             patrol_positions : [],
-            patrol_loop : node.getAttribute('patrol_loop'),
+            patrol_loop : node.getAttribute('patrol_loop')=='true',
             patrol_wait : parseInt(node.getAttribute('patrol_wait'),10),
             drops : node.getAttribute('drops'),
             rotation: parseInt(node.getAttribute('rotation')),
@@ -550,7 +550,7 @@ function add_object(type,h, params)
         div.style.transform='rotate('+params.rotation+'deg)';
         for(var param in params)
         {
-            if(param!='left' && param!='top' && param!='rotation')
+            if(param!='left' && param!='top' && param!='rotation' && param!='patrol_positions')
             {
                 div.setAttribute(param, params[param]);
             }
@@ -606,6 +606,7 @@ function build_form_item()
             if(attribute.value=='true' || attribute.value=='false')
             {
                 type='checkbox';
+                if(attribute.value=='true') {  extra='checked'; } 
             }
             switch(attribute.name)
             {

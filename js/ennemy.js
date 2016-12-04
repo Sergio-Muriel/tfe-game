@@ -11,7 +11,7 @@ var Ennemy = function(game, options)
     this.options = options;
     this.game=game;
     this.move_speed= 0.5;
-    this.run_speed= 1.0;
+    this.run_speed= 2.0;
     this.check_vision_every= 80;
     this.attack_range = 10;
     this.hovered=false;
@@ -20,9 +20,9 @@ var Ennemy = function(game, options)
 
     this.weapon_type='stick';
     this.weapon_speed= 0.4;
-    this.weapon_range= 15 + options.level*0.2;
-    this.weapon_attack_damage = options.level * 10;
-    this.weapon_hit_chance = 0.3 + options.level * 0.2;
+    this.weapon_range= 20;
+    this.weapon_attack_damage = 100;
+    this.weapon_hit_chance = 0.5;
 
     this.weapon_defense = 0.1;
 
