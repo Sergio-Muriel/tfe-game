@@ -7,8 +7,6 @@ var Fish = function(game, options)
     this.has_walk_through_callback=true;
     this.is_static_collision=false;
 
-    this.increase_life_value = 10;
-
     this.build =function()
     {
         var self=this;
@@ -65,7 +63,6 @@ var Fish = function(game, options)
         {
             this.deleted=true;
             play_multiple(game.assets.fish_pick_sound);
-            game.focus_perso.increase_life_value(this.increase_life_value);
             this.options.parentStructure.remove_interraction_item(this);
             game.scene.remove(this.container);
             if(callback)
