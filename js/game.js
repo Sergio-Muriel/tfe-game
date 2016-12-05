@@ -29,7 +29,7 @@ var Game = function(opt)
     //stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
     //document.body.appendChild( stats.dom );
 
-    this.level=3;
+    this.level=1;
 
     this.load = function()
     {
@@ -167,7 +167,7 @@ var Game = function(opt)
         this.focus_perso.name='main character';
 
         // Create start 
-        this.current_item = new Path(this, {level: 1, direction: this.direction, x: 0, z: 0});
+        this.current_item = new Path(this, { direction: this.direction, x: 0, z: 0});
         this.current_item.build();
 
         var pos = this.current_item.get_start_pos();

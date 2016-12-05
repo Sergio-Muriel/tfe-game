@@ -165,7 +165,8 @@ Path.prototype.add_cell = function(params)
 Path.prototype.build = function()
 {
     var self=this;
-    this.level = Levels[game.level-1];
+    this.level_num = game.level-1;
+    this.level = Levels[this.level_num];
 
     if(!this.level)
     {

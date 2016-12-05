@@ -1275,7 +1275,7 @@ Maze.prototype.enter = function()
     if(!this.entered)
     {
         this.level_text = game.add_fadeout_text({
-            text:'L e v e l   '+game.level,
+            text:'L e v e l   '+(this.level_num+1),
             color:game.config.enter_color,
             bevelSize: 0.4,
             size: game.config.enter_size,
