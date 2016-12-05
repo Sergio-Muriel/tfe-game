@@ -10,6 +10,7 @@ var objects={
     'add_stick' : 'Stick',
     'add_hammer' : 'Hammer',
     'add_potion' : 'Potion',
+    'add_fish' : 'Fish',
     'add_chest' : 'Chest',
     'add_key' : 'Key'
 };

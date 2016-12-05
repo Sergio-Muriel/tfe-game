@@ -32,6 +32,7 @@ var Assets = function(opt)
         this.add('blender/key.json','key');
         this.add('blender/potion.json','potion');
         this.add('blender/chest.json','chest');
+        this.add('blender/fish.json','fish');
 
         this.add_texture('textures/ice.jpg','path_wall');
         this.add_texture('textures/ice_bump.jpg','path_wall_bump');
@@ -69,6 +70,9 @@ var Assets = function(opt)
 
         this.add_sound('sounds/potion_drop.mp3','potion_drop', false, 0.8);
         this.add_sound('sounds/potion_pick.mp3','potion_pick', false, 0.5);
+
+        this.add_sound('sounds/fish_drop.mp3','fish_drop', false, 0.8);
+        this.add_sound('sounds/fish_drop.mp3','fish_pick', false, 0.5);
 
         this.add_sound('sounds/punch_attack.mp3','punch_attack', false, 0.4);
 
