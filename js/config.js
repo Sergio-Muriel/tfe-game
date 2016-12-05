@@ -1,6 +1,8 @@
 Game.prototype.config =
 {
-    music_volume: 0.09,
+    //music_volume: 0.09,
+    music_volume: 0.01,
+
     ambient_volume: 1.0,
 
 

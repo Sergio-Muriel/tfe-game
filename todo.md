@@ -1,3 +1,5 @@
+- add coins
+- open last door when no coins left in the maze
 - open door animation ( clickable door - click to open if key)
 - add snow like / blizzard particles
 - zoom level depending on maze / path

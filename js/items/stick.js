@@ -9,7 +9,7 @@ var Stick = function(game, options)
 
     this.weapon_speed=0.5;
     this.weapon_range = 15;
-    this.weapon_attack_damage = 5;
+    this.weapon_attack_damage = 20;
     this.weapon_hit_chance = 0.9;
 
     this.weapon_defense = 0.5;
