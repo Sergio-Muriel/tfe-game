@@ -20,8 +20,6 @@ var Fish = function(game, options)
         this.container_mesh.name='Fish';
         this.id=game.getNewId();
         this.container_mesh.position.y=0;
-        this.container_mesh.rotation.x = Math.radians(90);
-        this.container_mesh.rotation.z = Math.radians(45);
         this.container.add(this.container_mesh);
 
         this.container_mesh.walk_through_callback = this.remove.bind(this, options.walk_through_callback);
@@ -42,6 +40,8 @@ var Fish = function(game, options)
         this.mesh.scale.x=2;
         this.mesh.scale.y=2;
         this.mesh.scale.z=2;
+        this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
+
         this.container.add(this.mesh);
         this.mesh.castShadow  = true;
 
@@ -52,7 +52,9 @@ var Fish = function(game, options)
         this.mixer = new THREE.AnimationMixer( this.mesh );
 
         this.rotatingClip = game.assets.fish_geo.animations[1];
-        this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(2);
+        var duration  = Math.random()*2 + 1;
+        console.log('duration ',duration);
+        this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
         this.rotate_action.play();
         this.rotate_action.setEffectiveWeight(1);
     };
