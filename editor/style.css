@@ -136,14 +136,10 @@ h1
     text-align:center;
     border:2px solid transparent;
 }
-.ennemy
-{
-    background:red;
-}
-.chest
-{
-    background:#c4c04e;
-}
+.ennemy { background:red; }
+.fish { background:blue; }
+.key { background:yellow; color:black }
+.chest { background:#c4c04e; }
 
 .chest:before,
 .ennemy:before
