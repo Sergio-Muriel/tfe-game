@@ -14,6 +14,12 @@ Game.prototype.gui =
         this.loader_text = document.querySelector('.loader-text');
         this.loader_progress_container = document.querySelector('.loader-progress span');
 
+        this.build_gui();
+    },
+
+    build_gui: function()
+    {
+        document.querySelector('.life label').innerText= game.labels.get('life');
     },
 
     toggle_weapon : function(bone, e)
