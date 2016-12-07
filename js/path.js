@@ -408,6 +408,7 @@ Path.prototype.add_objects = function()
                     type: object.key || type,
                     callback: function() { },
                     rotate: Math.radians(-object.rotation),
+                    parameters: object,
                     drops: drops,
                     x: coord.x + (game.opt.door_size * object.left)*2 - (game.opt.door_size),
                     y: 1,

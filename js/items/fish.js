@@ -11,6 +11,7 @@ var Fish = function(game, options)
     {
         var self=this;
         this.options=options;
+        console.log('full ',this.options);
         this.container = new THREE.Object3D();
         game.scene.add(this.container);
 

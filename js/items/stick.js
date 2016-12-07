@@ -21,6 +21,7 @@ var Stick = function(game, options)
 
     this.build =function()
     {
+        console.log('options ',options);
         var self=this;
         this.options=options;
         this.container = new THREE.Object3D();

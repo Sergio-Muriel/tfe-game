@@ -1,3 +1,4 @@
+- pass all items/\* to a parent class
 - open last door when no coins left in the maze
 - add snow like / blizzard particles
 - teleport item
