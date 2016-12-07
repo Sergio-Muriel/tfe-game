@@ -483,7 +483,7 @@ function toggle(h, line, row, e)
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 });
+        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});
         e.stopPropagation();
     }
 
@@ -623,7 +623,8 @@ function build_form_item()
                 case 'top': 
                     type = 'range'; extra='min="0" max="1" step="0.01"'; break; 
             };
-            div.innerHTML='<label>'+attribute.name+'</label><input '+extra+' type="'+type+'" name="'+attribute.name+'" value="'+attribute.value+'" />';
+            div.innerHTML='<label>'+attribute.name+'</label><input '+extra+' type="'+type+'" name="'+attribute.name+'" />';
+            div.querySelector('input').setAttribute('value', attribute.value);
             container.appendChild(div);
         }
     });
