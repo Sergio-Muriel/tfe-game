@@ -9,6 +9,7 @@ Game.prototype.gui =
         this.bone_attachments_container = document.querySelector('.bones_attachments');
         this.bone_attachments = Array.prototype.slice.call(document.querySelectorAll('.bone_attachment'));
         this.gui_container = document.querySelector('.gui');
+        this.game_container = document.querySelector('#game_container');
         this.loader_container = document.querySelector('.loader');
         this.loader_text = document.querySelector('.loader-text');
         this.loader_progress_container = document.querySelector('.loader-progress span');
@@ -86,6 +87,26 @@ Game.prototype.gui =
             case '8' :  this.toggle_weapon(this.bone_attachments[7],e); break;
             case '9' :  this.toggle_weapon(this.bone_attachments[8],e); break;
         }
+    },
+
+    box: function(title, text)
+    {
+        var div = document.createElement('div');
+        div.className='textbox';
+
+        div.innerHTML=
+            '<div class="textbox-content">'+
+                '<h2>'+title+'</h2>'+
+                '<button class="box_close"></button>'+
+                '<p>'+text+'</p>'+
+            '</div>';
+        this.game_container.appendChild(div);
+        div.addEventListener('mousedown', this.remove_box.bind(this, div));
+    },
+    remove_box: function(div, e)
+    {
+        div.parentElement.removeChild(div);
+        e.stopPropagation();
     },
 
     add_weapon: function(type)

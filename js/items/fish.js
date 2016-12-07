@@ -53,7 +53,6 @@ var Fish = function(game, options)
 
         this.rotatingClip = game.assets.fish_geo.animations[1];
         var duration  = Math.random()*2 + 1;
-        console.log('duration ',duration);
         this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
         this.rotate_action.play();
         this.rotate_action.setEffectiveWeight(1);
