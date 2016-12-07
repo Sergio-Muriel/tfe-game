@@ -1097,7 +1097,7 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
     }
 
     var extra = extra_door ? game.opt.door_size*0.4 : 0;
-    var separator = outside_door ? 0.8 : 0.85;
+    var separator = outside_door ? 0.75 : 0.85;
 
     var pivot = new THREE.Object3D();
     pivot.name ='p '+params.x+'/'+params.z+'/'+i;
