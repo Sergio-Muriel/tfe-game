@@ -1,4 +1,3 @@
-- add coins
 - open last door when no coins left in the maze
 - add snow like / blizzard particles
 - teleport item

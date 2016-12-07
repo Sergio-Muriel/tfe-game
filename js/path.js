@@ -181,7 +181,7 @@ Path.prototype.build = function()
             this.ambient = game.assets.cave_sound;
             this.floor_material = game.assets.maze_floor_material;
             this.ambient_light_color =  0xd9cba2;
-            this.ambient_light_intensity =  0.40;
+            this.ambient_light_intensity =  0.50;
             break;
 
         case 'outside':
@@ -189,7 +189,7 @@ Path.prototype.build = function()
             this.ambient = game.assets.blizzard_sound;
             this.floor_material = game.assets.path_floor_material;
             this.ambient_light_color = 0xffffff;
-            this.ambient_light_intensity = 0.30;
+            this.ambient_light_intensity = 0.40;
             break;
     }
 
