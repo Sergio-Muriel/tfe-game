@@ -21,7 +21,6 @@ var Stick = function(game, options)
 
     this.build =function()
     {
-        console.log('options ',options);
         var self=this;
         this.options=options;
         this.container = new THREE.Object3D();
@@ -77,7 +76,6 @@ var Stick = function(game, options)
             if(distance<from.open_range)
             {
                 this.remove();
-                console.log('stick picked');
                 game.gui.add_weapon('stick');
                 play_multiple(game.assets.stick_pick_sound);
             }
@@ -103,7 +101,6 @@ var Stick = function(game, options)
 
     this.hover = function()
     {
-        console.log('hover stick!');
         this.mesh.material.materials.forEach(function(material, i)
         {
             material.emissive = hover_material_emissive[i];
