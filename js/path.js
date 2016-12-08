@@ -65,7 +65,7 @@ Path.prototype.getCollisionCallbacks = function()
     }
     this.interraction_items.forEach(function(item)
     {
-        if(item.has_walk_through_callback)
+        if(item.walk_through_callback)
         {
             coll.push(item.container_mesh);
         }

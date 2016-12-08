@@ -5,9 +5,9 @@ var Fish = function(game, options)
     this.deleted=false;
 
     this.is_hoverable=false;
-    this.can_walk_through=true;
-    this.has_walk_through_callback=true;
     this.is_static_collision=false;
+    this.can_walk_through=true;
+    this.walk_through_callback = this.remove.bind(this, this.options.walk_through_callback);
 
     this.object_material = game.assets.fish_mat;
     this.object_geo = game.assets.fish_geo;

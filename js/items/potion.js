@@ -4,9 +4,9 @@ var Potion = function(game, options)
     this.deleted=false;
 
     this.is_hoverable=false;
-    this.can_walk_through=true;
-    this.has_walk_through_callback=true;
     this.is_static_collision=false;
+    this.can_walk_through=true;
+    this.walk_through_callback = this.remove.bind(this, this.options.walk_through_callback);
 
     this.increase_life_value = 10;
 
@@ -14,6 +14,7 @@ var Potion = function(game, options)
     this.object_geo = game.assets.potion_geo;
     this.pick_sound = game.assets.potion_pick_sound;
     this.drop_sound = game.assets.potion_drop_sound;
+
 
     this.remove= function(callback)
     {

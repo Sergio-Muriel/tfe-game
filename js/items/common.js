@@ -9,7 +9,6 @@ Common.prototype.default = function(options)
 
     this.is_hoverable=false;
     this.can_walk_through=true;
-    this.has_walk_through_callback=true;
     this.is_static_collision=false;
 
     this.options=options;
@@ -29,7 +28,10 @@ Common.prototype.build =function()
     this.container_mesh.position.y=0;
     this.container.add(this.container_mesh);
 
-    this.container_mesh.walk_through_callback = this.remove.bind(this, this.options.walk_through_callback);
+    if(this.walk_through_callback)
+    {
+        this.container_mesh.walk_through_callback = this.walk_through_callback;
+    }
 
     this.container.position.x = this.options.x;
     this.container.position.y = 0;
