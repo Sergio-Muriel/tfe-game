@@ -32,6 +32,7 @@ Common.prototype.build =function()
     this.container.position.x = this.options.x;
     this.container.position.y = 0;
     this.container.position.z = this.options.z;
+    this.container.rotation.y = this.options.rotate;
 
     var materials;
     if(this.hover_color)
