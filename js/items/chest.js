@@ -58,9 +58,7 @@ Chest.prototype.targeted = function(from)
     }
     return false;
 };
-Chest.prototype.untargeted = function(from)
-{
-};
+
 Chest.prototype.drop = function()
 {
     game.drop({

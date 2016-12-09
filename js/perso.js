@@ -175,8 +175,7 @@ var Perso = function(game, options)
             });
 
             var weapon  = new THREE.SkinnedMesh( game.assets[type+'_geo'], new THREE.MultiMaterial(materials));
-            weapon.rotation.x = Math.radians(90);
-            weapon.rotation.z = Math.radians(180);
+            weapon.rotation.y = Math.radians(90);
             weapon.position.x=0;
             weapon.position.y=0;
             weapon.position.z=0;

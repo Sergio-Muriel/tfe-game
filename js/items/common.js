@@ -63,7 +63,18 @@ Common.prototype.build =function()
         this.mesh.scale.y=this.scale;
         this.mesh.scale.z=this.scale;
     }
-    //this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
+    if(this.mesh_position)
+    {
+        this.mesh.position.x = this.mesh_position.x;
+        this.mesh.position.y = this.mesh_position.y;
+        this.mesh.position.z = this.mesh_position.z;
+    }
+    if(this.mesh_rotation)
+    {
+        this.mesh.rotation.x = Math.radians(this.mesh_rotation.x);
+        this.mesh.rotation.y = Math.radians(this.mesh_rotation.y);
+        this.mesh.rotation.z = Math.radians(this.mesh_rotation.z);
+    }
 
     this.mesh.geometry.computeBoundingBox();
     var bbox = this.mesh.geometry.boundingBox;
@@ -75,12 +86,6 @@ Common.prototype.build =function()
     this.container.add(this.mesh);
     this.mesh.castShadow  = true;
 
-    if(this.mesh_position)
-    {
-        this.mesh.position.x = this.mesh_position.x;
-        this.mesh.position.y = this.mesh_position.y;
-        this.mesh.position.z = this.mesh_position.z;
-    }
 
     var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
     var cube_geo = new THREE.BoxGeometry(bbox_x, 10, bbox_z);
@@ -143,3 +148,7 @@ Common.prototype.unhover = function()
         material.emissive = self.original_material_emissive[i];
     });
 };
+
+Common.prototype.targeted= function(from) { };
+Common.prototype.untargeted = function(from) { };
+

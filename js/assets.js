@@ -149,8 +149,8 @@ var Assets = function(opt)
             bumpScale:0.5,
             map: cell_wall_texture,
             shininess:0,
-            transparent: true,
-            opacity:0.5,
+            transparent: false,
+            opacity:1,
             bumpMap: cell_wall_bump_texture
         });
 

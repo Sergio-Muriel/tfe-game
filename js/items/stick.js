@@ -1,5 +1,6 @@
 var Stick = function(game, options)
 {
+    this.default(options);
     this.deleted=false;
 
     this.is_hoverable=true;
@@ -13,109 +14,30 @@ var Stick = function(game, options)
     this.weapon_hit_chance = 0.9;
 
     this.weapon_defense = 0.5;
-
     this.increase_life_value = 10;
+    this.hover_color =  0x330000;
+    this.scale=5;
 
-    var hover_material_emissive=[];
-    var original_material_emissive=[];
+    this.mesh_position = new THREE.Vector3(0,0.5,0);
 
-    this.build =function()
-    {
-        var self=this;
-        this.options=options;
-        this.container = new THREE.Object3D();
-        game.scene.add(this.container);
+    this.object_material = game.assets.stick_mat;
+    this.object_geo = game.assets.stick_geo;
+    this.pick_sound = game.assets.stick_pick_sound;
+    this.drop_sound = game.assets.stick_drop_sound;
 
-        var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
-        var cube_geo = new THREE.BoxGeometry(20 , 10, 10);
-        this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-        this.container_mesh.name='Stick';
-        this.container_mesh.object = this;
-        this.id=game.getNewId();
-        this.container_mesh.position.y=0;
-        this.container_mesh.rotation.x = Math.radians(0);
-        this.container_mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
-        this.container.add(this.container_mesh);
-
-        this.container.position.x = options.x;
-        this.container.position.y = 0;
-        this.container.position.z = options.z;
-
-
-		var materials = [];
-		for ( var i = 0; i < game.assets.stick_mat.length; i ++ ) {
-			var m = game.assets.stick_mat[ i ].clone();
-			m.skinning = true;
-			m.morphTargets = true;
-            materials.push(m);
-
-            hover_material_emissive[i] = new THREE.Color(m.emissive).add(new THREE.Color(0x330000));
-            original_material_emissive[i] = m.emissive;
-		}
-	
-        this.mesh = new THREE.SkinnedMesh( game.assets.stick_geo, new THREE.MultiMaterial(materials));
-        this.mesh.scale.x=5;
-        this.mesh.scale.y=5;
-        this.mesh.scale.z=5;
-        this.mesh.rotation.x = Math.radians(90);
-        this.mesh.rotation.y = Math.radians(0);
-        this.mesh.rotation.z = Math.radians(90);
-        this.container_mesh.add(this.mesh);
-        this.mesh.castShadow  = true;
-
-        this.mesh.position.x = 10;
-        this.mesh.position.y = 10;
-        this.mesh.position.z = 0;
-    };
-
-    this.targeted= function(from)
-    {
-        if(!this.deleted)
-        {
-            var distance = from.container.position.distanceTo(this.container.position);
-            if(distance<from.open_range)
-            {
-                this.remove();
-                game.gui.add_weapon('stick');
-                play_multiple(game.assets.stick_pick_sound);
-            }
-        }
-    };
-    this.remove = function()
-    {
-        this.deleted=true;
-        this.options.parentStructure.remove_interraction_item(this);
-        game.scene.remove(this.container);
-        game.updateCollisionsCache();
-    };
-
-
-    this.untargeted = function(from)
-    {
-    };
-
-    this.dropped=function()
-    {
-        play_multiple(game.assets.stick_drop_sound);
-    };
-
-    this.hover = function()
-    {
-        this.mesh.material.materials.forEach(function(material, i)
-        {
-            material.emissive = hover_material_emissive[i];
-        });
-    };
-    this.unhover = function()
-    {
-        this.mesh.material.materials.forEach(function(material, i)
-        {
-            material.emissive = original_material_emissive[i];
-        });
-    };
-
-    this.update = function(delta)
-    {
-    };
 };
+
+Stick.prototype = Object.create(Common.prototype);
+Stick.prototype.constructor = Common;
+
+
+Stick.prototype.targeted= function(from)
+{
+    if(!this.deleted)
+    {
+        game.gui.add_weapon('stick');
+        this.remove();
+    }
+};
+
 
