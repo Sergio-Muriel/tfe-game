@@ -16,8 +16,12 @@ var Fish = function(game, options)
 
 };
 
+Fish.prototype = Object.create(Common.prototype);
+Fish.prototype.constructor = Common;
+
 Fish.prototype.bind = function()
 {
+    console.log('bind here');
     this.walk_through_callback = this.remove.bind(this, this.options.walk_through_callback);
 
     this.rotatingClip = this.object_geo.animations[1];
@@ -27,6 +31,4 @@ Fish.prototype.bind = function()
     this.rotate_action.setEffectiveWeight(1);
 };
 
-Fish.prototype = Object.create(Common.prototype);
-Fish.prototype.constructor = Common;
 

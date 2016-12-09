@@ -542,14 +542,12 @@ var Game = function(opt)
         }
         else
         {
-            console.log('audio pause!');
             audio.pause()
         }
     };
 
     this.getRandomWeaponType = function(level)
     {
-        console.log('get weapon level ',level);
         var weapons=[];
         if(level>3)
         {

@@ -34,7 +34,6 @@ Chest.prototype.bind = function()
     this.opened_action = this.mixer.clipAction(this.openedClip, null ).setDuration(3);
     this.opened_action.setEffectiveWeight(0.1);
     this.opened_action.play();
-    //this.mixer.addEventListener('finished', this.end_attack.bind(this));
 }
 
 Chest.prototype.targeted = function(from)

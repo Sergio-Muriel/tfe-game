@@ -24,10 +24,6 @@ Common.prototype.build =function()
     this.container = new THREE.Object3D();
     game.scene.add(this.container);
 
-    if(this.walk_through_callback)
-    {
-        this.container_mesh.walk_through_callback = this.walk_through_callback;
-    }
 
     this.container.position.x = this.options.x;
     this.container.position.y = 0;
@@ -66,6 +62,14 @@ Common.prototype.build =function()
     this.mesh.scale.z=2;
     //this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
 
+    this.mesh.geometry.computeBoundingBox();
+    var bbox = this.mesh.geometry.boundingBox;
+
+    var bbox_x = (bbox.max.x - bbox.min.x);
+    var bbox_y = (bbox.max.y - bbox.min.y);
+    var bbox_z = (bbox.max.z - bbox.min.z);
+    console.log('bbox ',bbox_x, bbox_y, bbox_z);
+
     this.container.add(this.mesh);
     this.mesh.castShadow  = true;
 
@@ -74,7 +78,7 @@ Common.prototype.build =function()
     this.mesh.position.z = 0;
 
     var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
-    var cube_geo = new THREE.BoxGeometry(6 , 6, 6);
+    var cube_geo = new THREE.BoxGeometry(bbox_x, 10, bbox_z);
     this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
     this.container_mesh.name=this.type || 'Common';
     this.container_mesh.position.y=6;
@@ -86,6 +90,11 @@ Common.prototype.build =function()
     if(this.bind)
     {
         this.bind();
+    }
+
+    if(this.walk_through_callback)
+    {
+        this.container_mesh.walk_through_callback = this.walk_through_callback;
     }
 };
 
