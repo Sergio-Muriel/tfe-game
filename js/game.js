@@ -375,6 +375,10 @@ var Game = function(opt)
 
     this.drop = function(params)
     {
+        if(!params.drops || params.drops.length===0)
+        {
+            return false;
+        }
         var self=this;
         var items = params.drops;
         var delay=0;
