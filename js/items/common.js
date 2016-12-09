@@ -65,9 +65,9 @@ Common.prototype.build =function()
     this.mesh.geometry.computeBoundingBox();
     var bbox = this.mesh.geometry.boundingBox;
 
-    var bbox_x = (bbox.max.x - bbox.min.x);
-    var bbox_y = (bbox.max.y - bbox.min.y);
-    var bbox_z = (bbox.max.z - bbox.min.z);
+    var bbox_x = (bbox.max.x - bbox.min.x) * this.mesh.scale.x + 3;
+    var bbox_y = (bbox.max.y - bbox.min.y) * this.mesh.scale.y + 3;
+    var bbox_z = (bbox.max.z - bbox.min.z) * this.mesh.scale.z + 3;
     console.log('bbox ',bbox_x, bbox_y, bbox_z);
 
     this.container.add(this.mesh);
