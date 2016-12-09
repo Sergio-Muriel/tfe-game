@@ -1,6 +1,7 @@
 var Hammer = function(game, options)
 {
     this.default(options);
+    this.type='Hammer';
     this.deleted=false;
 
     this.is_hoverable=true;

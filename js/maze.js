@@ -796,7 +796,6 @@ Maze.prototype.remove_interraction_item = function(item)
 
 Maze.prototype.add_interraction_item = function(type,options, dropping)
 {
-    options.ai = true;
     options.parentStructure = this;
     options.game = game;
 

@@ -1,6 +1,7 @@
 var Stick = function(game, options)
 {
     this.default(options);
+    this.type='Stick';
     this.deleted=false;
 
     this.is_hoverable=true;
