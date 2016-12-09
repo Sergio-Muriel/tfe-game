@@ -349,12 +349,15 @@ Path.prototype.add_ennemys = function()
             var drops = [];
             ennemy.drops.split(/\s+/).forEach(function(drop)
             {
-                drops.push(
+                if(drop)
                 {
-                    type:drop,
-                    params:{
-                    }
-                });
+                    drops.push(
+                    {
+                        type:drop,
+                        params:{
+                        }
+                    });
+                }
             });
             self.add_interraction_item('Ennemy',
             {
@@ -394,12 +397,15 @@ Path.prototype.add_objects = function()
                     var drops = [];
                     object.drops.split(/\s+/).forEach(function(drop)
                     {
-                        drops.push(
+                        if(drop)
                         {
-                            type:drop,
-                            params:{
-                            }
-                        });
+                            drops.push(
+                            {
+                                type:drop,
+                                params:{
+                                }
+                            });
+                        }
                     });
                 }
                 self.add_interraction_item(classtype,{
