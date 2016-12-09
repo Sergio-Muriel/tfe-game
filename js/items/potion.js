@@ -25,7 +25,6 @@ Potion.prototype.bind = function()
 
 Potion.prototype.drink= function()
 {
-    console.log('drink 1');
     if(!this.deleted)
     {
         game.focus_perso.increase_life_value(this.increase_life_value);
