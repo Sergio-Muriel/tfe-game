@@ -13,6 +13,8 @@ var Chest = function(game, options)
     this.has_walk_through_callback=false;
     this.is_hoverable=true;
 
+    this.mesh_position = new THREE.Vector3(0,0.5,0);
+
     this.object_material = game.assets.chest_mat;
     this.object_geo = game.assets.chest_geo;
     this.pick_sound = game.assets.chest_pick_sound;

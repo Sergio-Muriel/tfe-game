@@ -68,20 +68,21 @@ Common.prototype.build =function()
     var bbox_x = (bbox.max.x - bbox.min.x) * this.mesh.scale.x + 3;
     var bbox_y = (bbox.max.y - bbox.min.y) * this.mesh.scale.y + 3;
     var bbox_z = (bbox.max.z - bbox.min.z) * this.mesh.scale.z + 3;
-    console.log('bbox ',bbox_x, bbox_y, bbox_z);
 
     this.container.add(this.mesh);
     this.mesh.castShadow  = true;
 
-    this.mesh.position.x = 0;
-    this.mesh.position.y = 0;
-    this.mesh.position.z = 0;
+    if(this.mesh_position)
+    {
+        this.mesh.position.x = this.mesh_position.x;
+        this.mesh.position.y = this.mesh_position.y;
+        this.mesh.position.z = this.mesh_position.z;
+    }
 
     var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
     var cube_geo = new THREE.BoxGeometry(bbox_x, 10, bbox_z);
     this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
     this.container_mesh.name=this.type || 'Common';
-    this.container_mesh.position.y=6;
     this.container_mesh.object = this;
     this.container.add(this.container_mesh);
 
