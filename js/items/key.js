@@ -35,7 +35,7 @@ Key.prototype.open = function()
         if(result = type.match(reg))
         {
             console.log('call ',this.options.parent, result);
-            this.options.path.openDoor(result[1], result[2], result[3]);
+            this.options.parentStructure.openDoor(result[1], result[2], result[3]);
             this.remove();
         }
     }

@@ -800,11 +800,8 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     options.parentStructure = this;
     options.game = game;
 
-    var reg = new RegExp('Key(\\d+)\-(\\d+)\-(\\d+)','i');
-    var result;
-    if(result = type.match(reg))
+    if(type.indexOf('key')!==-1)
     {
-        options.path = this;
         type='Key';
     }
     if(!window[type])
