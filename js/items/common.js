@@ -17,6 +17,10 @@ Common.prototype.default = function(options)
 Common.prototype.build =function()
 {
     var self=this;
+    if(this.bind)
+    {
+        this.bind();
+    }
     this.container = new THREE.Object3D();
     game.scene.add(this.container);
 
