@@ -1,87 +1,57 @@
 var Key = function(game, options)
 {
+    this.default(options);
+    this.type='Key';
     this.deleted=false;
+    this.opened=false;
 
     this.is_hoverable=false;
     this.can_walk_through=true;
     this.has_walk_through_callback=true;
     this.is_static_collision=false;
-    this.walk_through_callback = options.walk_through_callback;
+    
+    this.mesh_position = new THREE.Vector3(0,0.5,0);
+    this.scale = 10;
 
-    this.build =function()
-    {
-        var self=this;
-        this.options=options;
-        this.container = new THREE.Object3D();
-        game.scene.add(this.container);
-
-        var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
-        var cube_geo = new THREE.BoxGeometry(6 , 6, 6);
-        this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-        this.container_mesh.name='Key';
-        this.id=game.getNewId();
-        this.container_mesh.position.y=0;
-        this.container_mesh.rotation.x = Math.radians(90);
-        this.container_mesh.rotation.z = Math.radians(45);
-        this.container.add(this.container_mesh);
-
-        this.container_mesh.walk_through_callback = this.remove.bind(this, this.walk_through_callback);
-
-        this.container.position.x = options.x;
-        this.container.position.y = 0;
-        this.container.position.z = options.z;
-
-
-		var materials = game.assets.key_mat;
-		for ( var i = 0; i < materials.length; i ++ ) {
-			var m = materials[ i ];
-			m.skinning = true;
-			m.morphTargets = true;
-		}
-	
-        this.mesh = new THREE.SkinnedMesh( game.assets.key_geo, new THREE.MultiMaterial(materials));
-        this.mesh.scale.x=15;
-        this.mesh.scale.y=15;
-        this.mesh.scale.z=15;
-        this.container.add(this.mesh);
-        this.mesh.castShadow=true;
-
-        this.mesh.position.x = 0;
-        this.mesh.position.y = 0;
-        this.mesh.position.z = 0;
-
-        this.mixer = new THREE.AnimationMixer( this.mesh );
-
-        this.rotatingClip = game.assets.key_geo.animations[1];
-        this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(1);
-        this.rotate_action.play();
-        this.rotate_action.setEffectiveWeight(1);
-    };
-
-    this.dropped=function()
-    {
-        play_multiple(game.assets.key_drop_sound);
-    };
-
-    this.remove= function(callback)
-    {
-        if(!this.deleted)
-        {
-            this.deleted=true;
-            this.options.parentStructure.remove_interraction_item(this);
-            play_multiple(game.assets.key_pick_sound);
-            game.scene.remove(this.container);
-            if(callback)
-            {
-                callback();
-            }
-            game.updateCollisionsCache();
-        }
-    }
-
-    this.update = function(delta)
-    {
-        this.mixer.update(delta);
-    };
+    this.object_material = game.assets.key_mat;
+    this.object_geo = game.assets.key_geo;
+    this.pick_sound = game.assets.key_pick_sound;
+    this.drop_sound = game.assets.key_drop_sound;
 };
 
+Key.prototype = Object.create(Common.prototype);
+Key.prototype.constructor = Common;
+
+Key.prototype.open = function()
+{
+    if(!this.opened)
+    {
+        this.opened=true;
+        console.log('opening! ',this.options);
+        var type = this.options.type;
+
+        var reg = new RegExp('Key(\\d+)\-(\\d+)\-(\\d+)','i');
+        var result;
+        if(result = type.match(reg))
+        {
+            console.log('call ',this.options.parent, result);
+            this.options.path.openDoor(result[1], result[2], result[3]);
+            this.remove();
+        }
+    }
+};
+Key.prototype.bind = function()
+{
+    this.walk_through_callback = this.open.bind(this);
+
+    this.rotatingClip = this.object_geo.animations[1];
+    var duration  = Math.random()*2 + 1;
+    this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
+    this.rotate_action.play();
+    this.rotate_action.setEffectiveWeight(1);
+};
+
+Key.prototype.dropped=function()
+{
+    play_multiple(game.assets.key_drop_sound);
+};

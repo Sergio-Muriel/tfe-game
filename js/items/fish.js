@@ -9,6 +9,8 @@ var Fish = function(game, options)
     this.is_static_collision=false;
     this.can_walk_through=true;
 
+    this.scale=2;
+
     this.object_material = game.assets.fish_mat;
     this.object_geo = game.assets.fish_geo;
     this.pick_sound = game.assets.fish_pick_sound;

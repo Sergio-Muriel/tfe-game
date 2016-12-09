@@ -804,7 +804,7 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     var result;
     if(result = type.match(reg))
     {
-        options.walk_through_callback= this.openDoor.bind(this, result[1], result[2], result[3]);
+        options.path = this;
         type='Key';
     }
     if(!window[type])

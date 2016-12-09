@@ -10,6 +10,7 @@ var Potion = function(game, options)
 
     this.increase_life_value = 10;
 
+    this.scale=2;
     this.object_material = game.assets.potion_mat;
     this.object_geo = game.assets.potion_geo;
     this.pick_sound = game.assets.potion_pick_sound;

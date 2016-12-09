@@ -57,9 +57,12 @@ Common.prototype.build =function()
     }
 
     this.mesh = new THREE.SkinnedMesh( this.object_geo, new THREE.MultiMaterial(materials));
-    this.mesh.scale.x=2;
-    this.mesh.scale.y=2;
-    this.mesh.scale.z=2;
+    if(this.scale)
+    {
+        this.mesh.scale.x=this.scale;
+        this.mesh.scale.y=this.scale;
+        this.mesh.scale.z=this.scale;
+    }
     //this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
 
     this.mesh.geometry.computeBoundingBox();
