@@ -6,6 +6,7 @@ var Key = function(game, options)
     this.can_walk_through=true;
     this.has_walk_through_callback=true;
     this.is_static_collision=false;
+    this.walk_through_callback = options.walk_through_callback;
 
     this.build =function()
     {
@@ -24,7 +25,7 @@ var Key = function(game, options)
         this.container_mesh.rotation.z = Math.radians(45);
         this.container.add(this.container_mesh);
 
-        this.container_mesh.walk_through_callback = this.remove.bind(this, options.walk_through_callback);
+        this.container_mesh.walk_through_callback = this.remove.bind(this, this.walk_through_callback);
 
         this.container.position.x = options.x;
         this.container.position.y = 0;
