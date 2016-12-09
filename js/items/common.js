@@ -115,7 +115,10 @@ Common.prototype.remove= function(callback)
     if(!this.deleted)
     {
         this.deleted=true;
-        play_multiple(this.pick_sound);
+        if(this.pick_sound)
+        {
+            play_multiple(this.pick_sound);
+        }
         this.options.parentStructure.remove_interraction_item(this);
         game.scene.remove(this.container);
         if(callback)
