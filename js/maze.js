@@ -76,7 +76,6 @@ Maze.prototype.getCellId = function(x, z)
 
 Maze.prototype.openDoor = function(x, z, i)
 {
-    console.log('open door!', x, z, i);
     var door = this.doors[x+'-'+z+'-'+i];
     door.opened=true;
     var closed_door_mesh = door.mesh;
@@ -85,7 +84,6 @@ Maze.prototype.openDoor = function(x, z, i)
     play_multiple(game.assets.door_open_sound);
     if(closed_door_mesh)
     {
-        console.log('really opening door');
         closed_door_mesh.material.visible=false;
         closed_door_mesh_col.material.visible=false;
     }
@@ -675,7 +673,6 @@ Maze.prototype.getCollisionCallbacks = function()
         var cell = this.cells[this.perso.current_cell];
         if(!cell)
         {
-            console.error('no current cell !');
             return [];
         }
 
@@ -767,7 +764,6 @@ Maze.prototype.enter = function()
             this.close_mesh.position.x = cell.position.x;
             this.close_mesh.position.y = cell.position.y;
             this.close_mesh.position.z = cell.position.z;
-            console.log('enter cell ',this.level);
             this.set_mesh_orientation(this.close_mesh, this.level.start_cell.i);
 
             close_mesh1.position.x = cell.position.x;
@@ -785,7 +781,6 @@ Maze.prototype.leave = function()
     game.fadeoutmusic(this.ambient);
     this.stop_step();
     this.entered=false;
-    console.log('leave maze');
 };
 
 Maze.prototype.remove_interraction_item = function(item)
