@@ -1,6 +1,7 @@
 var Potion = function(game, options)
 {
     this.default(options);
+    this.type='Potion';
     this.deleted=false;
 
     this.is_hoverable=false;
@@ -21,6 +22,12 @@ Potion.prototype.constructor = Common;
 Potion.prototype.bind = function()
 {
     this.walk_through_callback = this.drink.bind(this);
+
+    this.rotatingClip = this.object_geo.animations[1];
+    var duration  = Math.random()*2 + 1;
+    this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
+    this.rotate_action.play();
+    this.rotate_action.setEffectiveWeight(1);
 };
 
 Potion.prototype.drink= function()

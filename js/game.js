@@ -17,9 +17,9 @@ var Game = function(opt)
     var drop_delay_multiple=50;
     if(opt.debug_level>1)
     {
-        camera_decal_x = 0;
-        camera_decal_y = 100;
-        camera_decal_z = 80;
+        camera_decal_x = 5;
+        camera_decal_y = 50;
+        camera_decal_z = 30;
     }
 
     var current_item_id = 0;

@@ -6,6 +6,9 @@ var Common = function(game, options)
 Common.prototype.default = function(options)
 {
     this.deleted=false;
+    this.id=game.getNewId();
+    this.original_material_emissive=[];
+    this.hover_material_emissive=[];
 
     this.is_hoverable=false;
     this.can_walk_through=true;
@@ -17,20 +20,9 @@ Common.prototype.default = function(options)
 Common.prototype.build =function()
 {
     var self=this;
-    if(this.bind)
-    {
-        this.bind();
-    }
+    
     this.container = new THREE.Object3D();
     game.scene.add(this.container);
-
-    var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
-    var cube_geo = new THREE.BoxGeometry(6 , 6, 6);
-    this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-    this.container_mesh.name='Common';
-    this.id=game.getNewId();
-    this.container_mesh.position.y=0;
-    this.container.add(this.container_mesh);
 
     if(this.walk_through_callback)
     {
@@ -41,19 +33,37 @@ Common.prototype.build =function()
     this.container.position.y = 0;
     this.container.position.z = this.options.z;
 
+    var materials;
+    if(this.hover_color)
+    {
+        var materials=[];
+		game.assets.chest_mat.forEach(function(mat){
+            materials.push(mat.clone());
+        });
+		for ( var i = 0; i < materials.length; i ++ ) {
+			var m = materials[ i ];
+            self.original_material_emissive[i] = m.emissive;
+            self.hover_material_emissive[i] = new THREE.Color(m.emissive).add(new THREE.Color(this.hover_color));
 
-    var materials = this.object_material;
-    for ( var i = 0; i < materials.length; i ++ ) {
-        var m = materials[ i ];
-        m.skinning = true;
-        m.morphTargets = true;
+			m.skinning = true;
+			m.morphTargets = true;
+		}
+    }
+    else
+    {
+        materials = this.object_material;
+        for ( var i = 0; i < materials.length; i ++ ) {
+            var m = materials[ i ];
+            m.skinning = true;
+            m.morphTargets = true;
+        }
     }
 
     this.mesh = new THREE.SkinnedMesh( this.object_geo, new THREE.MultiMaterial(materials));
     this.mesh.scale.x=2;
     this.mesh.scale.y=2;
     this.mesh.scale.z=2;
-    this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
+    //this.mesh.rotation.y = Math.radians(Math.floor(Math.random()*180));
 
     this.container.add(this.mesh);
     this.mesh.castShadow  = true;
@@ -62,13 +72,20 @@ Common.prototype.build =function()
     this.mesh.position.y = 0;
     this.mesh.position.z = 0;
 
-    this.mixer = new THREE.AnimationMixer( this.mesh );
+    var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1 } );
+    var cube_geo = new THREE.BoxGeometry(6 , 6, 6);
+    this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
+    this.container_mesh.name=this.type || 'Common';
+    this.container_mesh.position.y=6;
+    this.container_mesh.object = this;
+    this.container.add(this.container_mesh);
 
-    this.rotatingClip = this.object_geo.animations[1];
-    var duration  = Math.random()*2 + 1;
-    this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
-    this.rotate_action.play();
-    this.rotate_action.setEffectiveWeight(1);
+
+    this.mixer = new THREE.AnimationMixer( this.mesh );
+    if(this.bind)
+    {
+        this.bind();
+    }
 };
 
 Common.prototype.remove= function(callback)
@@ -94,4 +111,21 @@ Common.prototype.dropped=function()
 Common.prototype.update = function(delta)
 {
     this.mixer.update(delta);
+};
+
+Common.prototype.hover = function()
+{
+    var self=this;
+    this.mesh.material.materials.forEach(function(material, i)
+    {
+        material.emissive = self.hover_material_emissive[i];
+    });
+};
+Common.prototype.unhover = function()
+{
+    var self=this;
+    this.mesh.material.materials.forEach(function(material, i)
+    {
+        material.emissive = self.original_material_emissive[i];
+    });
 };
