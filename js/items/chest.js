@@ -18,8 +18,6 @@ var Chest = function(game, options)
 
     this.object_material = game.assets.chest_mat;
     this.object_geo = game.assets.chest_geo;
-    this.pick_sound = game.assets.chest_pick_sound;
-    this.drop_sound = game.assets.chest_drop_sound;
 };
 
 Chest.prototype = Object.create(Common.prototype);
