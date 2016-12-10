@@ -28,7 +28,7 @@ var Assets = function(opt)
         this.add('blender/pingu_with_armature.json','perso');
         this.add('blender/stick.json','stick');
         this.add('blender/hammer.json','hammer');
-        this.add('blender/ennemy.json','ennemy');
+        this.add('blender/ennemy2_with_armature.json','ennemy');
         this.add('blender/key.json','key');
         this.add('blender/potion.json','potion');
         this.add('blender/chest.json','chest');

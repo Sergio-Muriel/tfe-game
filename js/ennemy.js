@@ -172,9 +172,9 @@ Ennemy.prototype.create =function()
     }
 
     this.mesh = new THREE.SkinnedMesh( game.assets.ennemy_geo, new THREE.MultiMaterial(materials));
-    this.mesh.scale.x=15;
-    this.mesh.scale.y=15;
-    this.mesh.scale.z=15;
+    this.mesh.scale.x=1.6;
+    this.mesh.scale.y=1.6;
+    this.mesh.scale.z=1.6;
     this.container.add(this.mesh);
     this.mesh.receiveShadow  = true;
     this.mesh.castShadow  = true;
@@ -185,12 +185,12 @@ Ennemy.prototype.create =function()
 
     this.mixer = new THREE.AnimationMixer( this.mesh );
 
-    this.walkingClip = game.assets.ennemy_geo.animations[2];
     this.iddlingClip = game.assets.ennemy_geo.animations[1];
+    this.walkingClip = game.assets.ennemy_geo.animations[2];
     this.attackingClip = game.assets.ennemy_geo.animations[3];
     this.dyingClip = game.assets.ennemy_geo.animations[4];
 
-    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.45);
+    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.50);
     this.move_action.name='move';
     this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
     this.idle_action.name='idle';
