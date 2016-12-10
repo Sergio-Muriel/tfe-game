@@ -14,7 +14,7 @@ var Chest = function(game, options)
     this.is_hoverable=true;
 
     this.scale=3;
-    this.mesh_position = new THREE.Vector3(0,0.5,0);
+    this.mesh_position = new THREE.Vector3(0,1.0,0);
 
     this.object_material = game.assets.chest_mat;
     this.object_geo = game.assets.chest_geo;
