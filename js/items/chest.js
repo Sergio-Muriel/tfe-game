@@ -13,7 +13,7 @@ var Chest = function(game, options)
     this.has_walk_through_callback=false;
     this.is_hoverable=true;
 
-    this.scale=2;
+    this.scale=3;
     this.mesh_position = new THREE.Vector3(0,0.5,0);
 
     this.object_material = game.assets.chest_mat;
