@@ -1,5 +1,9 @@
 # Three.js
 
+## 22
+
+- new common.js class for all objects with interactions
+
 ## 21
 
 - add emissive red when the player is attacked
