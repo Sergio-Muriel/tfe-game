@@ -19,7 +19,7 @@ var Ennemy = function(game, options)
     this.type='ennemy';
 
     this.weapon_type='stick';
-    this.weapon_speed= 0.8;
+    this.weapon_speed= 0.5;
     this.weapon_range= 20;
     this.weapon_attack_damage = 100;
     this.weapon_hit_chance = 0.5;
