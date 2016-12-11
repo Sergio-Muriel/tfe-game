@@ -1,4 +1,4 @@
-var Ennemy = function(game, options)
+var Seal = function(game, options)
 {
     var self=this;
     this.id=game.getNewId();
@@ -16,7 +16,7 @@ var Ennemy = function(game, options)
     this.attack_range = 10;
     this.hovered=false;
     this.is_dead=false;
-    this.type='ennemy';
+    this.type='seal';
 
     this.weapon_type='stick';
     this.weapon_speed= 0.5;
@@ -81,7 +81,7 @@ var Ennemy = function(game, options)
     };
 };
 
-Ennemy.prototype.create =function()
+Seal.prototype.create =function()
 {
     var self=this;
     this.container = new THREE.Object3D();
@@ -95,7 +95,7 @@ Ennemy.prototype.create =function()
     }
     var cube_geo = new THREE.BoxGeometry(10 , 10, 10);
     this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-    this.container_mesh.name='ennemy';
+    this.container_mesh.name='seal';
     this.container_mesh.position.y=1;
     this.container_mesh.id= game.getNewId();
 
@@ -103,7 +103,7 @@ Ennemy.prototype.create =function()
     this.container.add(this.container_mesh);
 
     this.life_container = new THREE.Object3D();
-    this.life_container.name='ennemy';
+    this.life_container.name='seal';
     this.life_container.position.y=2;
     this.life_container.rotation.x = Math.radians(90);
 
@@ -164,14 +164,14 @@ Ennemy.prototype.create =function()
     this.vision.position.z = this.options.z;
     game.scene.add(this.vision);
 
-    var materials = game.assets.ennemy_mat;
+    var materials = game.assets.seal_mat;
     for ( var i = 0; i < materials.length; i ++ ) {
         var m = materials[ i ];
         m.skinning = true;
         m.morphTargets = true;
     }
 
-    this.mesh = new THREE.SkinnedMesh( game.assets.ennemy_geo, new THREE.MultiMaterial(materials));
+    this.mesh = new THREE.SkinnedMesh( game.assets.seal_geo, new THREE.MultiMaterial(materials));
     this.mesh.scale.x=1.6;
     this.mesh.scale.y=1.6;
     this.mesh.scale.z=1.6;
@@ -185,10 +185,10 @@ Ennemy.prototype.create =function()
 
     this.mixer = new THREE.AnimationMixer( this.mesh );
 
-    this.iddlingClip = game.assets.ennemy_geo.animations[1];
-    this.walkingClip = game.assets.ennemy_geo.animations[2];
-    this.attackingClip = game.assets.ennemy_geo.animations[3];
-    this.dyingClip = game.assets.ennemy_geo.animations[4];
+    this.iddlingClip = game.assets.seal_geo.animations[1];
+    this.walkingClip = game.assets.seal_geo.animations[2];
+    this.attackingClip = game.assets.seal_geo.animations[3];
+    this.dyingClip = game.assets.seal_geo.animations[4];
 
     this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.80);
     this.move_action.name='move';
@@ -217,12 +217,12 @@ Ennemy.prototype.create =function()
     this.walk();
 };
 
-Ennemy.prototype.hover=function()
+Seal.prototype.hover=function()
 {
     this.hovered=true;
     this.life_material.visible=true;
 };
-Ennemy.prototype.unhover=function()
+Seal.prototype.unhover=function()
 {
     if(!this.is_targeted)
     {
@@ -232,13 +232,13 @@ Ennemy.prototype.unhover=function()
 };
 
 
-Ennemy.prototype.untargeted=function(from)
+Seal.prototype.untargeted=function(from)
 {
     this.is_targeted=false;
     this.unhover();
 };
 
-Ennemy.prototype.targeted=function(from)
+Seal.prototype.targeted=function(from)
 {
     if(!this.is_dying)
     {
@@ -266,7 +266,7 @@ Ennemy.prototype.targeted=function(from)
 
             if(this.life===0)
             {
-                play_multiple(game.assets.ennemy_die_sound, 200);
+                play_multiple(game.assets.seal_die_sound, 200);
                 this.die();
             }
             return true;
@@ -276,14 +276,14 @@ Ennemy.prototype.targeted=function(from)
     return false;
 };
 
-Ennemy.prototype.update_life=function()
+Seal.prototype.update_life=function()
 {
     var life_value = (this.life/this.max_life) * (Math.PI*2);
     this.life_mesh.geometry.dispose();
     this.life_mesh.geometry = new THREE.RingGeometry(5, 6, 6, 1, 3, life_value)
 };
 
-Ennemy.prototype.die=function()
+Seal.prototype.die=function()
 {
     var self=this;
     // Already dead?
@@ -311,7 +311,7 @@ Ennemy.prototype.die=function()
 
     window.setTimeout(this.remove.bind(this), 5000);
 };
-Ennemy.prototype.remove = function(destination)
+Seal.prototype.remove = function(destination)
 {
     this.options.parentStructure.remove_interraction_item(this);
     game.scene.remove(this.container);
@@ -319,7 +319,7 @@ Ennemy.prototype.remove = function(destination)
     game.updateCollisionsCache();
 };
 
-Ennemy.prototype.run = function(destination)
+Seal.prototype.run = function(destination)
 {
     window.clearTimeout(this.patrol_waiting_timer);
     window.clearTimeout(this.running_timer);
@@ -336,7 +336,7 @@ Ennemy.prototype.run = function(destination)
     this.running_timer = window.setTimeout(this.walk.bind(this), 2000);
 };
 
-Ennemy.prototype.walk = function()
+Seal.prototype.walk = function()
 {
     window.clearTimeout(this.running_timer);
     window.clearTimeout(this.patrol_waiting_timer);
@@ -355,7 +355,7 @@ Ennemy.prototype.walk = function()
 };
 
 
-Ennemy.prototype.lookAt= function(pos,view_pos)
+Seal.prototype.lookAt= function(pos,view_pos)
 {
     if(pos)
     {
@@ -367,7 +367,7 @@ Ennemy.prototype.lookAt= function(pos,view_pos)
 }
 
 
-Ennemy.prototype.moveTo= function(pos)
+Seal.prototype.moveTo= function(pos)
 {
     var current_pos = this.container.position;
     if(current_pos.equals(pos))
@@ -411,7 +411,7 @@ Ennemy.prototype.moveTo= function(pos)
     }
 };
 
-Ennemy.prototype.move_step= function()
+Seal.prototype.move_step= function()
 {
     // Patrol right/left
     if(!this.is_running)
@@ -488,7 +488,7 @@ Ennemy.prototype.move_step= function()
     }
 };
 
-Ennemy.prototype.attack = function(target, reload)
+Seal.prototype.attack = function(target, reload)
 {
     if(!this.attacking || reload)
     {
@@ -512,7 +512,7 @@ Ennemy.prototype.attack = function(target, reload)
     }
 };
 
-Ennemy.prototype.end_attack = function(x)
+Seal.prototype.end_attack = function(x)
 {
     if(!this.is_dying)
     {
@@ -542,7 +542,7 @@ Ennemy.prototype.end_attack = function(x)
     }
 };
 
-Ennemy.prototype.update_vision = function()
+Seal.prototype.update_vision = function()
 {
     this.check_vision_loop=1;
     if(!this.check_vision_timer)
@@ -550,7 +550,7 @@ Ennemy.prototype.update_vision = function()
         this.check_vision();
     }
 };
-Ennemy.prototype.check_vision = function()
+Seal.prototype.check_vision = function()
 {
     if(!this.check_vision_loop)
     {
@@ -633,13 +633,13 @@ Ennemy.prototype.check_vision = function()
     this.check_vision_timer= window.setTimeout(this.check_vision_end.bind(this), this.check_vision_every);
 };
 
-Ennemy.prototype.check_vision_end  = function()
+Seal.prototype.check_vision_end  = function()
 {
     this.check_vision_timer=null;
     this.check_vision();
 };
 
-Ennemy.prototype.move_weight  = function()
+Seal.prototype.move_weight  = function()
 {
     if(this.move_weight_destination!==null)
     {
@@ -668,7 +668,7 @@ Ennemy.prototype.move_weight  = function()
     }
 };
 
-Ennemy.prototype.update= function(delta)
+Seal.prototype.update= function(delta)
 {
     var self=this;
     if(this.is_dead)
@@ -711,7 +711,7 @@ Ennemy.prototype.update= function(delta)
     }
 };
 
-Ennemy.prototype.get_next_patrol_point = function()
+Seal.prototype.get_next_patrol_point = function()
 {
     if(this.options.patrol_positions.length<2)
     {

@@ -117,7 +117,7 @@ h1
 }
 
 .object,
-.ennemy,
+.seal,
 .chest,
 .patrol_point
 {
@@ -136,13 +136,13 @@ h1
     text-align:center;
     border:2px solid transparent;
 }
-.ennemy { background:red; }
+.seal { background:red; }
 .fish { background:blue; }
 .key { background:yellow; color:black }
 .chest { background:#c4c04e; }
 
 .chest:before,
-.ennemy:before
+.seal:before
 {
     content:'';
     display:block;
@@ -157,7 +157,7 @@ h1
 {
     height:15px;
 }
-.ennemy:hover,
+.seal:hover,
 .chest:hover,
 .patrol_point:hover
 {

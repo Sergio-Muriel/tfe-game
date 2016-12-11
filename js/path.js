@@ -313,31 +313,31 @@ Path.prototype.build = function()
     this.walls_collision.name='walls';
     this.container.add(this.walls_collision);
 
-    this.add_ennemys();
+    this.add_seals();
     this.add_objects();
 
     game.scene.add(this.container);
 };
 
-Path.prototype.add_ennemys = function()
+Path.prototype.add_seals = function()
 {
     var self=this;
-    if(this.level.ennemys)
+    if(this.level.seals)
     {
-        this.level.ennemys.forEach(function(ennemy)
+        this.level.seals.forEach(function(seal)
         {
-            var coord = self.get_cell_pos_params({ x: ennemy.x, z: ennemy.z });
+            var coord = self.get_cell_pos_params({ x: seal.x, z: seal.z });
 
-            var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
-            var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
+            var view_x = coord.x + Math.cos(Math.radians(seal.rotation + 90)) * game.opt.door_size;
+            var view_z = coord.z + Math.sin(Math.radians(seal.rotation + 90)) * game.opt.door_size;
 
             var patrols = [];
             patrols.push({
-                x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
+                x: coord.x + (game.opt.door_size * seal.left)*2 - (game.opt.door_size),
                 y:1,
-                z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
+                z: coord.z + (game.opt.door_size * seal.top)*2 - (game.opt.door_size),
             });
-            ennemy.patrol_positions.forEach(function(patrol)
+            seal.patrol_positions.forEach(function(patrol)
             {
                 var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
                 patrols.push({
@@ -347,7 +347,7 @@ Path.prototype.add_ennemys = function()
                 });
             });
             var drops = [];
-            ennemy.drops.split(/\s+/).forEach(function(drop)
+            seal.drops.split(/\s+/).forEach(function(drop)
             {
                 if(drop)
                 {
@@ -359,16 +359,16 @@ Path.prototype.add_ennemys = function()
                     });
                 }
             });
-            self.add_interraction_item('Ennemy',
+            self.add_interraction_item('Seal',
             {
                 level: game.level,
-                x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
-                z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
+                x: coord.x + (game.opt.door_size * seal.left)*2 - (game.opt.door_size),
+                z: coord.z + (game.opt.door_size * seal.top)*2 - (game.opt.door_size),
                 patrol_positions: patrols,
                 view_direction:  { x: view_x, z: view_z } ,
-                patrol_loop:ennemy.patrol_loop,
+                patrol_loop:seal.patrol_loop,
                 drops: drops,
-                patrol_wait: ennemy.patrol_wait
+                patrol_wait: seal.patrol_wait
             });
         });
     }

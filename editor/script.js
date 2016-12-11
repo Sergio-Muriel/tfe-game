@@ -5,7 +5,7 @@ var moving_item = null;
 var moving_hexa = null;
 
 var objects={
-    'add_ennemy' : 'Ennemy',
+    'add_seal' : 'Seal',
 
     'add_stick' : 'Stick',
     'add_hammer' : 'Hammer',
@@ -91,7 +91,7 @@ document.getElementById('object_list').addEventListener('keyup',add_object_toggl
 
 var chest_id = 0;
 var object_id = 0;
-var has_ennemy = false;
+var has_seal = false;
 
 function toggle_mode(_mode)
 {
@@ -137,7 +137,7 @@ function add_object_toggle()
 
 function update_lists()
 {
-    has_ennemy=false;
+    has_seal=false;
     var object_list = document.getElementById('object_list');
 
     object_list.innerText='';
@@ -151,14 +151,14 @@ function update_lists()
         if(mode==key) { opt.setAttribute('selected',true) }
     }
 
-    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.seal'));
     nodes.forEach(function(node)
     {
-        has_ennemy=true;
+        has_seal=true;
         opt = document.createElement('option');
         var key = 'add_patrol_point_'+node.getAttribute('object_id');
         opt.setAttribute('value', key);
-        opt.innerText =  'Patrol point - Ennemy '+node.getAttribute('object_id');
+        opt.innerText =  'Patrol point - Seal '+node.getAttribute('object_id');
         object_list.appendChild(opt);
         if(mode==key) { opt.setAttribute('add_patrol_point',true) }
     });
@@ -236,12 +236,12 @@ function load()
                 node.classList.add('next_maze');
             }
 
-            // Load ennemys + patrol points
-            data.ennemys.forEach(function(ennemy)
+            // Load seals + patrol points
+            data.seals.forEach(function(seal)
             {
-                var ennemynode = document.querySelector('.hexagone[row="'+ennemy.x+'"][line="'+ennemy.z+'"]');
-                var e_id = self.add_object('ennemy',ennemynode, ennemy);
-                ennemy.patrol_positions.forEach(function(patrol)
+                var sealnode = document.querySelector('.hexagone[row="'+seal.x+'"][line="'+seal.z+'"]');
+                var e_id = self.add_object('seal',sealnode, seal);
+                seal.patrol_positions.forEach(function(patrol)
                 {
                     var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
                     self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
@@ -252,7 +252,7 @@ function load()
             for (var key in objects)
             {
                 var type = key.replace('add_','');
-                if(type!='ennemy')
+                if(type!='seal')
                 {
                     // Load chests
                     if(data[type])
@@ -283,7 +283,7 @@ function save()
     {
         type:  level_type,
         cells: [ ],
-        ennemys: [],
+        seals: [],
         extrawalls: [ ],
         end_cell:  null,
         next_maze:  null
@@ -321,13 +321,13 @@ function save()
     }
     map.next_maze = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };
 
-    // Add ennemys
-    var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy'));
+    // Add seals
+    var nodes = Array.prototype.slice.call(document.querySelectorAll('.seal'));
     nodes.forEach(function(node)
     {
         var p = node.parentElement;
         var e_id = node.getAttribute('object_id');
-        var ennemy = 
+        var seal = 
         {
             x: parseInt(p.getAttribute('row'),10),
             z: parseInt(p.getAttribute('line'),10),
@@ -348,7 +348,7 @@ function save()
             patrols.forEach(function(patrol)
             {
                 var parent_patrol = patrol.parentElement;
-                ennemy.patrol_positions.push(
+                seal.patrol_positions.push(
                 {
                     x: parseInt(parent_patrol.getAttribute('row'),10),
                     z: parseInt(parent_patrol.getAttribute('line'),10),
@@ -359,13 +359,13 @@ function save()
             found = patrols.length;
             search++;
         }
-        map.ennemys.push(ennemy);
+        map.seals.push(seal);
     });
 
     for (var key in objects)
     {
         var type = key.replace('add_','');
-        if(type!='ennemy')
+        if(type!='seal')
         {
             // Add type (chest/potion/etc)
             var nodes = Array.prototype.slice.call(document.querySelectorAll('.'+type));
@@ -452,16 +452,16 @@ function toggle(h, line, row, e)
     }
     else if(mode=='add_patrol_point')
     {
-        if(h.classList.contains('disabled') || !has_ennemy) { return; }
+        if(h.classList.contains('disabled') || !has_seal) { return; }
         var pos = get_pos(e,h);
         self.add_patrol_point(h, mode_param, pos.top, pos.left);
         e.stopPropagation();
     }
-    else if(mode=='add_ennemy')
+    else if(mode=='add_seal')
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        this.add_object('ennemy',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
+        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});
         e.stopPropagation();
     }
 
@@ -586,9 +586,9 @@ function selectItem(div, hexagone, e)
     {
         node.removeAttribute('disabled');
     });
-    if(selected_item.classList.contains('ennemy'))
+    if(selected_item.classList.contains('seal'))
     {
-        var nodes = Array.prototype.slice.call(document.querySelectorAll('.ennemy_action'));
+        var nodes = Array.prototype.slice.call(document.querySelectorAll('.seal_action'));
         nodes.forEach(function(node)
         {
             node.removeAttribute('disabled');

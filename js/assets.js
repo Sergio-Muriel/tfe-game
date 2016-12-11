@@ -28,7 +28,7 @@ var Assets = function(opt)
         this.add('blender/pingu.json','perso');
         this.add('blender/stick.json','stick');
         this.add('blender/hammer.json','hammer');
-        this.add('blender/ennemy.json','ennemy');
+        this.add('blender/seal.json','seal');
         this.add('blender/key.json','key');
         this.add('blender/potion.json','potion');
         this.add('blender/chest.json','chest');
@@ -57,8 +57,8 @@ var Assets = function(opt)
         this.add_sound('sounds/hit.mp3','hit', false, 0.5);
 
         // Ennemys
-        this.add_sound('sounds/ennemy_hit.mp3','ennemy_hit', false, 0.5);
-        this.add_sound('sounds/ennemy_die.mp3','ennemy_die', false, 1);
+        this.add_sound('sounds/seal_hit.mp3','seal_hit', false, 0.5);
+        this.add_sound('sounds/seal_die.mp3','seal_die', false, 1);
 
         // Items
         this.add_sound('sounds/chest_open.mp3','chest_open', false, 0.3);
