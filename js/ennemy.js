@@ -19,7 +19,7 @@ var Ennemy = function(game, options)
     this.type='ennemy';
 
     this.weapon_type='stick';
-    this.weapon_speed= 0.4;
+    this.weapon_speed= 0.8;
     this.weapon_range= 20;
     this.weapon_attack_damage = 100;
     this.weapon_hit_chance = 0.5;
@@ -190,7 +190,7 @@ Ennemy.prototype.create =function()
     this.attackingClip = game.assets.ennemy_geo.animations[3];
     this.dyingClip = game.assets.ennemy_geo.animations[4];
 
-    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.50);
+    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.80);
     this.move_action.name='move';
     this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
     this.idle_action.name='idle';
@@ -202,7 +202,7 @@ Ennemy.prototype.create =function()
 
     this.mixer.addEventListener('finished', this.end_attack.bind(this));
 
-    this.dying_action = this.mixer.clipAction(this.dyingClip, null ).setDuration(0.7);
+    this.dying_action = this.mixer.clipAction(this.dyingClip, null ).setDuration(1.0);
     this.dying_action.setLoop(THREE.LoopOnce, 0);
     this.dying_action.clampWhenFinished = true;
 
@@ -307,7 +307,7 @@ Ennemy.prototype.die=function()
         self.is_hoverable=false;
         self.is_dead=true;
         game.updateCollisionsCache();
-    }, 700);
+    }, 1000);
 
     window.setTimeout(this.remove.bind(this), 5000);
 };
