@@ -190,7 +190,7 @@ Seal.prototype.create =function()
     this.attackingClip = game.assets.seal_geo.animations[3];
     this.dyingClip = game.assets.seal_geo.animations[4];
 
-    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(0.80);
+    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(1.20);
     this.move_action.name='move';
     this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
     this.idle_action.name='idle';
