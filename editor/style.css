@@ -135,6 +135,7 @@ h1
     border:2px solid transparent;
 }
 .seal { background:red; }
+.pinga { background:#FFE4E1; color:black; }
 .fish { background:blue; }
 .key { background:yellow; color:black }
 .chest { background:#c4c04e; }

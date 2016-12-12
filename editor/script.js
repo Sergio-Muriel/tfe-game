@@ -6,6 +6,7 @@ var moving_hexa = null;
 
 var objects={
     'add_seal' : 'Seal',
+    'add_pinga' : 'Pinga',
 
     'add_stick' : 'Stick',
     'add_hammer' : 'Hammer',
@@ -92,6 +93,7 @@ document.getElementById('object_list').addEventListener('keyup',add_object_toggl
 var chest_id = 0;
 var object_id = 0;
 var has_seal = false;
+var has_pinga = false;
 
 function toggle_mode(_mode)
 {
@@ -138,6 +140,7 @@ function add_object_toggle()
 function update_lists()
 {
     has_seal=false;
+    has_pinga=false;
     var object_list = document.getElementById('object_list');
 
     object_list.innerText='';
