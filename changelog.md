@@ -3,6 +3,7 @@
 ## 22
 
 - new common.js class for all objects with interactions
+- added pinga character
 
 ## 21
 
