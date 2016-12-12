@@ -378,7 +378,7 @@ Path.prototype.add_objects = function()
 {
     var self=this;
 
-    var objects = [ 'stick','hammer','potion','chest','key','fish' ];
+    var objects = [ 'stick','hammer','potion','chest','key','fish','pinga' ];
     objects.forEach(function(type)
     {
         var classtype = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase()
