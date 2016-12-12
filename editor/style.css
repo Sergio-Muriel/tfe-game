@@ -70,12 +70,10 @@ h1
 }
 .hexagone:hover
 {
-    z-index:10;
     opacity:1;
 }
 .hexagone.disabled:hover
 {
-    z-index:10;
     opacity:0.3;
 }
 .hexagone.disabled
@@ -167,6 +165,10 @@ h1
 .patrol_point
 {
     background-color:gray;
+}
+.selectable_item:hover
+{
+    border:2px solid white;
 }
 .selectable_item.selected
 {
