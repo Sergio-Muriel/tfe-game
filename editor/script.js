@@ -521,7 +521,7 @@ function get_pos(e, h)
         var editorTop =  editor.offsetTop;
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        if(left<0) {  
+        if(h.offsetLeft> 300) {  
             left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
             top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
         }
