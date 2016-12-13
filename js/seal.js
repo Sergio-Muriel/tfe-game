@@ -3,6 +3,8 @@ var Seal = function(game, options)
     var self=this;
     this.id=game.getNewId();
 
+    this.friend=false;
+    this.has_vision=true;
     this.mesh_geo = game.assets.seal_geo;
     this.mesh_mat = game.assets.seal_mat;
     this.die_sound = game.assets.seal_die_sound;

@@ -121,7 +121,14 @@ Character.prototype.create =function()
     this.life_container.rotation.x = Math.radians(90);
 
     var life_geo = new THREE.RingGeometry(5, 6, 6, 1, 3, Math.PI*2);
-    this.life_material =  new THREE.MeshPhongMaterial( { color: 0xaa3333, side: THREE.DoubleSide, visible: false } );
+    if(this.friend)
+    {
+        this.life_material =  new THREE.MeshPhongMaterial( { color: 0x33aa33, side: THREE.DoubleSide, visible: false } );
+    }
+    else
+    {
+        this.life_material =  new THREE.MeshPhongMaterial( { color: 0xaa3333, side: THREE.DoubleSide, visible: false } );
+    }
 
     this.life_mesh = new THREE.Mesh(life_geo, this.life_material);
     this.life_container.add(this.life_mesh);
@@ -131,51 +138,52 @@ Character.prototype.create =function()
     this.container.position.y = 0;
     this.container.position.z = this.options.z;
 
-    // Vision geometry
-    this.vision_geom = new THREE.Geometry();
-
-    var current_deg_angle = -this.vision_angle;
-    
-    var v1 = new THREE.Vector3(0, 1, 0);
-    var v2 = new THREE.Vector3(-Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
-    var v3 = new THREE.Vector3(Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
-
-    this.vision_orig_vertices=[v1];
-    this.vision_geom.vertices.push(v1);
-
-    var vIndex=2;
-    var vision_step = this.vision_angle/10;
-    for(true; current_deg_angle<=this.vision_angle; current_deg_angle+=vision_step)
+    if(this.has_vision)
     {
-        var angle = Math.radians(90+current_deg_angle);
-        vLast = new THREE.Vector3(Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
-        this.vision_geom.vertices.push(vLast);
-        this.vision_orig_vertices.push(vLast.clone());
+        // Vision geometry
+        this.vision_geom = new THREE.Geometry();
+        var current_deg_angle = -this.vision_angle;
+        var v1 = new THREE.Vector3(0, 1, 0);
+        var v2 = new THREE.Vector3(-Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
+        var v3 = new THREE.Vector3(Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
 
-        if(vIndex>3)
+        this.vision_orig_vertices=[v1];
+        this.vision_geom.vertices.push(v1);
+
+        var vIndex=2;
+        var vision_step = this.vision_angle/10;
+        for(true; current_deg_angle<=this.vision_angle; current_deg_angle+=vision_step)
         {
-            this.vision_geom.faces.push(new THREE.Face3(0,vIndex-1,vIndex-2));
+            var angle = Math.radians(90+current_deg_angle);
+            vLast = new THREE.Vector3(Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
+            this.vision_geom.vertices.push(vLast);
+            this.vision_orig_vertices.push(vLast.clone());
+
+            if(vIndex>3)
+            {
+                this.vision_geom.faces.push(new THREE.Face3(0,vIndex-1,vIndex-2));
+            }
+
+            vIndex+=1;
         }
+        this.vision_geom.computeFaceNormals();
+        this.vision_geom.dynamic=true;
+        this.vision_geom.verticesNeedUpdate=true;
 
-        vIndex+=1;
+
+        var vision_material = new THREE.MeshPhongMaterial( { color: 0xaef8a8, wireframe:false, transparent:true, opacity: 0.3, visible:false  } );
+        if(game.opt.debug_level>1)
+        {
+            vision_material = new THREE.MeshPhongMaterial( { color: 0xaaffaa, wireframe:true, transparent:true, opacity: 1, visible:false  } );
+        }
+        this.vision = new THREE.Mesh( this.vision_geom, vision_material);
+
+        this.vision.rotation.y=Math.radians(0);
+        this.vision.position.x = this.options.x;
+        this.vision.position.y = 0;
+        this.vision.position.z = this.options.z;
+        game.scene.add(this.vision);
     }
-    this.vision_geom.computeFaceNormals();
-    this.vision_geom.dynamic=true;
-    this.vision_geom.verticesNeedUpdate=true;
-
-
-    var vision_material = new THREE.MeshPhongMaterial( { color: 0xaef8a8, wireframe:false, transparent:true, opacity: 0.3, visible:false  } );
-    if(game.opt.debug_level>1)
-    {
-        vision_material = new THREE.MeshPhongMaterial( { color: 0xaaffaa, wireframe:true, transparent:true, opacity: 1, visible:false  } );
-    }
-    this.vision = new THREE.Mesh( this.vision_geom, vision_material);
-
-    this.vision.rotation.y=Math.radians(0);
-    this.vision.position.x = this.options.x;
-    this.vision.position.y = 0;
-    this.vision.position.z = this.options.z;
-    game.scene.add(this.vision);
 
     var materials = this.mesh_mat;
     for ( var i = 0; i < materials.length; i ++ ) {
@@ -375,8 +383,11 @@ Character.prototype.lookAt= function(pos,view_pos)
         pos.y=0;
         this.container.lookAt(pos);
     }
-    this.vision_destination = new THREE.Vector3(view_pos.x, view_pos.y, view_pos.z);
-    this.vision.lookAt(view_pos);
+    if(this.has_vision)
+    {
+        this.vision_destination = new THREE.Vector3(view_pos.x, view_pos.y, view_pos.z);
+        this.vision.lookAt(view_pos);
+    }
 }
 
 
@@ -641,9 +652,12 @@ Character.prototype.check_vision = function()
         }
     }
 
-    // Loop check vision
-    this.check_vision_loop=0;
-    this.check_vision_timer= window.setTimeout(this.check_vision_end.bind(this), this.check_vision_every);
+    if(this.has_vision)
+    {
+        // Loop check vision
+        this.check_vision_loop=0;
+        this.check_vision_timer= window.setTimeout(this.check_vision_end.bind(this), this.check_vision_every);
+    }
 };
 
 Character.prototype.check_vision_end  = function()
@@ -720,7 +734,10 @@ Character.prototype.update= function(delta)
             this.move_step();
             this.move_weight();
         }
-        this.update_vision();
+        if(this.has_vision)
+        {
+            this.update_vision();
+        }
     }
 };
 

@@ -3,6 +3,8 @@ var Pinga = function(game, options)
     var self=this;
     this.id=game.getNewId();
 
+    this.friend=true;
+    this.has_vision=false;
     this.mesh_geo = game.assets.pinga_geo;
     this.mesh_mat = game.assets.pinga_mat;
     this.die_sound = game.assets.pinga_die_sound;
