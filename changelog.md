@@ -3,6 +3,7 @@
 ## 22
 
 - new common.js class for all objects with interactions
+- new characters.js class for all moveable characteres, friends or not.
 - added pinga character
 
 ## 21
