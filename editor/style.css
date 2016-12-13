@@ -141,7 +141,8 @@ h1
 .chest { background:#c4c04e; }
 
 .chest:before,
-.seal:before
+.seal:before,
+.pinga:before
 {
     content:'';
     display:block;

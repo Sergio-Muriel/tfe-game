@@ -1,11 +1,11 @@
-var Seal = function(game, options)
+var Pinga = function(game, options)
 {
     var self=this;
     this.id=game.getNewId();
 
-    this.mesh_geo = game.assets.seal_geo;
-    this.mesh_mat = game.assets.seal_mat;
-    this.die_sound = game.assets.seal_die_sound;
+    this.mesh_geo = game.assets.pinga_geo;
+    this.mesh_mat = game.assets.pinga_mat;
+    this.die_sound = game.assets.pinga_die_sound;
 
     this.is_hoverable=true;
     this.can_walk_through=false;
@@ -20,7 +20,7 @@ var Seal = function(game, options)
     this.attack_range = 10;
     this.hovered=false;
     this.is_dead=false;
-    this.type='seal';
+    this.type='pinga';
 
     this.weapon_type='stick';
     this.weapon_speed= 0.5;
@@ -45,7 +45,7 @@ var Seal = function(game, options)
     this.ennemy_detection_distance = game.opt.door_size*2.0;
 };
 
-Seal.prototype = Object.create(Character.prototype);
-Seal.prototype.constructor = Character;
+Pinga.prototype = Object.create(Character.prototype);
+Pinga.prototype.constructor = Character;
 
 

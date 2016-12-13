@@ -1,0 +1,232 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+add_object	script.js	/^function add_object(type,h, params)$/;"	r
+add_object_toggle	script.js	/^document.getElementById('add_object').addEventListener('click',add_object_toggle, false);$/;"	r
+add_object_toggle	script.js	/^document.getElementById('object_list').addEventListener('change',add_object_toggle, false);$/;"	r
+add_object_toggle	script.js	/^document.getElementById('object_list').addEventListener('click',add_object_toggle, false);$/;"	r
+add_object_toggle	script.js	/^document.getElementById('object_list').addEventListener('keyup',add_object_toggle, false);$/;"	r
+add_object_toggle	script.js	/^function add_object_toggle()$/;"	r
+add_patrol_point	script.js	/^function add_patrol_point(h, e_id, top, left)$/;"	r
+add_type	script.js	/^    var add_type =  c.options[c.selectedIndex].value;$/;"	r
+add_walltype	script.js	/^function add_walltype(node,i,type)$/;"	r
+attributes	script.js	/^                var attributes = Array.prototype.slice.call(node.attributes);$/;"	r
+attributes	script.js	/^    var attributes = Array.prototype.slice.call(selected_item.attributes);$/;"	r
+break	script.js	/^                    type = 'range'; extra='min="0" max="1" step="0.01"'; break; $/;"	r
+break	script.js	/^                case 'rotation': type = 'range'; extra='min="0" max="360"'; break; $/;"	r
+break	script.js	/^            case '1': classname = 'smallwall'; break;$/;"	r
+break	script.js	/^            case '2': classname = 'wall'; break;$/;"	r
+break	script.js	/^            case '3': classname = 'opened'; break;$/;"	r
+break	script.js	/^            case '4': classname = 'door'; break;$/;"	r
+break	script.js	/^            case 'indoor':  c.selectedIndex=1; break;$/;"	r
+break	script.js	/^            case 'outside':  c.selectedIndex=0; break;$/;"	r
+build_form_item	script.js	/^function build_form_item()$/;"	r
+build_form_wall	script.js	/^function build_form_wall(h)$/;"	r
+c	script.js	/^        var c = document.getElementById('level_type');$/;"	r
+c	script.js	/^    var c = document.getElementById('level_type');$/;"	r
+c	script.js	/^    var c = document.getElementById('object_list');$/;"	r
+c_id	script.js	/^                var c_id = node.getAttribute('object_id');$/;"	r
+cells	script.js	/^        cells: [ ],$/;"	r
+chest_id	script.js	/^var chest_id = 0;$/;"	r
+className	script.js	/^            wall.className=classname+' walltype type'+i;$/;"	r
+className	script.js	/^        div.className=type+' object selectable_item';$/;"	r
+className	script.js	/^    div.className='patrol_point selectable_item';$/;"	r
+className	script.js	/^    div.className='wall_editor';$/;"	r
+classname	script.js	/^        var classname='';$/;"	r
+container	script.js	/^    var container = document.getElementById('edit_item');$/;"	r
+create_new	script.js	/^function create_new()$/;"	r
+current	script.js	/^        var current = h.querySelector('.type'+i);$/;"	r
+data	script.js	/^    var data = Levels[levels_container.options[levels_container.selectedIndex].value];$/;"	r
+div	script.js	/^            var div =document.createElement('div');$/;"	r
+div	script.js	/^        div.addEventListener('click', selectItem.bind(this, div, h), true);$/;"	r
+div	script.js	/^        var div = document.createElement('div');$/;"	r
+div	script.js	/^    div.addEventListener('click', selectItem.bind(this, div, h), true);$/;"	r
+div	script.js	/^    var div = document.createElement('div');$/;"	r
+download	script.js	/^    link.download = 'levels.js';$/;"	r
+drops	script.js	/^            drops : node.getAttribute('drops'),$/;"	r
+drops	script.js	/^        this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});$/;"	r
+drops	script.js	/^        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});$/;"	r
+e_id	script.js	/^                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);$/;"	r
+e_id	script.js	/^                var e_id = self.add_object('seal',sealnode, seal);$/;"	r
+e_id	script.js	/^        var e_id = node.getAttribute('object_id');$/;"	r
+e_id	script.js	/^function add_patrol_point(h, e_id, top, left)$/;"	r
+edit_submit	script.js	/^function edit_submit()$/;"	r
+edit_wall	script.js	/^function edit_wall()$/;"	r
+editor	script.js	/^var editor = document.getElementById('editor');$/;"	r
+editorLeft	script.js	/^        var editorLeft =  editor.offsetLeft;$/;"	r
+editorTop	script.js	/^        var editorTop =  editor.offsetTop;$/;"	r
+else	script.js	/^        else$/;"	r
+else	script.js	/^    else$/;"	r
+end_cell	script.js	/^        end_cell:  null,$/;"	r
+end_cell	script.js	/^    map.end_cell = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };$/;"	r
+extra	script.js	/^                case 'rotation': type = 'range'; extra='min="0" max="360"'; break; $/;"	r
+extra	script.js	/^            var extra='';$/;"	r
+extrawalls	script.js	/^        extrawalls: [ ],$/;"	r
+found	script.js	/^            found = patrols.length;$/;"	r
+found	script.js	/^        var found=true;$/;"	r
+get_pos	script.js	/^function get_pos(e, h)$/;"	r
+h	script.js	/^        h.addEventListener('click',toggle.bind(this,h, real_line, real_row), false);$/;"	r
+h	script.js	/^        this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});$/;"	r
+h	script.js	/^        this.add_object('key',h, { top: pos.top, left:pos.left, key: '',rotation:0 });$/;"	r
+h	script.js	/^        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});$/;"	r
+h	script.js	/^        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});$/;"	r
+h	script.js	/^        var h = document.createElement('div');$/;"	r
+h	script.js	/^function add_object(type,h, params)$/;"	r
+has_seal	script.js	/^        has_seal=true;$/;"	r
+has_seal	script.js	/^    has_seal=false;$/;"	r
+has_seal	script.js	/^var has_seal = false;$/;"	r
+hexagone	script.js	/^function selectItem(div, hexagone, e)$/;"	r
+href	script.js	/^    link.href = 'data:text\/plain,var Levels = '+JSON.stringify(Levels, null , '\\t');$/;"	r
+i	script.js	/^        add_walltype(node, i, select.value);$/;"	r
+i	script.js	/^function add_walltype(node,i,type)$/;"	r
+innerHTML	script.js	/^                wall.innerHTML='<span>key'+key+'<\/span>';$/;"	r
+innerHTML	script.js	/^            div.innerHTML='<label>'+attribute.name+'<\/label><input '+extra+' type="'+type+'" name="'+attribute.name+'" \/>';$/;"	r
+innerText	script.js	/^            node.innerText='';$/;"	r
+innerText	script.js	/^        div.innerText=object_id;$/;"	r
+innerText	script.js	/^        opt.innerText =  'Patrol point - Seal '+node.getAttribute('object_id');$/;"	r
+innerText	script.js	/^        opt.innerText =  objects[key];$/;"	r
+innerText	script.js	/^    container.innerText='';$/;"	r
+innerText	script.js	/^    container.innerText='Type '+selected_item.getAttribute('type');$/;"	r
+innerText	script.js	/^    div.innerText=e_id+'-'+num;$/;"	r
+innerText	script.js	/^    link.innerText='Download';$/;"	r
+innerText	script.js	/^    object_list.innerText='';$/;"	r
+innerText	script.js	/^    opt.innerText= 'Level '+(num+1);$/;"	r
+item	script.js	/^        var item = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10), walls: [] };$/;"	r
+key	script.js	/^                var key = node.getAttribute('row')+'-'+node.getAttribute('line')+'-'+i;$/;"	r
+key	script.js	/^        this.add_object('key',h, { top: pos.top, left:pos.left, key: '',rotation:0 });$/;"	r
+key	script.js	/^        var key = 'add_patrol_point_'+node.getAttribute('object_id');$/;"	r
+l	script.js	/^    var l = document.createElement('div');$/;"	r
+left	script.js	/^                    left: parseFloat(node.getAttribute('left')),$/;"	r
+left	script.js	/^                    left: parseFloat(patrol.getAttribute('left')),$/;"	r
+left	script.js	/^            left = ((e.pageX - h.offsetLeft ) \/ h.offsetWidth).toFixed(2); $/;"	r
+left	script.js	/^            left: parseFloat(node.getAttribute('left')),$/;"	r
+left	script.js	/^            selected_item.style.left = (parseFloat(input.value)*100)+'%';$/;"	r
+left	script.js	/^        this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});$/;"	r
+left	script.js	/^        this.add_object('key',h, { top: pos.top, left:pos.left, key: '',rotation:0 });$/;"	r
+left	script.js	/^        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});$/;"	r
+left	script.js	/^        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});$/;"	r
+left	script.js	/^        var left = ((e.pageX - h.offsetLeft - editorLeft ) \/ h.offsetWidth).toFixed(2);$/;"	r
+left	script.js	/^    div.style.left=(left*100)+'%';$/;"	r
+left	script.js	/^    div.style.left=(parseFloat(params.left)*100)+'%';$/;"	r
+left	script.js	/^    return { top: top, left: left};$/;"	r
+level_type	script.js	/^        var level_type =  c.options[c.selectedIndex].value;$/;"	r
+level_type	script.js	/^    var level_type =  c.options[c.selectedIndex].value;$/;"	r
+levels_container	script.js	/^var levels_container = document.getElementById('levels');$/;"	r
+line	script.js	/^            var line = h.getAttribute('line');$/;"	r
+line	script.js	/^function toggle(h, line, row, e)$/;"	r
+link	script.js	/^    var link = document.createElement('a');$/;"	r
+list	script.js	/^    var list = document.querySelectorAll('.hexagone');$/;"	r
+load	script.js	/^document.getElementById('load').addEventListener('click',load, false);$/;"	r
+load	script.js	/^function load()$/;"	r
+mode	script.js	/^    mode = _mode;$/;"	r
+mode	script.js	/^var mode='edit_map';$/;"	r
+mode_param	script.js	/^        mode_param = result[1];$/;"	r
+mode_param	script.js	/^        self.add_patrol_point(h, mode_param, pos.top, pos.left);$/;"	r
+mode_param	script.js	/^var mode_param=null;$/;"	r
+move_item_hover	script.js	/^function move_item_hover()$/;"	r
+moving_hexa	script.js	/^            moving_hexa=h;$/;"	r
+moving_hexa	script.js	/^            moving_hexa=null;$/;"	r
+moving_hexa	script.js	/^        moving_hexa=h;$/;"	r
+moving_hexa	script.js	/^var moving_hexa = null;$/;"	r
+moving_item	script.js	/^            moving_item=div;$/;"	r
+moving_item	script.js	/^            moving_item=null;$/;"	r
+moving_item	script.js	/^        moving_item=div;$/;"	r
+moving_item	script.js	/^var moving_item = null;$/;"	r
+next_maze	script.js	/^        next_maze:  null$/;"	r
+next_maze	script.js	/^    map.next_maze = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10) };$/;"	r
+node	script.js	/^                node = document.querySelector('.hexagone[row="'+data.next_maze.x+'"][line="'+data.next_maze.z+'"]');$/;"	r
+node	script.js	/^                var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');$/;"	r
+node	script.js	/^            node = document.querySelector('.hexagone[row="'+data.end_cell.x+'"][line="'+data.end_cell.z+'"]');$/;"	r
+node	script.js	/^    node = document.querySelector('.next_maze');$/;"	r
+node	script.js	/^    var node = document.querySelector('.end_cell');$/;"	r
+node	script.js	/^    var node = document.querySelector('.hexagone[row="'+select.getAttribute('row')+'"][line="'+select.getAttribute('line')+'"]');$/;"	r
+nodes	script.js	/^            var nodes = Array.prototype.slice.call(document.querySelectorAll('.'+type));$/;"	r
+nodes	script.js	/^        var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone'));$/;"	r
+nodes	script.js	/^        var nodes = Array.prototype.slice.call(document.querySelectorAll('.seal_action'));$/;"	r
+nodes	script.js	/^    var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone:not(.disabled)'));$/;"	r
+nodes	script.js	/^    var nodes = Array.prototype.slice.call(document.querySelectorAll('.mode'));$/;"	r
+nodes	script.js	/^    var nodes = Array.prototype.slice.call(document.querySelectorAll('.seal'));$/;"	r
+nodes	script.js	/^    var nodes = Array.prototype.slice.call(document.querySelectorAll('.selected_item_action'));$/;"	r
+nodes	script.js	/^    var nodes = Array.prototype.slice.call(list);$/;"	r
+null	script.js	/^    link.href = 'data:text\/plain,var Levels = '+JSON.stringify(Levels, null , '\\t');$/;"	r
+num	script.js	/^    var num = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[object_id="'+e_id+'"]')).length+1;$/;"	r
+num	script.js	/^    var num = levels_container.options.length;$/;"	r
+obj	script.js	/^                var obj = $/;"	r
+object_id	script.js	/^    object_id=0;$/;"	r
+object_id	script.js	/^var object_id = 0;$/;"	r
+object_list	script.js	/^    var object_list = document.getElementById('object_list');$/;"	r
+objectnode	script.js	/^                            self.add_object(type,objectnode, object);$/;"	r
+objectnode	script.js	/^                            var objectnode = document.querySelector('.hexagone[row="'+object.x+'"][line="'+object.z+'"]');$/;"	r
+objects	script.js	/^var objects={$/;"	r
+opt	script.js	/^        opt = document.createElement('option');$/;"	r
+opt	script.js	/^    var opt = document.createElement('option');$/;"	r
+opt	script.js	/^    var opt;$/;"	r
+p	script.js	/^                var p = node.parentElement;$/;"	r
+p	script.js	/^            var p = node.parentElement;$/;"	r
+p	script.js	/^        var p = node.parentElement;$/;"	r
+parent_patrol	script.js	/^                var parent_patrol = patrol.parentElement;$/;"	r
+patrol_loop	script.js	/^        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});$/;"	r
+patrol_positions	script.js	/^            patrol_positions : [],$/;"	r
+patrol_wait	script.js	/^            patrol_wait : parseInt(node.getAttribute('patrol_wait'),10),$/;"	r
+patrolnode	script.js	/^                    var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');$/;"	r
+patrols	script.js	/^            var patrols = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[object_id="'+e_id+'"][patrol_id="'+search+'"'));$/;"	r
+pos	script.js	/^                var pos = get_pos(e, moving_hexa);$/;"	r
+pos	script.js	/^        var pos = get_pos(e,h);$/;"	r
+real_line	script.js	/^        var real_line = Math.floor(line\/2);$/;"	r
+real_row	script.js	/^        var real_row = line%2===0 ? row*2  : row*2+1;$/;"	r
+regex	script.js	/^    var regex = new RegExp('add_patrol_point_(\\\\d+)');$/;"	r
+remove	script.js	/^document.getElementById('remove').addEventListener('click',remove, false);$/;"	r
+remove	script.js	/^function remove(e)$/;"	r
+reset	script.js	/^function reset()$/;"	r
+result	script.js	/^    var result;$/;"	r
+return	script.js	/^        return;$/;"	r
+rotation	script.js	/^                    rotation: parseInt(node.getAttribute('rotation')),$/;"	r
+rotation	script.js	/^            rotation: parseInt(node.getAttribute('rotation')),$/;"	r
+rotation	script.js	/^        this.add_object('chest',h, { top: pos.top, left:pos.left, rotation:0, drops:''});$/;"	r
+rotation	script.js	/^        this.add_object('key',h, { top: pos.top, left:pos.left, key: '',rotation:0 });$/;"	r
+rotation	script.js	/^        this.add_object('seal',h, { top: pos.top, left:pos.left, rotation:0, patrol_loop: true, drops:'', patrol_wait: 2000});$/;"	r
+rotation	script.js	/^        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});$/;"	r
+row	script.js	/^            var row = h.getAttribute('row');$/;"	r
+save	script.js	/^document.getElementById('save').addEventListener('click',save, false);$/;"	r
+save	script.js	/^function save()$/;"	r
+seal	script.js	/^        var seal = $/;"	r
+sealnode	script.js	/^                var e_id = self.add_object('seal',sealnode, seal);$/;"	r
+sealnode	script.js	/^                var sealnode = document.querySelector('.hexagone[row="'+seal.x+'"][line="'+seal.z+'"]');$/;"	r
+seals	script.js	/^        seals: [],$/;"	r
+search	script.js	/^        var search=1;$/;"	r
+select	script.js	/^        select = document.querySelector('#edit_item .type'+i);$/;"	r
+select	script.js	/^    var select = document.querySelector('#edit_item select');$/;"	r
+selectItem	script.js	/^function selectItem(div, hexagone, e)$/;"	r
+selectedIndex	script.js	/^            selectedIndex = current.getAttribute('type');$/;"	r
+selectedIndex	script.js	/^        var selectedIndex=0;$/;"	r
+selectedIndex	script.js	/^    levels_container.selectedIndex = num;$/;"	r
+selected_item	script.js	/^    selected_item=div;$/;"	r
+selected_item	script.js	/^    selected_item=null;$/;"	r
+selected_item	script.js	/^var selected_item=null;$/;"	r
+subnodes	script.js	/^        var subnodes = Array.prototype.slice.call(node.querySelectorAll('.walltype'));$/;"	r
+toggle	script.js	/^function toggle(h, line, row, e)$/;"	r
+toggle_mode	script.js	/^function toggle_mode(_mode)$/;"	r
+top	script.js	/^                    top: parseFloat(node.getAttribute('top')),$/;"	r
+top	script.js	/^                    top: parseFloat(patrol.getAttribute('top')),$/;"	r
+top	script.js	/^            selected_item.style.top = (parseFloat(input.value)*100)+'%';$/;"	r
+top	script.js	/^            top = ((e.pageY - h.offsetTop ) \/ h.offsetHeight).toFixed(2);$/;"	r
+top	script.js	/^            top: parseFloat(node.getAttribute('top')),$/;"	r
+top	script.js	/^        var top = ((e.pageY - h.offsetTop - editorTop ) \/ h.offsetHeight).toFixed(2);$/;"	r
+top	script.js	/^    div.style.top=(parseFloat(params.top)*100)+'%';$/;"	r
+top	script.js	/^    div.style.top=(top*100)+'%';$/;"	r
+transform	script.js	/^            selected_item.style.transform='rotate('+input.value+'deg)';$/;"	r
+transform	script.js	/^        div.style.transform='rotate('+params.rotation+'deg)';$/;"	r
+trigger	script.js	/^        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});$/;"	r
+type	script.js	/^                    type = 'range'; extra='min="0" max="1" step="0.01"'; break; $/;"	r
+type	script.js	/^                type='checkbox';$/;"	r
+type	script.js	/^                var type = key.replace('add_','');$/;"	r
+type	script.js	/^            var type='text';$/;"	r
+type	script.js	/^        type:  level_type,$/;"	r
+type	script.js	/^        var type = key.replace('add_','');$/;"	r
+update_lists	script.js	/^function update_lists()$/;"	r
+update_pos	script.js	/^function update_pos(div, params)$/;"	r
+wall	script.js	/^        var wall =  document.createElement('div');$/;"	r
+walls	script.js	/^        var item = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10), walls: [] };$/;"	r

@@ -18,7 +18,7 @@ var Game = function(opt)
     if(opt.debug_level>1)
     {
         camera_decal_x = 5;
-        camera_decal_y = 70;
+        camera_decal_y = 200;
         camera_decal_z = 30;
     }
 
