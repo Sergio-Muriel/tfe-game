@@ -101,8 +101,6 @@ var Assets = function(opt)
     };
     this.loaded= function()
     {
-        console.log('loaded', this);
-
         // transparent material
         this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
 
