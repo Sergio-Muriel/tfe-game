@@ -325,6 +325,7 @@ var Perso = function(game, options)
 
         if(this.click_target && this.mouse_clicked)
         {
+            this.mouse_clicked=false;
             if(this.click_target.targeted(this))
             {
                 return false;
