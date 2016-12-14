@@ -17,8 +17,13 @@ var Pinga = function(game, options)
 
     this.options = options;
     this.game=game;
-    this.move_speed= 1.0;
-    this.run_speed= 2.0;
+
+    this.move_speed= 0.5;
+    this.move_action_duration = 0.40;
+
+    this.run_speed= 0.5;
+    this.run_action_duration = 0.40;
+
     this.check_vision_every= 80;
     this.attack_range = 10;
     this.hovered=false;

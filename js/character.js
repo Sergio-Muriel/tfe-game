@@ -14,6 +14,7 @@ var Character = function(game, options)
     this.run_speed= 2.0;
     this.check_vision_every= 80;
     this.attack_range = 10;
+
     this.hovered=false;
     this.is_dead=false;
 
@@ -67,6 +68,10 @@ Character.prototype.build = function()
     }
 
     this.create();
+    if(this.custom)
+    {
+        this.custom();
+    }
 
     if(this.next_pos)
     {
@@ -210,7 +215,7 @@ Character.prototype.create =function()
     this.attackingClip = this.mesh_geo.animations[3];
     this.dyingClip = this.mesh_geo.animations[4];
 
-    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(1.20);
+    this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(this.move_action_duration);
     this.move_action.name='move';
     this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
     this.idle_action.name='idle';
@@ -299,13 +304,14 @@ Character.prototype.targeted=function(from)
         {
             if(distance<this.weapon_range)
             {
-                console.log('stop following');
                 this.lookAt(from.container.position);
                 this.can_walk_through=true;
                 game.updateCollisionsCache();
                 this.following = null;
                 this.move_destination=this.container.position;
+                window.pinga= this;
                 this.is_running=true;
+                from.open();
             }
         }
         // Friend, not following already
@@ -313,13 +319,13 @@ Character.prototype.targeted=function(from)
         {
             if(distance<this.weapon_range)
             {
-                console.log('following');
                 this.lookAt(from.container.position);
                 this.can_walk_through=true;
                 game.updateCollisionsCache();
                 this.following = from;
                 this.is_running=true;
                 this.moveTo(from.container.position);
+                from.open();
             }
         }
         return true;
@@ -382,7 +388,7 @@ Character.prototype.run = function(destination)
     if(!this.is_running)
     {
         this.is_running=true;
-        this.move_action.setDuration(0.45);
+        this.move_action.setDuration(this.run_action_duration);
     }
     this.running_timer = window.setTimeout(this.walk.bind(this), 2000);
 };
@@ -400,7 +406,7 @@ Character.prototype.walk = function()
         if(this.move_destination)
         {
             this.moveTo(this.move_destination);
-            this.move_action.setDuration(0.8);
+            this.move_action.setDuration(this.move_action_duration);
         }
     }
 };
@@ -495,6 +501,10 @@ Character.prototype.move_step= function()
             moving++;
         }
 
+        if(distanceToPlayer<this.attack_range)
+        {
+            moving=0;
+        }
         if(distanceToPlayer>this.attack_range || !this.is_running)
         {
             if(this.has_vision)
@@ -774,7 +784,6 @@ Character.prototype.update= function(delta)
     }
     else if(this.following)
     {
-        //console.log('new follow pos',this.following.container.position);
         self.moveTo(this.following.container.position);
     }
 
