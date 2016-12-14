@@ -266,31 +266,38 @@ Character.prototype.targeted=function(from)
         this.is_targeted=true;
         this.hover();
         var distance = from.container.position.distanceTo(this.container.position);
-        if(distance<from.weapon_range && from.attack(this))
+        if(!this.friend)
         {
-            from.attack(this);
-            this.moveTo(from.container.position);
-            var value = get_attack_value(from, this);
-            if(value>0)
+            if(distance<from.weapon_range && from.attack(this))
             {
-                play_multiple(game.assets[from.weapon_type+'_attack_sound']);
-                play_multiple(game.assets[this.type+'_hit_sound']);
+                from.attack(this);
+                this.moveTo(from.container.position);
+                var value = get_attack_value(from, this);
+                if(value>0)
+                {
+                    play_multiple(game.assets[from.weapon_type+'_attack_sound']);
+                    play_multiple(game.assets[this.type+'_hit_sound']);
 
-                game.add_damage_text({ text:value, position: this.container.position});
-                this.life= Math.max(0,this.life-value);
-                this.update_life();
-            }
-            else
-            {
-                play_multiple(game.assets.miss_sound);
-            }
+                    game.add_damage_text({ text:value, position: this.container.position});
+                    this.life= Math.max(0,this.life-value);
+                    this.update_life();
+                }
+                else
+                {
+                    play_multiple(game.assets.miss_sound);
+                }
 
-            if(this.life===0)
-            {
-                play_multiple(this.die_sound, 200);
-                this.die();
+                if(this.life===0)
+                {
+                    play_multiple(this.die_sound, 200);
+                    this.die();
+                }
+                return true;
             }
-            return true;
+        }
+        else
+        {
+            this.lookAt(from.container.position);
         }
         return true;
     }
