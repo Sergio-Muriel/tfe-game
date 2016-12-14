@@ -3,6 +3,7 @@ var Pinga = function(game, options)
     var self=this;
     this.id=game.getNewId();
 
+
     this.friend=true;
     this.has_vision=false;
     this.mesh_geo = game.assets.pinga_geo;
@@ -16,7 +17,7 @@ var Pinga = function(game, options)
 
     this.options = options;
     this.game=game;
-    this.move_speed= 0.3;
+    this.move_speed= 1.0;
     this.run_speed= 2.0;
     this.check_vision_every= 80;
     this.attack_range = 10;

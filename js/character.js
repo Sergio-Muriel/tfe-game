@@ -66,7 +66,6 @@ Character.prototype.build = function()
         });
     }
 
-
     this.create();
 
     if(this.next_pos)
@@ -298,6 +297,10 @@ Character.prototype.targeted=function(from)
         else
         {
             this.lookAt(from.container.position);
+            this.can_walk_through=true;
+            game.updateCollisionsCache();
+            this.following = from;
+            this.moveTo(from.container.position);
         }
         return true;
     }
@@ -474,26 +477,42 @@ Character.prototype.move_step= function()
 
         if(distanceToPlayer>this.attack_range || !this.is_running)
         {
+            if(this.has_vision)
+            {
+                // Moving X restrictions
+                if(Math.abs(this.container.position.x - this.move_destination.x) > 1)
+                {
+                    this.vision.position.add(this.move_step_vector_x);
+                }
+                else
+                {
+                    this.vision.position.x = this.move_destination.x;
+                }
+                if(Math.abs(this.container.position.z - this.move_destination.z) > 1)
+                {
+                    this.vision.position.add(this.move_step_vector_z);
+                }
+                else
+                {
+                    this.vision.position.z = this.move_destination.z;
+                }
+            }
             // Moving X restrictions
             if(Math.abs(this.container.position.x - this.move_destination.x) > 1)
             {
                 this.container.position.add(this.move_step_vector_x);
-                this.vision.position.add(this.move_step_vector_x);
             }
             else
             {
                 this.container.position.x = this.move_destination.x;
-                this.vision.position.x = this.move_destination.x;
             }
             if(Math.abs(this.container.position.z - this.move_destination.z) > 1)
             {
                 this.container.position.add(this.move_step_vector_z);
-                this.vision.position.add(this.move_step_vector_z);
             }
             else
             {
                 this.container.position.z = this.move_destination.z;
-                this.vision.position.z = this.move_destination.z;
             }
         }
         else if(!game.focus_perso.is_dying)
@@ -732,6 +751,10 @@ Character.prototype.update= function(delta)
                 }, this.patrol_wait);
             }
         }
+    }
+    else if(this.following)
+    {
+        self.moveTo(this.following.container.position);
     }
 
     if(!this.is_dying)
