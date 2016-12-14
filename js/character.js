@@ -4,7 +4,7 @@ var Character = function(game, options)
     this.id=game.getNewId();
 
     this.is_hoverable=true;
-    this.can_walk_through=false;
+    this.can_walk_through=true;
     this.has_walk_through_callback=false;
     this.is_static_collision=false;
 
@@ -294,13 +294,33 @@ Character.prototype.targeted=function(from)
                 return true;
             }
         }
+        // If it is a friend, we check if we are already following it or not
+        else if(this.following)
+        {
+            if(distance<this.weapon_range)
+            {
+                console.log('stop following');
+                this.lookAt(from.container.position);
+                this.can_walk_through=true;
+                game.updateCollisionsCache();
+                this.following = null;
+                this.move_destination=this.container.position;
+                this.is_running=true;
+            }
+        }
+        // Friend, not following already
         else
         {
-            this.lookAt(from.container.position);
-            this.can_walk_through=true;
-            game.updateCollisionsCache();
-            this.following = from;
-            this.moveTo(from.container.position);
+            if(distance<this.weapon_range)
+            {
+                console.log('following');
+                this.lookAt(from.container.position);
+                this.can_walk_through=true;
+                game.updateCollisionsCache();
+                this.following = from;
+                this.is_running=true;
+                this.moveTo(from.container.position);
+            }
         }
         return true;
     }
@@ -515,7 +535,7 @@ Character.prototype.move_step= function()
                 this.container.position.z = this.move_destination.z;
             }
         }
-        else if(!game.focus_perso.is_dying)
+        else if(!this.friend && !game.focus_perso.is_dying)
         {
             this.attack(game.focus_perso);
         }
@@ -754,6 +774,7 @@ Character.prototype.update= function(delta)
     }
     else if(this.following)
     {
+        //console.log('new follow pos',this.following.container.position);
         self.moveTo(this.following.container.position);
     }
 
