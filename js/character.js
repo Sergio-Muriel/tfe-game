@@ -412,12 +412,12 @@ Character.prototype.moveTo= function(pos)
     var directionX = (pos.x-current_pos.x) / distance;
     var directionZ = (pos.z-current_pos.z) / distance;
 
-    var speed = this.is_running ? this.run_speed : this.move_speed;
-    move_step_x = speed * directionX;
-    move_step_z = speed * directionZ;
-
     this.move_step_vector = pos.clone();
     this.move_step_vector.sub(this.container.position).normalize();
+
+    var speed = this.is_running ? this.run_speed : this.move_speed;
+    this.move_step_vector.multiplyScalar(speed);
+
 
     this.move_destination = pos;
     if(this.move_action_weight!=1)
@@ -482,6 +482,7 @@ Character.prototype.move_step= function()
             else
             {
                 this.container.position = this.move_destination;
+                moving=false;
             }
         }
         else if(!this.friend && !game.focus_perso.is_dying)
@@ -776,6 +777,7 @@ Character.prototype.get_next_patrol_point = function()
     }
     this.patrol_id=next_id;
     this.patrol_inc=next_inc;
-    return this.options.patrol_positions[next_id];
+    var r = this.options.patrol_positions[next_id];
+    return new THREE.Vector3(r.x, r.y, r.z);
 };
 
