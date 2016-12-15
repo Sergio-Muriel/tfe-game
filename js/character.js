@@ -265,6 +265,7 @@ Character.prototype.untargeted=function(from)
 
 Character.prototype.targeted=function(from)
 {
+    var self=this;
     if(!this.is_dying)
     {
         this.is_targeted=true;
@@ -299,14 +300,12 @@ Character.prototype.targeted=function(from)
                 return true;
             }
         }
-        // If it is a friend, we check if we are already following it or not
+
+        // Frien stopping following
         else if(this.following)
         {
             if(distance<this.weapon_range)
             {
-                this.lookAt(from.container.position);
-                this.can_walk_through=true;
-                game.updateCollisionsCache();
                 this.following = null;
                 this.move_destination=this.container.position;
                 window.pinga= this;
@@ -314,17 +313,18 @@ Character.prototype.targeted=function(from)
                 from.open();
             }
         }
-        // Friend, not following already
+        // Friend start following
         else
         {
             if(distance<this.weapon_range)
             {
-                this.lookAt(from.container.position);
-                this.can_walk_through=true;
-                game.updateCollisionsCache();
-                this.following = from;
-                this.is_running=true;
-                this.moveTo(from.container.position);
+                window.setTimeout(function()
+                {
+                    self.lookAt(from.container.position);
+                    self.following = from;
+                    self.is_running=true;
+                    self.moveTo(from.container.position);
+                }, 500);
                 from.open();
             }
         }
