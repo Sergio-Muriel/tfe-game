@@ -32,7 +32,7 @@ var Hammer = function(game, options)
 Hammer.prototype = Object.create(Common.prototype);
 Hammer.prototype.constructor = Common;
 
-Hammer.prototype.targeted= function(from)
+Hammer.prototype.equip= function()
 {
     if(!this.deleted)
     {
@@ -41,5 +41,8 @@ Hammer.prototype.targeted= function(from)
     }
 };
 
-
+Hammer.prototype.bind = function()
+{
+    this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
+};
 

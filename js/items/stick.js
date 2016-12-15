@@ -32,7 +32,7 @@ Stick.prototype = Object.create(Common.prototype);
 Stick.prototype.constructor = Common;
 
 
-Stick.prototype.targeted= function(from)
+Stick.prototype.equip= function()
 {
     if(!this.deleted)
     {
@@ -41,4 +41,8 @@ Stick.prototype.targeted= function(from)
     }
 };
 
+Stick.prototype.bind = function()
+{
+    this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
+};
 
