@@ -11,7 +11,7 @@ var Pinga = function(game, options)
     this.die_sound = game.assets.pinga_die_sound;
 
     this.is_hoverable=true;
-    this.can_walk_through=false;
+    this.can_walk_through=true;
     this.has_walk_through_callback=false;
     this.is_static_collision=false;
 
