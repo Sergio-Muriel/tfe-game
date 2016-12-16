@@ -473,7 +473,7 @@ var Game = function(opt)
         var text_geo = new THREE.TextGeometry(text , {
             font: game.assets.text_font,
             size: size,
-            height: 1,
+            height: 0,
             curveSegments: 1,
             bevelThickness: 1,
             bevelSize: params.bevelSize || 0.1,
