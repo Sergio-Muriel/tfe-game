@@ -323,6 +323,7 @@ var Perso = function(game, options)
             this.mouse_clicked=false;
             if(this.click_target.targeted(this))
             {
+                this.click_target=null;
                 return false;
             }
             else
