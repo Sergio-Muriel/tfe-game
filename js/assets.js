@@ -306,7 +306,7 @@ var Assets = function(opt)
         promises.push(new Promise(function(ok, reject)
         {
             var loader = new THREE.FontLoader();
-            loader.load('fonts/cabin_bold.json', function ( response ) {
+            loader.load('fonts/cabin_regular.json', function ( response ) {
                 self.text_font = response;
                 self.current_loaded++;
                 game.gui.update_loading(self.current(), self.total());

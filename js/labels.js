@@ -7,6 +7,8 @@ Game.prototype.labels =
     },
     'en':
     {
-        'life': 'Life'
+        'life': 'Life',
+        'follow me': 'Follow me!',
+        'dont move': 'Don\'t move!',
     }
 };

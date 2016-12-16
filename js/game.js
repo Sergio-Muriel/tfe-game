@@ -446,6 +446,20 @@ var Game = function(opt)
         return this.add_fadeout_text(params);
     };
 
+    this.add_friend_text = function(params)
+    {
+        params.fadeout = true;
+        params.anim_callback = this.inc_scale_fadeout.bind(this, { move_y: 0.10, scale:  0, opacity: 0.01});
+        params.bevelSize= 0;
+
+        params.delta_y=15;
+        params.size= game.config.text_friend_size;
+        params.color= game.config.text_friend_color;
+        params.anim_time = 1000;
+
+        return this.add_fadeout_text(params);
+    };
+
     this.add_fadeout_text = function(params)
     {
         var text = params.text;
@@ -473,13 +487,15 @@ var Game = function(opt)
         text_mesh.position.y= -( text_geo.boundingBox.max.y - text_geo.boundingBox.min.y)/2;
         text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2;
         
-        text_mesh.rotation.x = Math.radians(-90);
+        text_mesh.rotation.x = Math.radians(-45);
         text_mesh.rotation.y = 0;
         text_mesh.rotation.z = Math.radians(0);
 
         text_container.position.x = position.x;
         text_container.position.y = position.y + delta_y;
         text_container.position.z = position.z;
+
+        text_container.rotation.y = Math.radians(3);
 
         if(params.anim_callback)
         {

@@ -204,37 +204,38 @@ Character.prototype.create =function()
 
 Character.prototype.hover=function()
 {
-    this.hovered=true;
+    this.is_hovered=true;
     this.life_material.visible=true;
 };
 Character.prototype.unhover=function()
 {
-    if(!this.is_targeted)
-    {
-        this.hovered=false;
-        this.life_material.visible=false;
-    }
+    this.is_hovered=false;
+    this.life_material.visible=false;
 };
 
 
 Character.prototype.untargeted=function(from)
 {
-    this.is_targeted=false;
-    this.unhover();
+    if(this.is_targeted)
+    {
+        this.is_targeted=false;
+        this.unhover();
+    }
 };
 
 Character.prototype.targeted=function(from)
 {
     var self=this;
-    if(!this.is_dying)
+    console.log('targeted!');
+    if(!this.is_dying && !this.is_targeted)
     {
-        this.is_targeted=true;
         this.hover();
         var distance = from.container.position.distanceTo(this.container.position);
         if(!this.friend)
         {
             if(distance<from.weapon_range && from.attack(this))
             {
+                this.is_targeted=true;
                 from.attack(this);
                 this.moveTo(from.container.position);
                 var value = get_attack_value(from, this);
@@ -266,12 +267,14 @@ Character.prototype.targeted=function(from)
         {
             if(distance<from.open_range)
             {
+                this.is_targeted=true;
                 this.following = null;
                 this.move_destination=this.container.position;
                 window.pinga= this;
                 this.is_running=true;
                 from.open();
-                self.untargeted();
+                game.add_friend_text({ text:game.labels.get('dont move'), position: from.container.position});
+                window.setTimeout(self.untargeted.bind(self), 500);
                 return true;
             }
         }
@@ -280,15 +283,15 @@ Character.prototype.targeted=function(from)
         {
             if(distance<from.open_range)
             {
-                window.setTimeout(function()
-                {
-                    self.lookAt(from.container.position);
-                    self.following = from;
-                    self.is_running=true;
-                    self.moveTo(from.container.position);
-                    self.untargeted();
-                }, 500);
+                this.is_targeted=true;
+                self.lookAt(from.container.position);
+                self.following = from;
+                self.is_running=true;
+                self.moveTo(from.container.position);
+                game.add_friend_text({ text:game.labels.get('follow me'), position: from.container.position});
                 from.open();
+
+                window.setTimeout(self.untargeted.bind(self), 500);
                 return true;
             }
         }
@@ -704,7 +707,7 @@ Character.prototype.update= function(delta)
 
     this.mixer.update(delta);
     this.delta=delta;
-    if(this.hovered)
+    if(this.is_hovered)
     {
         this.life_container.rotation.z += 0.03;
     }
