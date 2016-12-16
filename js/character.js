@@ -264,19 +264,21 @@ Character.prototype.targeted=function(from)
         // Frien stopping following
         else if(this.following)
         {
-            if(distance<this.weapon_range)
+            if(distance<from.open_range)
             {
                 this.following = null;
                 this.move_destination=this.container.position;
                 window.pinga= this;
                 this.is_running=true;
                 from.open();
+                self.untargeted();
+                return true;
             }
         }
         // Friend start following
         else
         {
-            if(distance<this.weapon_range)
+            if(distance<from.open_range)
             {
                 window.setTimeout(function()
                 {
@@ -284,11 +286,12 @@ Character.prototype.targeted=function(from)
                     self.following = from;
                     self.is_running=true;
                     self.moveTo(from.container.position);
+                    self.untargeted();
                 }, 500);
                 from.open();
+                return true;
             }
         }
-        return true;
     }
     return false;
 };

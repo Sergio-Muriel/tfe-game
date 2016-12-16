@@ -163,7 +163,6 @@ var Perso = function(game, options)
 
         if(this.weapon_mesh)
         {
-            console.log('remove mesh ');
             this.weapon_bone.remove(this.weapon_mesh);
             this.weapon_mesh=null;
         }
@@ -188,7 +187,6 @@ var Perso = function(game, options)
         }
         else
         {
-            //console.log('cannot equip with ',type);
         }
     };
 
@@ -251,7 +249,6 @@ var Perso = function(game, options)
         {
             this.is_moving=false;
             this.is_attacking=true;
-            console.log('attack!');
             this.set_weight_destination([0,0,1,0]);
             this.attack_action.stop();
             this.attack_action.play();
@@ -266,7 +263,6 @@ var Perso = function(game, options)
         {
             this.is_moving=false;
             this.is_opening=true;
-            console.log('attack!');
             this.set_weight_destination([0,0,0,1]);
             this.open_action.stop();
             this.open_action.play();
@@ -297,7 +293,6 @@ var Perso = function(game, options)
         game.zoomInCircle(function()
         {
             game.reload();
-            console.log('really dead here');
         });
 
         window.setTimeout(function()
@@ -332,7 +327,7 @@ var Perso = function(game, options)
             }
             else
             {
-                this.click_target=null;
+                //this.click_target=null;
             }
         }
 
@@ -526,6 +521,13 @@ var Perso = function(game, options)
 
     this.move_step= function()
     {
+        if(this.click_target)
+        {
+            if(this.click_target.targeted(this))
+            {
+                this.click_target=null;
+            }
+        }
         if(this.mouse_clicked)
         {
             this.mouseMoveCallback(this.last_mouse_event);
@@ -709,17 +711,17 @@ var Perso = function(game, options)
         self.mouseMoveCallback(e);
     };
     this.mouseup = function(e) {
-        if(this.click_target)
-        {
-            this.click_target.untargeted();
-            this.click_target=null;
-        }
         this.last_mouse_event=e;
         self.mouse_clicked=false;
         e.stopPropagation();
         return false;
     };
     this.mousedown = function(e) {
+        if(this.click_target)
+        {
+            this.click_target.untargeted();
+            this.click_target=null;
+        }
         this.last_mouse_event=e;
         self.mouse_clicked=true;
         e.stopPropagation();
@@ -731,13 +733,11 @@ var Perso = function(game, options)
     {
         this.is_running=false;
         this.move_speed = this.walk_speed;
-        console.log('walking!');
     };
     this.run = function()
     {
         this.is_running=true;
         this.move_speed = this.run_speed;
-        console.log('running!');
     };
 
     this.update_temperature = function(delta)
