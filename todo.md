@@ -1,4 +1,4 @@
-- pinga follow perso when clicked in
+- pinga desapear when enter a specific zone
 - add snow like / blizzard particles
 - teleport item
 - ennemies needs to be put down pressing a button
