@@ -3,6 +3,7 @@ var Perso = function(game, options)
     var self=this;
     self.id=game.getNewId();
     self.friend=true;
+    self.type='perso';
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
     self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.50;
@@ -208,7 +209,7 @@ var Perso = function(game, options)
             if(value>0)
             {
                 play_multiple(game.assets[from.weapon_type+'_attack_sound']);
-                play_multiple(game.assets.hit_sound);
+                play_multiple(game.assets.perso_hit_sound);
 
                 this.life= Math.max(0,this.life-value);
                 game.add_damage_text({ text:value, position: this.container.position});

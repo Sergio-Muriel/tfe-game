@@ -226,38 +226,16 @@ Character.prototype.untargeted=function(from)
 Character.prototype.targeted=function(from)
 {
     var self=this;
-    console.log('targeted!');
     if(!this.is_dying && !this.is_targeted)
     {
         this.hover();
         var distance = from.container.position.distanceTo(this.container.position);
-        if(!this.friend)
+        if(this.friend != from.friend)
         {
             if(distance<from.weapon_range && from.attack(this))
             {
                 this.is_targeted=true;
-                from.attack(this);
                 this.moveTo(from.container.position);
-                var value = get_attack_value(from, this);
-                if(value>0)
-                {
-                    play_multiple(game.assets[from.weapon_type+'_attack_sound']);
-                    play_multiple(game.assets[this.type+'_hit_sound']);
-
-                    game.add_damage_text({ text:value, position: this.container.position});
-                    this.life= Math.max(0,this.life-value);
-                    this.update_life();
-                }
-                else
-                {
-                    play_multiple(game.assets.miss_sound);
-                }
-
-                if(this.life===0)
-                {
-                    play_multiple(this.die_sound, 200);
-                    this.die();
-                }
                 return true;
             }
         }
@@ -533,14 +511,38 @@ Character.prototype.attack = function(target, reload)
         }
         this.attacking=true;
         this.attack_target = target;
-        console.log('target ',target);
         target.targeted(this);
 
         this.move_action.setEffectiveWeight(0);
         this.idle_action.setEffectiveWeight(0);
         this.attack_action.setEffectiveWeight(1);
 
+        // Effective life lost
+        var value = get_attack_value(this, target);
+        if(value>0)
+        {
+            play_multiple(game.assets[this.weapon_type+'_attack_sound']);
+            play_multiple(game.assets[target.type+'_hit_sound']);
+
+            game.add_damage_text({ text:value, position: target.container.position});
+            target.life= Math.max(0,target.life-value);
+            target.update_life();
+        }
+        else
+        {
+            play_multiple(game.assets.miss_sound);
+        }
+
+        if(target.life===0)
+        {
+            play_multiple(target.die_sound, 200);
+            target.die();
+        }
+        console.log('attack true');
+        return true;
     }
+    console.log('attack false', this.attacking);
+    return false;
 };
 
 Character.prototype.end_attack = function(x)
