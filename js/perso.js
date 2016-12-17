@@ -4,6 +4,8 @@ var Perso = function(game, options)
     self.id=game.getNewId();
     self.friend=true;
     self.type='perso';
+    self.followers=[];
+    self.following_idx=1;
 
     self.vision_distance = game.opt.door_size*3;
 
@@ -808,6 +810,26 @@ var Perso = function(game, options)
             this.move_step();
         }
         this.update_weight();
+    };
+    this.add_follower = function(target)
+    {
+        this.followers.push(target);
+        target.following_idx = this.followers.indexOf(target)+1;
+        target.following= this;
+        console.log('idx  = ',target.following_idx);
+    };
+    this.remove_follower = function(target)
+    {
+        target.following=null;
+        var idx = this.followers.indexOf(target);
+        this.followers.splice(idx, 1);
+        var idx=1;
+        this.followers.forEach(function(follower)
+        {
+            follower.following_idx=idx;
+            idx++;
+        });
+        console.log('afer = ',this.followers.length);
     };
     this.build();
 };

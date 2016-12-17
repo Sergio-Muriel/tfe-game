@@ -1,4 +1,3 @@
-- seal can attack pinga
 - pinga desapear when enter a specific zone
 - add snow like / blizzard particles
 - teleport item

@@ -62,6 +62,8 @@ Character.prototype.create =function()
 {
     var self=this;
     this.attack_target = game.focus_perso;
+    this.following_idx=1;
+    this.followers = [];
 
     this.container = new THREE.Object3D();
     this.game.scene.add(this.container);
@@ -258,7 +260,7 @@ Character.prototype.targeted=function(from)
             if(distance<from.open_range)
             {
                 this.is_targeted=true;
-                this.following = null;
+                from.remove_follower(this);
                 this.move_destination=this.container.position;
                 window.pinga= this;
                 this.is_running=true;
@@ -275,7 +277,7 @@ Character.prototype.targeted=function(from)
             {
                 this.is_targeted=true;
                 self.lookAt(from.container.position);
-                self.following = from;
+                from.add_follower(this);
                 self.is_running=true;
                 self.moveTo(from.container.position);
                 game.add_friend_text({ text:game.labels.get('follow me'), position: from.container.position});
@@ -462,7 +464,7 @@ Character.prototype.move_step= function()
         {
             moving=0;
         }
-        if(distanceToTarget>this.attack_range || !this.is_running)
+        if(distanceToTarget>this.attack_range*this.following_idx || !this.is_running)
         {
             if(this.has_vision)
             {
@@ -817,5 +819,25 @@ Character.prototype.get_next_patrol_point = function()
     this.patrol_inc=next_inc;
     var r = this.options.patrol_positions[next_id];
     return new THREE.Vector3(r.x, r.y, r.z);
+};
+
+Character.prototype.add_follower = function(target)
+{
+    this.followers.push(target);
+    target.following_idx = this.followers.indexOf(target)+1;
+    target.following= this;
+    console.log('idx  = ',target.following_idx);
+};
+Character.prototype.remove_follower = function(target)
+{
+    target.following=null;
+    var idx = this.followers.indexOf(target);
+    this.followers.splice(idx, 1);
+    var idx=1;
+    this.followers.forEach(function(follower)
+    {
+        follower.following_idx=idx;
+        idx++;
+    });
 };
 
