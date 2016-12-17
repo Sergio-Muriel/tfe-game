@@ -349,6 +349,8 @@ var Perso = function(game, options)
             if(this.click_target.targeted(this))
             {
                 this.click_target=null;
+                game.current_item.stop_step();
+                this.updateMovingStatus(null);
                 return false;
             }
             else
@@ -552,6 +554,8 @@ var Perso = function(game, options)
             if(this.click_target.targeted(this))
             {
                 this.click_target=null;
+                game.current_item.stop_step();
+                this.updateMovingStatus(null);
                 return false;
             }
         }
