@@ -2,6 +2,7 @@ var Perso = function(game, options)
 {
     var self=this;
     self.id=game.getNewId();
+    self.friend=true;
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
     self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.50;
@@ -71,6 +72,7 @@ var Perso = function(game, options)
         this.container_mesh.rotation.z = Math.radians(45);
         this.container_mesh.position.y=1;
         this.container_mesh.name='p';
+        this.container_mesh.object = this;
         this.container.add(this.container_mesh);
 
         this.container.position.x = this.options.x;
@@ -190,7 +192,7 @@ var Perso = function(game, options)
         }
     };
 
-    this.attacked=function(from)
+    this.targeted=function(from)
     {
         if(!this.is_dying)
         {
@@ -200,8 +202,8 @@ var Perso = function(game, options)
             {
                 material.emissive = hover_material_emissive[i];
             });
-            window.clearTimeout(this.unattacked_timer),
-            this.unattacked_timer = window.setTimeout(this.unattacked.bind(this), 100);
+            window.clearTimeout(this.untargeted_timer),
+            this.untargeted_timer = window.setTimeout(this.untargeted.bind(this), 100);
 
             if(value>0)
             {
@@ -219,7 +221,7 @@ var Perso = function(game, options)
 
         }
     };
-    this.unattacked = function()
+    this.untargeted = function()
     {
         this.mesh.material.materials.forEach(function(material, i)
         {

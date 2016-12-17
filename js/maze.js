@@ -650,6 +650,18 @@ Maze.prototype.getMovingObstacles = function()
     });
     return obstacles;
 };
+Maze.prototype.getFriends = function()
+{
+    var obstacles=[];
+    this.interraction_items.forEach(function(item)
+    {
+        if(item.friend)
+        {
+            obstacles.push(item.container_mesh);
+        }
+    });
+    return obstacles;
+};
 
 Maze.prototype.getHovers = function()
 {

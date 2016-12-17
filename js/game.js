@@ -297,6 +297,10 @@ var Game = function(opt)
     {
         return this.obstacles_with_player;
     };
+    this.getFriends = function()
+    {
+        return this.friends;
+    };
     this.getCollisionCallbacks = function()
     {
         return this.collision_callbacks;
@@ -321,7 +325,8 @@ var Game = function(opt)
         this.hovers=this.current_item.getHovers();
         this.static_obstacles = this.current_item.getStaticObstacles();
         this.moving_obstacles = this.current_item.getMovingObstacles();
-        this.obstacles_with_player = [].concat(this.static_obstacles, this.focus_perso.container_mesh);
+        this.friends = [].concat(this.current_item.getFriends(), this.focus_perso.container_mesh);
+        this.obstacles_with_player = [].concat(this.static_obstacles, this.friends);
 
         this.moving_and_static_obstacles = [].concat(this.static_obstacles).concat(this.moving_obstacles);
         this.hovers_with_ground= this.hovers.concat([this.click_ground]);

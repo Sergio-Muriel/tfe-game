@@ -455,18 +455,22 @@ Character.prototype.move_step= function()
 
 
         // Distance to player
-        var distanceToPlayer = this.container.position.distanceTo(game.focus_perso.container.position);
+        var distanceToTarget = 999;
+        if(this.attack_target)
+        {
+           distanceToTarget = this.container.position.distanceTo(this.attack_target.container.position);
+        }
 
         if(this.container.position.x!=this.move_destination.x || this.container.position.z!=this.move_destination.z)
         {
             moving++;
         }
 
-        if(distanceToPlayer<this.attack_range)
+        if(distanceToTarget<this.attack_range)
         {
             moving=0;
         }
-        if(distanceToPlayer>this.attack_range || !this.is_running)
+        if(distanceToTarget>this.attack_range || !this.is_running)
         {
             if(this.has_vision)
             {
@@ -491,9 +495,9 @@ Character.prototype.move_step= function()
                 moving=false;
             }
         }
-        else if(!this.friend && !game.focus_perso.is_dying)
+        else if(!this.friend && !this.attack_target.is_dying)
         {
-            this.attack(game.focus_perso);
+            this.attack(this.attack_target);
         }
 
         if(!moving)
@@ -529,7 +533,8 @@ Character.prototype.attack = function(target, reload)
         }
         this.attacking=true;
         this.attack_target = target;
-        target.attacked(this);
+        console.log('target ',target);
+        target.targeted(this);
 
         this.move_action.setEffectiveWeight(0);
         this.idle_action.setEffectiveWeight(0);
@@ -578,6 +583,7 @@ Character.prototype.update_vision = function()
 };
 Character.prototype.check_vision = function()
 {
+    var self=this;
     if(!this.check_vision_loop)
     {
         this.vision.material.visible=false;
@@ -591,36 +597,39 @@ Character.prototype.check_vision = function()
 
     var collisions=[];
 
-    // Trace 1 raycast to check if it is visible to the user (no cone)
-    var localVertex = game.focus_perso.container.position.clone();
-    var globalVertex = localVertex.sub(originPoint);
+    var is_near= game.focus_perso.container.position.distanceTo(this.container.position) < this.vision_distance;
 
-    var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0, this.ennemy_detection_distance);
-    var collisionResults = ray.intersectObjects(obstacles_with_player);
-
-    var is_near=false;
-    if (collisionResults.length > 0)
+    this.friends = game.getFriends();
+    this.friends.forEach(function(friend)
     {
-        is_near=collisionResults.filter(function(x) { return x.object.name=='p';}).length>0;
+        // Trace 1 raycast to check if it is visible to the user (no cone)
+        var localVertex = friend.object.container.position.clone();
+        var globalVertex = localVertex.sub(originPoint);
 
-        // It is visible to the user. Now let's check if the user is looking at it
-        if(collisionResults[0].object.name=='p')
+        var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
+        var collisionResults = ray.intersectObjects(obstacles_with_player);
+
+        if (collisionResults.length > 0)
         {
-            if(collisionResults[0].distance < this.vision_distance && this.vision_destination)
+            // It is visible to the user by distance, let's check if the user is looking at it
+            if(collisionResults[0].object.object && collisionResults[0].object.object.friend)
             {
-                var angle = find_angle(game.focus_perso.container.position,this.container.position, this.vision_destination);
-                angle = angle*180/Math.PI;
-                if(angle<this.vision_angle)
+                if(collisionResults[0].distance < self.vision_distance)
                 {
-                    collisions.push(collisionResults[0].point);
+                    var angle = find_angle(collisionResults[0].object.object.container.position,self.container.position, self.vision_destination);
+                    angle = angle*180/Math.PI;
+                    if(angle<self.vision_angle)
+                    {
+                        collisions.push(collisionResults[0].object.object);
+                    }
                 }
             }
         }
-    }
-    if(collisions.length>0)
-    {
-        this.run(game.focus_perso.container.position.clone());
-    }
+        if(collisions.length>0)
+        {
+            self.set_target(collisions[0]);
+        }
+    });
 
     this.vision.material.visible=is_near;
     // Update vision mesh if needed
@@ -662,6 +671,11 @@ Character.prototype.check_vision = function()
     }
 };
 
+Character.prototype.set_target  = function(obj)
+{
+    this.attack_target = obj;
+    this.run(obj.container.position.clone());
+};
 Character.prototype.check_vision_end  = function()
 {
     this.check_vision_timer=null;
