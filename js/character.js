@@ -489,7 +489,11 @@ Character.prototype.move_step= function()
                 moving=false;
             }
         }
-        else if(!this.friend && !this.attack_target.is_dying)
+        else if(this.friend)
+        {
+            moving=false;
+        }
+        else if(!this.attack_target.is_dying)
         {
             this.attack(this.attack_target);
         }
