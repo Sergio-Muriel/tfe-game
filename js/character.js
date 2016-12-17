@@ -176,11 +176,14 @@ Character.prototype.create =function()
     this.walkingClip = this.mesh_geo.animations[2];
     this.attackingClip = this.mesh_geo.animations[3];
     this.dyingClip = this.mesh_geo.animations[4];
+    this.helpClip = this.mesh_geo.animations[5];
+
+    this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
+    this.idle_action.name='idle';
 
     this.move_action = this.mixer.clipAction(this.walkingClip, null ).setDuration(this.move_action_duration);
     this.move_action.name='move';
-    this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
-    this.idle_action.name='idle';
+
 
     this.attack_action = this.mixer.clipAction(this.attackingClip, null ).setDuration(this.weapon_speed);
     this.attack_action.name='attack';
@@ -193,13 +196,21 @@ Character.prototype.create =function()
     this.dying_action.setLoop(THREE.LoopOnce, 0);
     this.dying_action.clampWhenFinished = true;
 
+    this.help_action = this.mixer.clipAction(this.helpClip, null ).setDuration(5);
+    this.help_action.name='idle';
+
     this.move_action.play();
     this.idle_action.play();
+    if(this.friend)
+    {
+        this.help_action.play();
+    }
 
     this.attack_action.setEffectiveWeight(0);
     this.dying_action.setEffectiveWeight(0);
     this.move_action.setEffectiveWeight(0);
     this.idle_action.setEffectiveWeight(1);
+    this.help_action.setEffectiveWeight(0);
 
     this.walk();
 };
@@ -234,7 +245,6 @@ Character.prototype.targeted=function(from)
         var distance = from.container.position.distanceTo(this.container.position);
         if(this.friend != from.friend)
         {
-            console.log('attack ',from, this);
             if(distance<from.weapon_range && from.attack(this))
             {
                 this.moveTo(from.container.position);
