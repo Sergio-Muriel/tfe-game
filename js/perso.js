@@ -382,7 +382,7 @@ var Perso = function(game, options)
         if ( intersects.length > 0 ) {
                 if(intersects[0].object.object)
                 {
-                    if(this.mouse_clicked)
+                    if(this.mouse_clicked && !moving_mouse)
                     {
                         this.click_target = intersects[0].object.object;
                     }
