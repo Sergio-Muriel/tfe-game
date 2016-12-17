@@ -10,7 +10,7 @@ var Perso = function(game, options)
     self.vision_distance = game.opt.door_size*3;
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
-    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.50;
+    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.30;
     self.move_speed= self.run_speed;
 
     self.open_range = 12;
@@ -107,9 +107,9 @@ var Perso = function(game, options)
         this.weapon_bone = search_bone_name('Weapon',this.mesh.children.concat());
 
         this.mesh.castShadow=true;
-        this.mesh.scale.x=20;
-        this.mesh.scale.y=20;
-        this.mesh.scale.z=20;
+        this.mesh.scale.x=15;
+        this.mesh.scale.y=15;
+        this.mesh.scale.z=15;
         this.container.add(this.mesh);
         this.mesh.receiveShadow  = true;
 

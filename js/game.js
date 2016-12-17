@@ -86,7 +86,7 @@ var Game = function(opt)
         this.ambient_light.castShadow=opt.enable_shadow;
         this.scene.add(this.ambient_light);
 
-        this.perso_light = new THREE.PointLight(0xffffff, 1.5, game.opt.door_size*1.5, 1.0);
+        this.perso_light = new THREE.PointLight(0xffffff, 1.0, game.opt.door_size*3.3, 1.0);
         if(game.opt.debug_level>1)
         {
             this.ambient_light.intensity=1;
