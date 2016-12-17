@@ -5,6 +5,8 @@ var Perso = function(game, options)
     self.friend=true;
     self.type='perso';
 
+    self.vision_distance = game.opt.door_size*3;
+
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
     self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.50;
     self.move_speed= self.run_speed;
@@ -246,7 +248,7 @@ var Perso = function(game, options)
         }
     };
 
-    this.attack=function()
+    this.attack=function(target)
     {
         if(!this.is_attacking)
         {
@@ -255,6 +257,26 @@ var Perso = function(game, options)
             this.set_weight_destination([0,0,1,0]);
             this.attack_action.stop();
             this.attack_action.play();
+
+            // Effective life lost
+            var value = get_attack_value(this, target);
+            if(value>0)
+            {
+                play_multiple(game.assets[this.weapon_type+'_attack_sound']);
+                play_multiple(game.assets[target.type+'_hit_sound']);
+
+                game.add_damage_text({ text:value, position: target.container.position});
+                target.life= Math.max(0,target.life-value);
+                target.update_life();
+                if(target.life===0)
+                {
+                    target.die();
+                }
+            }
+            else
+            {
+                play_multiple(game.assets.miss_sound);
+            }
             return true;
         }
         return false;
@@ -282,7 +304,7 @@ var Perso = function(game, options)
         {
             return;
         }
-        play_multiple(game.assets.die_sound);
+        play_multiple(game.assets.perso_die_sound);
         this.is_dying=true;
 
         self.move_action.setEffectiveWeight(0);
@@ -326,7 +348,6 @@ var Perso = function(game, options)
             this.mouse_clicked=false;
             if(this.click_target.targeted(this))
             {
-                console.log('ok!');
                 this.click_target=null;
                 return false;
             }
@@ -528,8 +549,10 @@ var Perso = function(game, options)
     {
         if(this.click_target)
         {
+            console.log('targeted2');
             if(this.click_target.targeted(this))
             {
+                console.log('end click target 2');
                 this.click_target=null;
                 return false;
             }

@@ -61,6 +61,8 @@ Character.prototype.build = function()
 Character.prototype.create =function()
 {
     var self=this;
+    this.attack_target = game.focus_perso;
+
     this.container = new THREE.Object3D();
     this.game.scene.add(this.container);
 
@@ -232,11 +234,11 @@ Character.prototype.targeted=function(from)
         var distance = from.container.position.distanceTo(this.container.position);
         if(this.friend != from.friend)
         {
+            console.log('attack ',from, this);
             if(distance<from.weapon_range && from.attack(this))
             {
-                this.is_targeted=true;
                 this.moveTo(from.container.position);
-                return true;
+                return false;
             }
         }
 
@@ -293,6 +295,8 @@ Character.prototype.die=function()
         return;
     }
     this.is_dying=true;
+    game.updateCollisionsCache();
+    play_multiple(game.assets[this.type+'_die_sound'], 200);
 
     self.move_action.setEffectiveWeight(0);
     self.idle_action.setEffectiveWeight(0);
@@ -535,13 +539,10 @@ Character.prototype.attack = function(target, reload)
 
         if(target.life===0)
         {
-            play_multiple(target.die_sound, 200);
             target.die();
         }
-        console.log('attack true');
         return true;
     }
-    console.log('attack false', this.attacking);
     return false;
 };
 
@@ -597,9 +598,10 @@ Character.prototype.check_vision = function()
     var obstacles_with_player = game.getObstaclesWithPlayer();
     var static_obstacles = game.getStaticObstacles();
 
-    var collisions=[];
+    var collision_distance = 999;
+    var collision_object = null;
 
-    var is_near= game.focus_perso.container.position.distanceTo(this.container.position) < this.vision_distance;
+    var is_near= game.focus_perso.container.position.distanceTo(this.container.position) < game.focus_perso.vision_distance;
 
     this.friends = game.getFriends();
     this.friends.forEach(function(friend)
@@ -622,14 +624,18 @@ Character.prototype.check_vision = function()
                     angle = angle*180/Math.PI;
                     if(angle<self.vision_angle)
                     {
-                        collisions.push(collisionResults[0].object.object);
+                        if(collisionResults[0].distance < collision_distance)
+                        {
+                            collision_object = collisionResults[0].object.object;
+                            collision_distance = collisionResults[0].distance;
+                        }
                     }
                 }
             }
         }
-        if(collisions.length>0)
+        if(collision_object)
         {
-            self.set_target(collisions[0]);
+            self.set_target(collision_object);
         }
     });
 

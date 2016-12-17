@@ -19,7 +19,7 @@ var Seal = function(game, options)
     this.move_speed= 0.3;
     this.move_action_duration = 1.30;
 
-    this.run_speed= 2.0;
+    this.run_speed= 1.5;
     this.run_action_duration = 0.45;
 
     this.check_vision_every= 80;

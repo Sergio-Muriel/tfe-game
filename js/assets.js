@@ -54,7 +54,7 @@ var Assets = function(opt)
         this.add_sound('sounds/step_snow.mp3','step_snow',true, 0.3);
 
         this.add_sound('sounds/miss.mp3','miss', false, 1);
-        this.add_sound('sounds/die.mp3','die', false, 1);
+        this.add_sound('sounds/perso_die.mp3','perso_die', false, 1);
         this.add_sound('sounds/perso_hit.mp3','perso_hit', false, 0.5);
 
         // Ennemys
