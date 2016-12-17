@@ -549,10 +549,8 @@ var Perso = function(game, options)
     {
         if(this.click_target)
         {
-            console.log('targeted2');
             if(this.click_target.targeted(this))
             {
-                console.log('end click target 2');
                 this.click_target=null;
                 return false;
             }
