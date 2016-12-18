@@ -816,7 +816,6 @@ var Perso = function(game, options)
         this.followers.push(target);
         target.following_idx = this.followers.indexOf(target)+1;
         target.following= this;
-        console.log('idx  = ',target.following_idx);
     };
     this.remove_follower = function(target)
     {
@@ -829,7 +828,15 @@ var Perso = function(game, options)
             follower.following_idx=idx;
             idx++;
         });
-        console.log('afer = ',this.followers.length);
+    };
+    this.rescue = function()
+    {
+        var timer=0;
+        this.followers.forEach(function(follower)
+        {
+            window.setTimeout(follower.remove.bind(follower), timer);
+            timer+=100;
+        });
     };
     this.build();
 };

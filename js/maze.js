@@ -554,7 +554,7 @@ Maze.prototype.getFindPathCoord = function(cell, i)
 };
 
 
-Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outside_door)
+Maze.prototype.create_separation_line= function(cell,params, i, callback)
 {
     var self=this;
     var material = new THREE.MeshBasicMaterial( { color: 0x666699, transparent:true, visible:false } );
@@ -563,8 +563,8 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
         material = new THREE.MeshBasicMaterial( { color: 0xffff99 + 0x0000ff, visible:true  } );
     }
 
-    var extra = extra_door ? game.opt.door_size*0.4 : 0;
-    var separator = outside_door ? 0.75 : 0.85;
+    var extra = 0;
+    var separator = 0.75;
 
     var pivot = new THREE.Object3D();
     pivot.name ='p '+params.x+'/'+params.z+'/'+i;
@@ -576,8 +576,8 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
         opacity:game.opt.debug_level>1 ? 1 : 0,
         container: pivot,
         color: 0x999999 + Math.random()* 0xffffff,
-        origin: { x: this.depth*( !extra_door ? .65 : .7), y: 1,  z: game.opt.door_size*separator +extra },
-        destination: { x: -this.depth*(!extra_door ? .65 : .7), y: 1, z: game.opt.door_size*separator +extra }
+        origin: { x: this.depth*.65, y: 1,  z: game.opt.door_size*separator +extra },
+        destination: { x: -this.depth*.65 , y: 1, z: game.opt.door_size*separator +extra }
     });
 
 
@@ -589,20 +589,11 @@ Maze.prototype.create_separation_line= function(cell,params, i, extra_door, outs
     cell.separation_lines.push(line);
 
     var action = '';
-    if(extra_door=='start'){
-        action = 'leave_maze_from_start';
-    }
-    if(extra_door=='end'){
-        action = 'leave_maze_from_end';
-    }
-    line.walk_through_callback= game.enterType.bind(game, this);
+    line.walk_through_callback= callback;
 
     line.enter_leave_door = !!extra;
-    line.outside_door = outside_door;
-    if(outside_door)
-    {
-        self.outside_separators.push(line);
-    }
+
+    return line;
 };
 
 Maze.prototype.reload = function()

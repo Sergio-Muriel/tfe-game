@@ -13,6 +13,7 @@ var Path = function(game, options)
     this.generated_doors = {};
     this.doors = {};
     this.outside_separators = [];
+    this.line_callbacks = [];
 
     this.interraction_items=[];
     this.all_interraction_items=[];
@@ -53,7 +54,7 @@ Path.prototype.get_cell_pos_params = function(params)
 
 Path.prototype.getCollisionCallbacks = function()
 {
-    var coll = [];
+    var coll = this.line_callbacks;
     if(!this.next_item)
     {
         this.buildNext();
@@ -201,6 +202,7 @@ Path.prototype.build = function()
 
     var connected_end = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 4);
 
+    var last_cell = null;
     // Auto add walls on outside cells
     this.level.cells.forEach(function(cell)
     {
@@ -221,6 +223,7 @@ Path.prototype.build = function()
 
             if(is_end)
             {
+                last_cell = cell;
                 self.level.next_maze.i = i;
                 cell.walls.push({ type: '3', i: i});
             }
@@ -270,10 +273,27 @@ Path.prototype.build = function()
         // Start doors separation line
         var params = { x: 0, z: 0, real_x:'outside',real_z:'outside'};
         var cell = this.cells[0];
-        this.create_separation_line(cell,params, this.level.start_cell.i,false, true);
+        var line = this.create_separation_line(cell,params, this.level.start_cell.i, game.enterType.bind(game, this));
+        this.outside_separators.push(line);
     }
-        
 
+    var last_cells = this.cells.filter(function(x)
+    {
+        return x.params.x == self.level.end_cell.x && x.params.z == self.level.end_cell.z;
+            
+    });
+
+    for(var i=0;i<6;i++)
+    {
+        var params = { x: connected_end[0], z: connected_end[1], real_x:'outside',real_z:'outside'};
+        var line = this.create_separation_line(
+            last_cells[0],
+            params,
+            i,
+            this.enterEndCell.bind(this)
+        );
+        this.line_callbacks.push(line);
+    }
 
     this.container.position.x = current_x;
     this.container.position.y = 0;
@@ -434,5 +454,10 @@ Path.prototype.play_step = function()
 Path.prototype.stop_step = function()
 {
     game.assets.step_snow_sound.pause();
+};
+
+Path.prototype.enterEndCell = function()
+{
+    game.focus_perso.rescue();
 };
 
