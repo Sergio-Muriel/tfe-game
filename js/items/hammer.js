@@ -19,7 +19,7 @@ var Hammer = function(game, options)
     this.increase_life_value = 10;
 
     this.hover_color =  0x330000;
-    this.scale=5;
+    this.scale=3;
 
     this.mesh_position = new THREE.Vector3(0,0.5,0);
 
