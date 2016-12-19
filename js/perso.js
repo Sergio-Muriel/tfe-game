@@ -71,7 +71,7 @@ var Perso = function(game, options)
 
         // Cube simulating perso, for collision detection
         var cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe:true, visible: game.opt.debug_level>1   } );
-        var cube_geo = new THREE.BoxGeometry(7,7,7);
+        var cube_geo = new THREE.BoxGeometry(6,6,6);
         this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
         this.container_mesh.rotation.x = Math.radians(90);
         this.container_mesh.rotation.z = Math.radians(45);
