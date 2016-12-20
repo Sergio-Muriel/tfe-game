@@ -1,8 +1,6 @@
 - add snow like / blizzard particles
 - teleport item
 - ennemies needs to be put down pressing a button
-- when entering a cell, play animation with buttons, and the user needs to repeat that animation to open the door
-- ennemies with hand equipment too
 - multiple perso move?
 - locales
 - Better memory cleanup (use dispose on geometry / materials / textures)
