@@ -1,4 +1,5 @@
 - add snow like / blizzard particles
+- main menu
 - teleport item
 - ennemies needs to be put down pressing a button
 - multiple perso move?
