@@ -449,11 +449,25 @@ Path.prototype.add_objects = function()
 
 Path.prototype.play_step = function()
 {
-    game.assets.step_snow_sound.play();
+    if(this.level.type=='indoor')
+    {
+        game.assets.step_floor_sound.play();
+    }
+    else
+    {
+        game.assets.step_snow_sound.play();
+    }
 };
 Path.prototype.stop_step = function()
 {
-    game.assets.step_snow_sound.pause();
+    if(this.level.type=='indoor')
+    {
+        game.assets.step_floor_sound.pause();
+    }
+    else
+    {
+        game.assets.step_snow_sound.pause();
+    }
 };
 
 Path.prototype.enterEndCell = function()

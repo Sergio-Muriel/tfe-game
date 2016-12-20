@@ -50,7 +50,7 @@ var Assets = function(opt)
         this.add_texture('textures/terre_bump.jpg','maze_floor_bump');
 
         // Perso
-        this.add_sound('sounds/step_floor.mp3','step_floor',true, 0.8);
+        this.add_sound('sounds/step_floor.mp3','step_floor',true, 0.4);
         this.add_sound('sounds/step_snow.mp3','step_snow',true, 0.3);
 
         this.add_sound('sounds/miss.mp3','miss', false, 1);
