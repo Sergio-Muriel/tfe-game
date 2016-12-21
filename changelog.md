@@ -1,5 +1,9 @@
 # Three.js
 
+## 23
+
+- move step now include delta to have same speed across the browsers
+
 ## 22
 
 - new common.js class for all objects with interactions

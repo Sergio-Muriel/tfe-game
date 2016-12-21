@@ -10,7 +10,7 @@ var Perso = function(game, options)
     self.vision_distance = game.opt.door_size*3;
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
-    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 1.30;
+    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 35;
     self.move_speed= self.run_speed;
 
     self.open_range = 12;
@@ -549,7 +549,7 @@ var Perso = function(game, options)
 
     };
 
-    this.move_step= function()
+    this.move_step= function(delta)
     {
         if(this.click_target)
         {
@@ -600,7 +600,8 @@ var Perso = function(game, options)
             if(Math.abs(distance) > 2)
             {
                 var originPoint = this.container.position.clone();
-                originPoint.add(this.move_vector);
+                var move_vector = this.move_vector.clone().multiplyScalar(delta);
+                originPoint.add(move_vector);
                 var new_distance= originPoint.clone().sub(this.move_destination).length();
                 if(new_distance<distance)
                 {
@@ -623,7 +624,8 @@ var Perso = function(game, options)
                     if(collision)
                     {
                         var originPoint = this.container.position.clone();
-                        originPoint.add(this.move_vector_alt1);
+                        var move_vector_alt1 = this.move_vector_alt1.clone().multiplyScalar(delta);
+                        originPoint.add(move_vector_alt1);
                         var distance_alt1= originPoint.clone().sub(this.move_destination).length();
                         if(distance_alt1<distance)
                         {
@@ -646,13 +648,14 @@ var Perso = function(game, options)
                             if(!collision_alt1)
                             {
                                 moving++;
-                                this.container.position.add(this.move_vector_alt1);
+                                this.container.position.add(move_vector_alt1);
                             }
                         }
 
                         var collision_alt2=false;
                         var originPoint = this.container.position.clone();
-                        originPoint.add(this.move_vector_alt2);
+                        var move_vector_alt2 = this.move_vector_alt2.clone().multiplyScalar(delta);
+                        originPoint.add(move_vector_alt2);
                         var distance_alt2= originPoint.clone().sub(this.move_destination).length();
                         if(distance_alt2<distance)
                         {
@@ -673,14 +676,14 @@ var Perso = function(game, options)
                             if(!collision_alt2)
                             {
                                 moving++;
-                                this.container.position.add(this.move_vector_alt2);
+                                this.container.position.add(move_vector_alt2);
                             }
                         }
                     }
                     if(!collision)
                     {
                         moving++;
-                        this.container.position.add(this.move_vector);
+                        this.container.position.add(move_vector);
                     }
                 }
             }
@@ -800,14 +803,13 @@ var Perso = function(game, options)
     };
 
 
-    this.update= function(delta)
+    this.update = function(delta)
     {
         this.mixer.update(delta);
-        this.delta=delta;
 
         if(!this.is_dying && !this.is_attacking && !this.is_opening)
         {
-            this.move_step();
+            this.move_step(delta);
         }
         this.update_weight();
     };

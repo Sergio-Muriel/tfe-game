@@ -249,7 +249,7 @@ var Game = function(opt)
         {
             this.updating=1;
             var delta = clock.getDelta();
-            if(delta>0.070 && game.opt.debug_level>10)
+            if(delta>0.070)
             {
                 console.warn('SLOW RENDERING DELTA: ',delta);
                 delta=0.070;
