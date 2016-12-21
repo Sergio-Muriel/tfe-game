@@ -29,6 +29,7 @@ var Assets = function(opt)
         this.add('blender/stick.json','stick');
         this.add('blender/hammer.json','hammer');
         this.add('blender/seal.json','seal');
+        this.add('blender/bear.json','bear');
         this.add('blender/pinga.json','pinga');
         this.add('blender/key.json','key');
         this.add('blender/potion.json','potion');
@@ -60,6 +61,8 @@ var Assets = function(opt)
         // Ennemys
         this.add_sound('sounds/seal_hit.mp3','seal_hit', false, 0.5);
         this.add_sound('sounds/seal_die.mp3','seal_die', false, 1);
+        this.add_sound('sounds/bear_hit.mp3','bear_hit', false, 0.5);
+        this.add_sound('sounds/bear_die.mp3','bear_die', false, 1);
         this.add_sound('sounds/pinga_hit.mp3','pinga_hit', false, 1);
         this.add_sound('sounds/pinga_die.mp3','pinga_die', false, 1);
 

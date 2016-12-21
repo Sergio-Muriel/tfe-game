@@ -161,9 +161,18 @@ Character.prototype.create =function()
     }
 
     this.mesh = new THREE.SkinnedMesh( this.mesh_geo, new THREE.MultiMaterial(materials));
-    this.mesh.scale.x=1.3;
-    this.mesh.scale.y=1.3;
-    this.mesh.scale.z=1.3;
+    if(this.scale)
+    {
+        this.mesh.scale.x = this.scale;
+        this.mesh.scale.y = this.scale;
+        this.mesh.scale.z = this.scale;
+    }
+    else
+    {
+        this.mesh.scale.x=1.3;
+        this.mesh.scale.y=1.3;
+        this.mesh.scale.z=1.3;
+    }
     this.container.add(this.mesh);
     this.mesh.receiveShadow  = true;
     this.mesh.castShadow  = true;
