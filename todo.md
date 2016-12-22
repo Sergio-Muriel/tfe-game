@@ -1,3 +1,4 @@
+- auto play scenario
 - add snow like / blizzard particles
 - main menu
 - teleport item
