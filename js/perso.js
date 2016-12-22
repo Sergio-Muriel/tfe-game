@@ -51,6 +51,11 @@ var Perso = function(game, options)
         this.bind();
         this.create();
         this.update_life();
+
+        this.move_bind = this.move.bind(this);
+        this.mouseup_bind = this.mouseup.bind(this);
+        this.mousedown_bind = this.mousedown.bind(this);
+
         if(options.moveable)
         {
             this.moveable();
@@ -737,10 +742,17 @@ var Perso = function(game, options)
         this.mouse_clicked=false;
 
         // Moveable perso has a light
-        document.addEventListener( 'mousemove', this.move.bind(this));
-        document.addEventListener( 'mouseup', this.mouseup.bind(this));
-        document.addEventListener( 'mousedown', this.mousedown.bind(this));
+        document.addEventListener( 'mousemove', this.move_bind);
+        document.addEventListener( 'mouseup', this.mouseup_bind);
+        document.addEventListener( 'mousedown', this.mousedown_bind);
     };
+    this.notmoveable = function()
+    {
+        // Moveable perso has a light
+        document.removeEventListener( 'mousemove', this.move_bind);
+        document.removeEventListener( 'mouseup', this.mouseup_bind);
+        document.removeEventListener( 'mousedown', this.mousedown_bind);
+    }
 
     this.move = function(e) {
         this.last_mouse_event=e;
