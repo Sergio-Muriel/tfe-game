@@ -7,6 +7,7 @@ var Game = function(opt)
     var camera;
     var renderer;
     var mazes= {};
+    var paused=false;
 
     var animations = [];
 
@@ -50,6 +51,14 @@ var Game = function(opt)
             alert('Error loading some assets...');
         });
     };
+    this.pause = function()
+    {
+        paused=true;
+    }
+    this.resume = function()
+    {
+        paused=false;
+    }
 
     this.init_loaded= function()
     {
@@ -245,7 +254,7 @@ var Game = function(opt)
         //stats.begin();
         this.renderer.render(this.scene, this.camera);
 
-        if(!this.updating)
+        if(!this.updating && !paused)
         {
             this.updating=1;
             var delta = clock.getDelta();
@@ -254,7 +263,6 @@ var Game = function(opt)
                 console.warn('SLOW RENDERING DELTA: ',delta);
                 delta=0.070;
             }
-			//delta=0.030;
 
             this.update(delta);
 

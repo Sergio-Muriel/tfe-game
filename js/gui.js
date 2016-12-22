@@ -6,6 +6,7 @@ Game.prototype.gui =
     {
         var self=this;
 
+        this.menu = document.querySelector('.menu');
         this.bone_attachments_container = document.querySelector('.bones_attachments');
         this.bone_attachments = Array.prototype.slice.call(document.querySelectorAll('.bone_attachment'));
         this.gui_container = document.querySelector('.gui');
@@ -20,6 +21,28 @@ Game.prototype.gui =
     build_gui: function()
     {
         document.querySelector('.life label').innerText= game.labels.get('life');
+    },
+
+    toggle_menu: function()
+    {
+        if(this.menu.classList.contains('visible'))
+        {
+            this.close_menu();
+        }
+        else
+        {
+            this.open_menu();
+        }
+    },
+
+    open_menu: function()
+    {
+        this.menu.classList.add('visible');
+    },
+
+    close_menu: function()
+    {
+        this.menu.classList.remove('visible');
     },
 
     toggle_weapon : function(bone, e)
@@ -83,6 +106,7 @@ Game.prototype.gui =
     {
         switch(e.key)
         {
+            case 'Escape' :  this.toggle_menu(); break;
             case '1' :  this.toggle_weapon(this.bone_attachments[0],e); break;
             case '2' :  this.toggle_weapon(this.bone_attachments[1],e); break;
             case '3' :  this.toggle_weapon(this.bone_attachments[2],e); break;
