@@ -8,6 +8,9 @@ Game.prototype.labels =
     'en':
     {
         'life': 'Life',
+        'loading_assets': 'Loading game data',
+        'loading_level': 'Loading level',
+        'reloading' :'Reloading level',
         'follow me': 'Follow me!',
         'dont move': 'Don\'t move!',
     }

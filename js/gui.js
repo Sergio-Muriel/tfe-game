@@ -7,6 +7,7 @@ Game.prototype.gui =
         var self=this;
 
         this.menu = document.querySelector('.menu');
+        this.menu_container = document.querySelector('.menu ul');
         this.bone_attachments_container = document.querySelector('.bones_attachments');
         this.bone_attachments = Array.prototype.slice.call(document.querySelectorAll('.bone_attachment'));
         this.gui_container = document.querySelector('.gui');
@@ -14,8 +15,19 @@ Game.prototype.gui =
         this.loader_container = document.querySelector('.loader');
         this.loader_text = document.querySelector('.loader-text');
         this.loader_progress_container = document.querySelector('.loader-progress span');
+        this.loading_txt = document.querySelector('.loader-content h1');
 
         this.build_gui();
+    },
+
+    add_loading: function(txt)
+    {
+        this.loading_txt.innerText = txt;
+        this.loader_container.classList.remove('hidden');
+    },
+    remove_loading: function()
+    {
+        this.loader_container.classList.add('hidden');
     },
 
     build_gui: function()
@@ -89,13 +101,25 @@ Game.prototype.gui =
         this.bind();
         
         this.gui_container.classList.remove('hidden');
-        this.loader_container.classList.add('hidden');
+        this.remove_loading();
 
+        this.keydown_bind = this.keydown.bind(this);
+        this.keyup_bind = this.keyup.bind(this);
         // Keys handle
-        document.addEventListener( 'keydown', this.keydown.bind(this));
-        document.addEventListener( 'keyup', this.keyup.bind(this));
+        document.addEventListener( 'keydown', this.keydown_bind);
+        document.addEventListener( 'keyup', this.keyup_bind);
 
+    },
+    loaded: function()
+    {
         this.add_weapon('punch');
+    },
+
+    unload: function()
+    {
+        this.game_container.innerText='';
+        document.removeEventListener( 'keydown', this.keydown_bind);
+        document.removeEventListener( 'keyup', this.keyup_bind);
     },
 
     keyup: function(e)

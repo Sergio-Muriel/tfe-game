@@ -5,6 +5,8 @@ var Assets = function(opt)
     this.load_sound = [];
     this.textures = [];
 
+    this.load_ended=false;
+
     this.current_loaded = 0;
 
     this.add=function(file, name)
@@ -15,6 +17,11 @@ var Assets = function(opt)
     this.load = function()
     {
         var self=this;
+        if(this.load_ended)
+        {
+            return Promise.resolve();
+        }
+        console.log('loading assets');
 
         this.add('js/meshes/wall.js','wall');
         this.add('js/meshes/wall1.js','wall1');
@@ -104,6 +111,7 @@ var Assets = function(opt)
     };
     this.loaded= function()
     {
+        this.load_ended=true;
         // transparent material
         this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
 

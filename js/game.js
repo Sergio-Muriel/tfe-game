@@ -8,6 +8,7 @@ var Game = function(opt)
     var renderer;
     var mazes= {};
     var paused=false;
+    this.assets = opt.assets;
 
     var animations = [];
 
@@ -30,20 +31,21 @@ var Game = function(opt)
     //stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
     //document.body.appendChild( stats.dom );
 
-    this.level=opt.level;
-
     this.load = function()
     {
         var promises = [];
-        this.assets = new Assets(opt);
         return  this.assets.load();
     };
 
-    this.init = function()
+    this.init = function(launch)
     {
         var self=this;
+        this.gui.init();
+        this.gui.add_loading(this.labels.get('loading_assets'));
+        this.level = launch.level;
         this.load().then(function()
         {
+            self.gui.add_loading(self.labels.get('loading_level'));
             self.init_loaded();
         }, function(e)
         {
@@ -53,12 +55,12 @@ var Game = function(opt)
     };
     this.pause = function()
     {
-        game.focus_perso.notmoveable();
+        this.focus_perso.notmoveable();
         paused=true;
     }
     this.resume = function()
     {
-        game.focus_perso.moveable();
+        this.focus_perso.moveable();
         paused=false;
     }
 
@@ -66,6 +68,7 @@ var Game = function(opt)
     {
         var self=this;
         this.opt = opt;
+        window.setTimeout(this.gui.remove_loading.bind(this.gui), 500);
 
         this.static_obstacles = [];
         this.moving_obstacles = [];
@@ -82,7 +85,7 @@ var Game = function(opt)
 
 
         // Set and add the click_ground
-        this.click_ground = new THREE.Mesh(click_ground, game.assets.outside_floor_material);
+        this.click_ground = new THREE.Mesh(click_ground, this.assets.outside_floor_material);
         this.click_ground.name='click_ground';
         this.click_ground.rotation.x = -Math.PI / 2;
         this.click_ground.position.y=-1;
@@ -97,8 +100,8 @@ var Game = function(opt)
         this.ambient_light.castShadow=opt.enable_shadow;
         this.scene.add(this.ambient_light);
 
-        this.perso_light = new THREE.PointLight(0xffffff, 1.0, game.opt.door_size*3.3, 1.0);
-        if(game.opt.debug_level>1)
+        this.perso_light = new THREE.PointLight(0xffffff, 1.0, this.opt.door_size*3.3, 1.0);
+        if(this.opt.debug_level>1)
         {
             this.ambient_light.intensity=1;
         }
@@ -129,10 +132,11 @@ var Game = function(opt)
         this.container = opt.root;
 
         this.setAspect();
+        this.container.innerText='';
         this.container.appendChild(this.renderer.domElement);
 
         this.start();
-        this.gui.init();
+        this.gui.loaded();
         this.render();
 
         this.updateCollisionsCache();
@@ -204,9 +208,18 @@ var Game = function(opt)
 
     this.reload = function()
     {
-        this.current_item.reload();
-        var pos = this.current_item.get_start_pos();
-        game.focus_perso.reload(pos);
+        var self=this;
+        this.focus_perso.notmoveable();
+        this.gui.add_loading(this.labels.get('reloading'));
+
+        // Delay a bit to enable the render of reloading screen
+        window.setTimeout(function()
+        {
+            self.ended = true;
+            var level = self.level;
+            game = new Game(opt);
+            game.init({level: level-1});
+        }, 100);
     },
 
     // Camera refresh animation
@@ -218,25 +231,25 @@ var Game = function(opt)
         else if(this.zoominDestination)
         {
             this.zoominAngle-= 0.01;
-            this.current_radius = Math.min(this.current_radius+1, game.opt.door_size);
+            this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
 
             this.current_camera_decal_x *=0.96;
             this.current_camera_decal_y *=0.96;
             this.current_camera_decal_z *=0.96;
 
             this.camera.position.x =
-                    game.focus_perso.container.position.x + 
+                    this.focus_perso.container.position.x + 
                     this.current_camera_decal_x +
                     this.current_radius * Math.cos( this.zoominAngle);
 
             this.camera.position.y *= 0.99;
 
             this.camera.position.z =
-                    game.focus_perso.container.position.z + 
+                    this.focus_perso.container.position.z + 
                     this.current_camera_decal_z +
                     this.current_radius * Math.sin( this.zoominAngle);
 
-            this.camera.lookAt(game.focus_perso.container.position);
+            this.camera.lookAt(this.focus_perso.container.position);
 
             if(this.camera.position.y<this.zoominDestination)
             {
@@ -277,7 +290,10 @@ var Game = function(opt)
             this.current_item.update(delta);
             this.updating=0;
         }
-	    requestAnimationFrame(this.render_fct);
+        if(!this.ended)
+        {
+	        requestAnimationFrame(this.render_fct);
+        }
         //stats.end();
     };
 
@@ -362,11 +378,11 @@ var Game = function(opt)
 
     this.resetCamera = function()
     {
-        this.camera.position.x = game.focus_perso.container.position.x + camera_decal_x;
-        this.camera.position.y = game.focus_perso.container.position.y + camera_decal_y;
-        this.camera.position.z = game.focus_perso.container.position.z + camera_decal_z;
+        this.camera.position.x = this.focus_perso.container.position.x + camera_decal_x;
+        this.camera.position.y = this.focus_perso.container.position.y + camera_decal_y;
+        this.camera.position.z = this.focus_perso.container.position.z + camera_decal_z;
 
-        this.camera.lookAt(game.focus_perso.container.position);
+        this.camera.lookAt(this.focus_perso.container.position);
     }
 
     this.enterType = function(item)
@@ -454,8 +470,8 @@ var Game = function(opt)
         params.bevelSize= 0.01;
 
         params.delta_y=15;
-        params.size= game.config.text_hit_size;
-        params.color= game.config.text_hit_color;
+        params.size= this.config.text_hit_size;
+        params.color= this.config.text_hit_color;
         params.anim_time = 1000;
 
         return this.add_fadeout_text(params);
@@ -468,8 +484,8 @@ var Game = function(opt)
         params.bevelSize= 0;
 
         params.delta_y=15;
-        params.size= game.config.text_friend_size;
-        params.color= game.config.text_friend_color;
+        params.size= this.config.text_friend_size;
+        params.color= this.config.text_friend_color;
         params.anim_time = 1000;
 
         return this.add_fadeout_text(params);
@@ -486,7 +502,7 @@ var Game = function(opt)
         var text_container = new THREE.Object3D();
 
         var text_geo = new THREE.TextGeometry(text , {
-            font: game.assets.text_font,
+            font: this.assets.text_font,
             size: size,
             height: 0,
             curveSegments: 1,
