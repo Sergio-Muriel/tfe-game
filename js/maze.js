@@ -596,10 +596,10 @@ Maze.prototype.create_separation_line= function(cell,params, i, callback)
     return line;
 };
 
-Maze.prototype.reload = function()
+Maze.prototype.restart = function()
 {
     var self=this;
-    console.log('maze reload!');
+    console.log('maze restart!');
 };
 
 Maze.prototype.getStaticObstacles = function()

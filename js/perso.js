@@ -324,7 +324,7 @@ var Perso = function(game, options)
 
         game.zoomInCircle(function()
         {
-            game.reload();
+            game.restart();
         });
 
         window.setTimeout(function()
@@ -441,7 +441,7 @@ var Perso = function(game, options)
         }
     }
 
-    this.reload = function(pos)
+    this.restart = function(pos)
     {
         window.clearInterval(this.loose_life_timer);
 

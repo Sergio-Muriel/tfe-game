@@ -120,6 +120,7 @@ Game.prototype.gui =
         this.game_container.innerText='';
         document.removeEventListener( 'keydown', this.keydown_bind);
         document.removeEventListener( 'keyup', this.keyup_bind);
+        console.log('gui unload');
     },
 
     keyup: function(e)
@@ -130,6 +131,7 @@ Game.prototype.gui =
     },
     keydown: function(e)
     {
+        console.log('keydown ',e.key);
         switch(e.key)
         {
             case 'Escape' :  this.toggle_menu(); break;

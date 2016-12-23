@@ -211,6 +211,7 @@ var Game = function(opt)
         var self=this;
         this.focus_perso.notmoveable();
         this.gui.add_loading(this.labels.get('reloading'));
+        this.gui.unload();
 
         // Delay a bit to enable the render of reloading screen
         window.setTimeout(function()
@@ -220,6 +221,13 @@ var Game = function(opt)
             game = new Game(opt);
             game.init({level: level-1});
         }, 100);
+    },
+
+    this.restart = function()
+    {
+        this.current_item.restart();
+        var pos = this.current_item.get_start_pos();
+        game.focus_perso.restart(pos);
     },
 
     // Camera refresh animation
