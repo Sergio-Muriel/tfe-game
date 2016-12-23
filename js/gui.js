@@ -48,26 +48,49 @@ Game.prototype.gui =
         }
     },
 
-    open_menu: function()
+    open_menu: function(section)
     {
         game.pause();
         this.menu_list.innerText='';
         this.menu_header.innerText='';
-        if(game.focus_perso.is_dead)
+
+        // Open specific section
+        if(section)
+        {
+            switch(section)
+            {
+                case 'options':
+                    this.menu_header.innerText = game.labels.get('menu_options');
+                    this.create_menu_option('menu_sound', game.restart_level.bind(game));
+                    this.create_menu_option('menu_graphic', game.restart_level.bind(game));
+                break;
+            }
+        }
+        // Open dead menu
+        else if(game.focus_perso.is_dead)
         {
             this.menu_header.innerText = game.labels.get('you_died');
             this.create_menu_option('menu_retry', game.restart_level.bind(game));
         }
+        // Open menu when playing
         else if(game.started)
         {
+            this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_restart', game.reload.bind(game));
         }
+        // Open menu when not playing (intro?)
         else
         {
+            this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_play', game.reload.bind(game));
         }
+
+        // Common options
+        this.create_menu_option('menu_options', this.open_options.bind(this));
+
         this.menu.classList.add('visible');
     },
+
     create_menu_option : function(text, callback)
     {
         var self=this;
@@ -87,6 +110,11 @@ Game.prototype.gui =
         this.menu_header.innerText='';
         game.resume();
         this.menu.classList.remove('visible');
+    },
+
+    open_options: function()
+    {
+        this.open_menu('options');
     },
 
     toggle_weapon : function(bone, e)
