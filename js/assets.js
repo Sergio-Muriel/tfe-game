@@ -108,9 +108,9 @@ var Assets = function(opt)
         this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
 
         // Add floor
-        var path_floor_texture = game.assets.path_floor_texture;
+        var path_floor_texture = this.path_floor_texture;
         path_floor_texture.repeat.set(0.00001, 0.00001);
-        var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+        var path_floor_bump_texture = this.path_floor_bump_texture;
         path_floor_bump_texture.repeat.set(0.00001, 0.00001);
 
         this.outside_floor_material = new THREE.MeshPhongMaterial({
@@ -126,9 +126,9 @@ var Assets = function(opt)
 
 
         // Maze floor
-        var maze_floor_texture = game.assets.maze_floor_texture;
+        var maze_floor_texture = this.maze_floor_texture;
         maze_floor_texture.repeat.set(2,2);
-        var maze_floor_bump_texture = game.assets.maze_floor_bump_texture;
+        var maze_floor_bump_texture = this.maze_floor_bump_texture;
         maze_floor_bump_texture.repeat.set(2,2);
 
         this.maze_floor_material = new THREE.MeshPhongMaterial({
@@ -144,9 +144,9 @@ var Assets = function(opt)
         }
 
         // Maze cell wall
-        var cell_wall_texture = game.assets.cell_wall_texture;
+        var cell_wall_texture = this.cell_wall_texture;
         cell_wall_texture.repeat.set(1,1);
-        var cell_wall_bump_texture = game.assets.cell_wall_bump_texture;
+        var cell_wall_bump_texture = this.cell_wall_bump_texture;
         cell_wall_bump_texture.repeat.set(1,1);
 
         this.maze_wall_material = new THREE.MeshPhongMaterial({
@@ -158,9 +158,9 @@ var Assets = function(opt)
             bumpMap: cell_wall_bump_texture
         });
 
-        var cell_door_texture = game.assets.cell_door_texture;
+        var cell_door_texture = this.cell_door_texture;
         cell_door_texture.repeat.set(10,10);
-        var cell_door_bump_texture = game.assets.cell_door_bump_texture;
+        var cell_door_bump_texture = this.cell_door_bump_texture;
         cell_door_bump_texture.repeat.set(10,10);
 
 
@@ -180,9 +180,9 @@ var Assets = function(opt)
         }
 
         // Path floor
-        var path_floor_texture = game.assets.path_floor_texture;
+        var path_floor_texture = this.path_floor_texture;
         path_floor_texture.repeat.set(2,2);
-        var path_floor_bump_texture = game.assets.path_floor_bump_texture;
+        var path_floor_bump_texture = this.path_floor_bump_texture;
         path_floor_bump_texture.repeat.set(2,2);
 
         this.path_floor_material = new THREE.MeshPhongMaterial({
@@ -197,17 +197,17 @@ var Assets = function(opt)
         }
 
         // Walls + doors
-        var path_wall_texture = game.assets.path_wall_texture;
+        var path_wall_texture = this.path_wall_texture;
         path_wall_texture.repeat.set(1,1);
-        var path_wall_bump_texture = game.assets.path_wall_bump_texture;
+        var path_wall_bump_texture = this.path_wall_bump_texture;
         path_wall_bump_texture.repeat.set(1,1);
 
-        var cell_door_texture = game.assets.cell_door_texture;
+        var cell_door_texture = this.cell_door_texture;
         cell_door_texture.repeat.set(10,10);
-        var cell_door_bump_texture = game.assets.cell_door_bump_texture;
+        var cell_door_bump_texture = this.cell_door_bump_texture;
         cell_door_bump_texture.repeat.set(10,10);
 
-        game.assets.path_wall_material = new THREE.MeshPhongMaterial({
+        this.path_wall_material = new THREE.MeshPhongMaterial({
             bumpScale:0.5,
             color:0x929ec4,
             map: path_wall_texture,
@@ -217,7 +217,7 @@ var Assets = function(opt)
             bumpMap: path_wall_bump_texture
         });
 
-        game.assets.path_door_material = new THREE.MeshPhongMaterial({
+        this.path_door_material = new THREE.MeshPhongMaterial({
             bumpScale:0.5,
             map: cell_door_texture,
             transparent: false,
@@ -232,8 +232,8 @@ var Assets = function(opt)
         }
 
         // create multi materials
-        this.multi_wall_material = new THREE.MultiMaterial([game.assets.maze_wall_material, game.assets.maze_door_material]);
-        this.multi_path_wall_material = new THREE.MultiMaterial([game.assets.path_wall_material, game.assets.path_door_material]);
+        this.multi_wall_material = new THREE.MultiMaterial([this.maze_wall_material, this.maze_door_material]);
+        this.multi_path_wall_material = new THREE.MultiMaterial([this.path_wall_material, this.path_door_material]);
 
 
     };
