@@ -53,10 +53,12 @@ var Game = function(opt)
     };
     this.pause = function()
     {
+        game.focus_perso.notmoveable();
         paused=true;
     }
     this.resume = function()
     {
+        game.focus_perso.moveable();
         paused=false;
     }
 

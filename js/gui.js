@@ -37,11 +37,13 @@ Game.prototype.gui =
 
     open_menu: function()
     {
+        game.pause();
         this.menu.classList.add('visible');
     },
 
     close_menu: function()
     {
+        game.resume();
         this.menu.classList.remove('visible');
     },
 
