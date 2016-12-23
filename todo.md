@@ -1,3 +1,9 @@
+- menu:
+    *  play ( restart )
+    *  options
+        - sound (saved to localStorage?)
+        - graphic
+- moveable camera
 - auto play scenario
 - add snow like / blizzard particles
 - main menu
