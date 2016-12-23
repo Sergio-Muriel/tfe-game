@@ -8,6 +8,8 @@ var Game = function(opt)
     var renderer;
     var mazes= {};
     var paused=false;
+
+    this.started=true;
     this.assets = opt.assets;
 
     var animations = [];

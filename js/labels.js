@@ -13,5 +13,7 @@ Game.prototype.labels =
         'reloading' :'Reloading level',
         'follow me': 'Follow me!',
         'dont move': 'Don\'t move!',
+        'menu_play': 'Play',
+        'menu_restart': 'Restart'
     }
 };

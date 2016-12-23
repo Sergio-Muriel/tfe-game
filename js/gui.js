@@ -50,7 +50,28 @@ Game.prototype.gui =
     open_menu: function()
     {
         game.pause();
+        this.menu_container.innerText='';
+        if(game.started)
+        {
+            this.create_menu_option('menu_restart', game.reload.bind(game));
+        }
+        else
+        {
+            this.create_menu_option('menu_play', game.reload.bind(game));
+        }
         this.menu.classList.add('visible');
+    },
+    create_menu_option : function(text, callback)
+    {
+        var self=this;
+        var li =  document.createElement('li');
+        li.innerText = game.labels.get(text);
+        this.menu_container.appendChild(li);
+        li.addEventListener('click',function()
+        {
+            self.close_menu();
+            callback();
+        });
     },
 
     close_menu: function()
@@ -118,9 +139,9 @@ Game.prototype.gui =
     unload: function()
     {
         this.game_container.innerText='';
+        this.menu_container.innerText='';
         document.removeEventListener( 'keydown', this.keydown_bind);
         document.removeEventListener( 'keyup', this.keyup_bind);
-        console.log('gui unload');
     },
 
     keyup: function(e)
@@ -131,7 +152,6 @@ Game.prototype.gui =
     },
     keydown: function(e)
     {
-        console.log('keydown ',e.key);
         switch(e.key)
         {
             case 'Escape' :  this.toggle_menu(); break;
