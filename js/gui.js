@@ -7,7 +7,8 @@ Game.prototype.gui =
         var self=this;
 
         this.menu = document.querySelector('.menu');
-        this.menu_container = document.querySelector('.menu ul');
+        this.menu_list = document.querySelector('.menu ul');
+        this.menu_header = document.querySelector('.menu_header');
         this.bone_attachments_container = document.querySelector('.bones_attachments');
         this.bone_attachments = Array.prototype.slice.call(document.querySelectorAll('.bone_attachment'));
         this.gui_container = document.querySelector('.gui');
@@ -50,8 +51,14 @@ Game.prototype.gui =
     open_menu: function()
     {
         game.pause();
-        this.menu_container.innerText='';
-        if(game.started)
+        this.menu_list.innerText='';
+        this.menu_header.innerText='';
+        if(game.focus_perso.is_dead)
+        {
+            this.menu_header.innerText = game.labels.get('you_died');
+            this.create_menu_option('menu_retry', game.restart_level.bind(game));
+        }
+        else if(game.started)
         {
             this.create_menu_option('menu_restart', game.reload.bind(game));
         }
@@ -66,7 +73,7 @@ Game.prototype.gui =
         var self=this;
         var li =  document.createElement('li');
         li.innerText = game.labels.get(text);
-        this.menu_container.appendChild(li);
+        this.menu_list.appendChild(li);
         li.addEventListener('click',function()
         {
             self.close_menu();
@@ -76,6 +83,8 @@ Game.prototype.gui =
 
     close_menu: function()
     {
+        this.menu_list.innerText='';
+        this.menu_header.innerText='';
         game.resume();
         this.menu.classList.remove('visible');
     },
@@ -139,7 +148,8 @@ Game.prototype.gui =
     unload: function()
     {
         this.game_container.innerText='';
-        this.menu_container.innerText='';
+        this.menu_list.innerText='';
+        this.menu_header.innerText='';
         document.removeEventListener( 'keydown', this.keydown_bind);
         document.removeEventListener( 'keyup', this.keyup_bind);
     },

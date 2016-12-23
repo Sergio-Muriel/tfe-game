@@ -324,7 +324,7 @@ var Perso = function(game, options)
 
         game.zoomInCircle(function()
         {
-            game.restart();
+            game.gui.open_menu();
         });
 
         window.setTimeout(function()

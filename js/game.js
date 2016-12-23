@@ -225,7 +225,7 @@ var Game = function(opt)
         }, 100);
     },
 
-    this.restart = function()
+    this.restart_level = function()
     {
         this.current_item.restart();
         var pos = this.current_item.get_start_pos();

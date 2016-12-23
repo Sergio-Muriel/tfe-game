@@ -14,6 +14,8 @@ Game.prototype.labels =
         'follow me': 'Follow me!',
         'dont move': 'Don\'t move!',
         'menu_play': 'Play',
-        'menu_restart': 'Restart'
+        'menu_restart': 'Restart',
+        'menu_retry': 'Retry',
+        'you_died': 'You died!'
     }
 };
