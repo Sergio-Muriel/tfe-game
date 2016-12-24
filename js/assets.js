@@ -4,6 +4,7 @@ var Assets = function(opt)
     this.load_textures = [];
     this.load_sound = [];
     this.textures = [];
+    this.sounds= [];
 
     this.load_ended=false;
 
@@ -100,17 +101,18 @@ var Assets = function(opt)
         this.add_sound('sounds/weapon_switch.mp3','weapon_switch', false, 1);
 
         // Music
-        this.add_sound('sounds/music/path.mp3','path',true, 1);
-        this.add_sound('sounds/music/maze.mp3','maze',true, 1);
+        this.add_sound('sounds/music/path.mp3','path',true, 0.8);
+        this.add_sound('sounds/music/maze.mp3','maze',true, 0.8);
 
         // Effects
-        this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 0);
-        this.add_sound('sounds/ambient/cave.mp3','cave',true, 0);
+        this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 1);
+        this.add_sound('sounds/ambient/cave.mp3','cave',true, 1);
 
         return this._load().then(this.loaded.bind(this));
     };
     this.loaded= function()
     {
+        this.update_volumes_delay();
         this.load_ended=true;
         // transparent material
         this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
@@ -308,7 +310,9 @@ var Assets = function(opt)
                 self[json.name+'_sound'].load();
                 self[json.name+'_sound'].loop=!!json.loop;
                 self[json.name+'_sound'].volume=json.volume;
+                self[json.name+'_sound'].setAttribute('initial_volume',json.volume);
                 self.current_loaded++;
+                self.sounds.push(self[json.name+'_sound']);
                 game.gui.update_loading(self.current(), self.total());
                 ok();
             }));
@@ -340,4 +344,24 @@ var Assets = function(opt)
         }
         return this.textures[texture+'_'+bumpTexture];
     }
+    this.update_volumes_delay = function()
+    {
+        window.clearTimeout(this.update_volume_timer);
+        this.update_volume_timer = window.setTimeout(this.update_volume.bind(this), 400);
+    }
+
+    this.update_volume= function()
+    {
+        this.sounds.forEach(function(sound)
+        {
+            var mul=1;
+            if(sound.getAttribute('volume_target_type'))
+            {
+                mul = game.gui.get_value(sound.getAttribute('volume_target_type'));
+            }
+            var val = game.gui.get_value('global_volume') * parseFloat(sound.getAttribute('initial_volume')) * mul;
+            console.log('sound ',sound , game.gui.get_value('global_volume') ,parseFloat(sound.getAttribute('initial_volume')) ,mul, ' = ',val);
+            sound.volume = val;
+        });
+    };
 };

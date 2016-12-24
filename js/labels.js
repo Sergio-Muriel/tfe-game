@@ -20,6 +20,10 @@ Game.prototype.labels =
         'menu_options': 'Options',
         'you_died': 'You died!',
         'menu_sound': 'Sound',
-        'menu_graphic': 'Graphic'
+        'menu_graphic': 'Graphic',
+        'menu_back': 'Back',
+        'global_volume': 'Global',
+        'ambient_volume': 'Ambient',
+        'music_volume': 'Music'
     }
 };

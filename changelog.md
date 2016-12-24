@@ -3,6 +3,7 @@
 ## 23
 
 - move step now include delta to have same speed across the browsers
+- audio system with global volume
 
 ## 22
 

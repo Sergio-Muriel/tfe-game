@@ -733,21 +733,11 @@ Maze.prototype.enter = function()
 {
     if(!this.entered)
     {
-        this.level_text = game.add_fadeout_text({
-            text:'L e v e l   '+(this.level_num+1),
-            color:game.config.enter_color,
-            bevelSize: 0.4,
-            size: game.config.enter_size,
-            material: this.floor_material.clone(),
-            delta_y : 5,
-            position: this.container.position
-        });
-
         this.music.currentTime=0;
         this.ambient.currentTime=0;
 
-        game.fadeinmusic(this.music, game.config.music_volume);
-        game.fadeinmusic(this.ambient, game.config.ambient_volume);
+        game.fadeinmusic(this.music, 'music_volume');
+        game.fadeinmusic(this.ambient,'ambient_volume');
         game.ambient_light.color = new THREE.Color(this.ambient_light_color);
         game.ambient_light.intensity = game.opt.debug_level>1 ? 1 : this.ambient_light_intensity;
         this.entered=true;

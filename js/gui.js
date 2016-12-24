@@ -61,8 +61,17 @@ Game.prototype.gui =
             {
                 case 'options':
                     this.menu_header.innerText = game.labels.get('menu_options');
-                    this.create_menu_option('menu_sound', game.restart_level.bind(game));
-                    this.create_menu_option('menu_graphic', game.restart_level.bind(game));
+                    this.create_menu_option('menu_sound', this.open_menu.bind(this,'sound'));
+                    this.create_menu_option('menu_graphic', this.open_menu.bind(this,'graphic'));
+                    this.create_menu_option('menu_back', this.open_menu.bind(this));
+                    break;
+                case 'sound':
+                    this.menu_header.innerText = game.labels.get('menu_sound');
+                    this.create_menu_level('global_volume', 'global_volume', game.assets.update_volumes_delay.bind(game.assets));
+                    this.create_menu_level('ambient_volume', 'ambient_volume', game.assets.update_volumes_delay.bind(game.assets));
+                    this.create_menu_level('music_volume', 'music_volume', game.assets.update_volumes_delay.bind(game.assets));
+                    this.create_menu_option('menu_back', this.open_menu.bind(this,'options'));
+                    break;
                 break;
             }
         }
@@ -77,24 +86,64 @@ Game.prototype.gui =
         {
             this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_restart', game.reload.bind(game));
+            this.create_menu_option('menu_options', this.open_menu.bind(this,'options'));
+            this.create_menu_option('menu_back', this.close_menu.bind(this));
         }
         // Open menu when not playing (intro?)
         else
         {
             this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_play', game.reload.bind(game));
+            this.create_menu_option('menu_options', this.open_menu.bind(this,'options'));
         }
 
-        // Common options
-        this.create_menu_option('menu_options', this.open_options.bind(this));
 
         this.menu.classList.add('visible');
+    },
+
+    create_menu_level: function(text, key, callback)
+    {
+        var self=this;
+        console.log('create menu level ',text);
+        var li =  document.createElement('li');
+        li.classList.add('menu_level');
+
+        var label = document.createElement('label');
+        label.innerText = game.labels.get(text);
+
+        var input = document.createElement('input');
+        input.setAttribute('type','range');
+        input.setAttribute('min','0');
+        input.setAttribute('max','1');
+        input.setAttribute('step','0.01');
+        input.setAttribute('value', this.get_value(key));
+
+        li.appendChild(label);
+        li.appendChild(input);
+
+        this.menu_list.appendChild(li);
+        input.addEventListener('input',function()
+        {
+            self.set_value(key, input.value);
+            callback();
+        });
+    },
+    set_value: function(data, value)
+    {
+        console.log('set value ',data,value);
+        localStorage.setItem(data,parseFloat(value));
+    },
+    get_value: function(data)
+    {
+        var value = localStorage.getItem(data) || game.config[data];
+        return value;
     },
 
     create_menu_option : function(text, callback)
     {
         var self=this;
         var li =  document.createElement('li');
+        li.classList.add('menu_entry');
         li.innerText = game.labels.get(text);
         this.menu_list.appendChild(li);
         li.addEventListener('click',function()
@@ -110,11 +159,6 @@ Game.prototype.gui =
         this.menu_header.innerText='';
         game.resume();
         this.menu.classList.remove('visible');
-    },
-
-    open_options: function()
-    {
-        this.open_menu('options');
     },
 
     toggle_weapon : function(bone, e)
