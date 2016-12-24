@@ -72,6 +72,11 @@ Game.prototype.gui =
                     this.create_menu_level('music_volume', 'music_volume', game.assets.update_volumes_delay.bind(game.assets));
                     this.create_menu_option('menu_back', this.open_menu.bind(this,'options'));
                     break;
+                case 'graphic':
+                    this.menu_header.innerText = game.labels.get('menu_graphic');
+                    this.create_menu_toggle('menu_shadow', 'shadow', game.update_shadow.bind(game, 'reload'));
+                    this.create_menu_option('menu_back', this.open_menu.bind(this,'options'));
+                    break;
                 break;
             }
         }
@@ -128,14 +133,40 @@ Game.prototype.gui =
             callback();
         });
     },
+
+    create_menu_toggle: function(text, key, callback)
+    {
+        var self=this;
+        console.log('create menu level ',text);
+        var li =  document.createElement('li');
+        li.classList.add('menu_level');
+
+        var label = document.createElement('label');
+        label.innerText = game.labels.get(text);
+
+        var input = document.createElement('input');
+        input.setAttribute('type','checkbox');
+        console.log('get value ',this.get_value(key),key);
+        input.checked = this.get_value(key);
+
+        li.appendChild(label);
+        li.appendChild(input);
+
+        this.menu_list.appendChild(li);
+        input.addEventListener('click',function()
+        {
+            self.set_value(key, input.checked);
+            callback();
+        });
+    },
     set_value: function(data, value)
     {
         console.log('set value ',data,value);
-        localStorage.setItem(data,parseFloat(value));
+        localStorage.setItem(data,value);
     },
     get_value: function(data)
     {
-        var value = localStorage.getItem(data) || game.config[data];
+        var value = JSON.parse(localStorage.getItem(data) || game.config[data]);
         return value;
     },
 

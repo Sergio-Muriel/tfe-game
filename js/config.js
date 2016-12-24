@@ -4,6 +4,7 @@ Game.prototype.config =
     global_volume: 0.7,
     music_volume: 0.01,
     ambient_volume: 0.01,
+    shadow: true,
 
 
     // Configurable, but not by the player ;)

@@ -99,7 +99,7 @@ var Game = function(opt)
 
         this.ambient_light = new THREE.PointLight(0xd9cba2, 0.15, 0, 1);
         this.ambient_light.position.set(50, 150, 80);
-        this.ambient_light.castShadow=opt.enable_shadow;
+        this.ambient_light.castShadow=true;
         this.scene.add(this.ambient_light);
 
         this.perso_light = new THREE.PointLight(0xffffff, 1.0, this.opt.door_size*3.3, 1.0);
@@ -119,8 +119,8 @@ var Game = function(opt)
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true});
         this.renderer.setClearColor(opt.debug_level>1 ? 0x000000 : 0x000000, 1);
-        this.renderer.shadowMapEnabled=opt.enable_shadow;
-        this.renderer.shadowMapSoft=opt.enable_shadow;
+        this.renderer.shadowMapEnabled=game.gui.get_value('shadow');
+        this.renderer.shadowMapSoft=game.gui.get_value('shadow');
         this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 
@@ -623,5 +623,9 @@ var Game = function(opt)
         }
         return weapons[Math.floor(Math.random()*weapons.length)];
     };
-
+    this.update_shadow = function()
+    {
+        game.gui.close_menu();
+        game.reload();
+    };
 };

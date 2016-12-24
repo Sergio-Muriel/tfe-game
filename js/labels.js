@@ -24,6 +24,7 @@ Game.prototype.labels =
         'menu_back': 'Back',
         'global_volume': 'Global',
         'ambient_volume': 'Ambient',
-        'music_volume': 'Music'
-    }
+        'music_volume': 'Music',
+        'menu_shadow': 'Enable shadows'
+    } 
 };
