@@ -250,6 +250,10 @@ Game.prototype.gui =
 
     unload: function()
     {
+        // Reset weapons
+        this.weapons=[];
+        this.bone_attachments_container.innerText='';
+
         this.game_container.innerText='';
         this.menu_list.innerText='';
         this.menu_header.innerText='';
