@@ -343,13 +343,9 @@ var Assets = function(opt)
         }
         return this.textures[texture+'_'+bumpTexture];
     }
-    this.update_volumes_delay = function()
-    {
-        window.clearTimeout(this.update_volume_timer);
-        this.update_volume_timer = window.setTimeout(this.update_volume.bind(this), 400);
-    }
 
-    this.update_volume= function()
+
+    this.update_volumes= function()
     {
         this.sounds.forEach(function(sound)
         {
@@ -362,4 +358,5 @@ var Assets = function(opt)
             sound.volume = val;
         });
     };
+    this.update_volumes_delay = throttle(this.update_volumes.bind(this), 200);
 };
