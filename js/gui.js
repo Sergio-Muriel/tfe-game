@@ -109,7 +109,6 @@ Game.prototype.gui =
     create_menu_level: function(text, key, callback)
     {
         var self=this;
-        console.log('create menu level ',text);
         var li =  document.createElement('li');
         li.classList.add('menu_level');
 
@@ -137,7 +136,6 @@ Game.prototype.gui =
     create_menu_toggle: function(text, key, callback)
     {
         var self=this;
-        console.log('create menu level ',text);
         var li =  document.createElement('li');
         li.classList.add('menu_level');
 
@@ -146,7 +144,6 @@ Game.prototype.gui =
 
         var input = document.createElement('input');
         input.setAttribute('type','checkbox');
-        console.log('get value ',this.get_value(key),key);
         input.checked = this.get_value(key);
 
         li.appendChild(label);
@@ -161,7 +158,6 @@ Game.prototype.gui =
     },
     set_value: function(data, value)
     {
-        console.log('set value ',data,value);
         localStorage.setItem(data,value);
     },
     get_value: function(data)
@@ -196,7 +192,6 @@ Game.prototype.gui =
     {
         if(!bone)
         {
-            console.log('no weapon selected!');
             return false;
         }
         var self=this;
