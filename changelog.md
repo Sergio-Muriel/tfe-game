@@ -4,6 +4,8 @@
 
 - move step now include delta to have same speed across the browsers
 - audio system with global volume
+- change menu sound volume with global/ambient/music
+- enable/disable graphics shadows
 
 ## 22
 
