@@ -22,7 +22,6 @@ var Assets = function(opt)
         {
             return Promise.resolve();
         }
-        console.log('loading assets');
 
         this.add('js/meshes/wall.js','wall');
         this.add('js/meshes/wall1.js','wall1');
@@ -360,7 +359,6 @@ var Assets = function(opt)
                 mul = game.gui.get_value(sound.getAttribute('volume_target_type'));
             }
             var val = game.gui.get_value('global_volume') * parseFloat(sound.getAttribute('initial_volume')) * mul;
-            console.log('sound ',sound , game.gui.get_value('global_volume') ,parseFloat(sound.getAttribute('initial_volume')) ,mul, ' = ',val);
             sound.volume = val;
         });
     };
