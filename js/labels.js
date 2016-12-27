@@ -7,7 +7,7 @@ Game.prototype.labels =
     },
     'en':
     {
-        'game_name': 'The Frozpedition',
+        'game_name': 'The Unnamed game',
         'life': 'Life',
         'loading_assets': 'Loading game data',
         'loading_level': 'Loading level',
