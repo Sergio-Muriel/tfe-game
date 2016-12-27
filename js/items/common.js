@@ -28,7 +28,7 @@ Common.prototype.build =function()
     this.container.position.x = this.options.x;
     this.container.position.y = 0;
     this.container.position.z = this.options.z;
-    if(this.options.rotate)
+    if(this.options.rotate!==undefined)
     {
         this.container.rotation.y = this.options.rotate;
     }

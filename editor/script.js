@@ -211,6 +211,10 @@ function load()
             case 'indoor':  c.selectedIndex=1; break;
         }
 
+        var c = document.getElementById('zoom_level');
+        var zoom_level =  c.options[c.selectedIndex].value;
+        c.selectedIndex = data.type || 0;
+
         if(data && data.cells)
         {
             // Load walls
@@ -282,9 +286,13 @@ function save()
     var c = document.getElementById('level_type');
     var level_type =  c.options[c.selectedIndex].value;
 
+    var c = document.getElementById('zoom_level');
+    var zoom_level =  c.options[c.selectedIndex].value;
+
     var map =
     {
         type:  level_type,
+        zoom_level:  zoom_level,
         cells: [ ],
         seals: [],
         extrawalls: [ ],
@@ -389,7 +397,7 @@ function save()
                 {
                     if(hidden_fields.indexOf(attribute.name)===-1)
                     {
-                        if(attribute.name!='left' && attribute.name!='top' && attribute.name!='row' && attribute.name!='line')
+                        if(attribute.name!='left' && attribute.name!='top' && attribute.name!='row' && attribute.name!='line' && attribute.name!='rotation')
                         {
                             obj[attribute.name] = attribute.value
                         }

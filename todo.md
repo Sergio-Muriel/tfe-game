@@ -1,8 +1,5 @@
-- menu:
-    *  play ( restart )
-    *  options
-        - sound (saved to localStorage?)
-        - graphic
+- mark end pinga position (end cell) with a flag or something else
+- fix restart bug after entering a new maze level (level 2)
 - moveable camera
 - auto play scenario
 - add snow like / blizzard particles

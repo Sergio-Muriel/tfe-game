@@ -44,7 +44,7 @@ Character.prototype.build = function()
         this.view_vector = v.clone().sub(this.container.position);
         this.lookAt(v, v);
     }
-    else if(this.options.rotate)
+    else if(this.options.rotate!==undefined)
     {
         var orig = new THREE.Vector3(0,2,0);
 
