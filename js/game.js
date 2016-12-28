@@ -14,16 +14,16 @@ var Game = function(opt)
 
     var animations = [];
 
-    var camera_decal_x = 10;
-    var camera_decal_y = 200;
-    var camera_decal_z = 100;
+    this.max_camera_decal_x = 10;
+    this.max_camera_decal_y = 200;
+    this.max_camera_decal_z = 100;
 
     var drop_delay_multiple=50;
     if(opt.debug_level>1)
     {
-        camera_decal_x = 10;
-        camera_decal_y = 200;
-        camera_decal_z = 100;
+        this.max_camera_decal_x = 10;
+        this.max_camera_decal_y = 200;
+        this.max_camera_decal_z = 100;
     }
 
     var current_item_id = 0;
@@ -160,9 +160,9 @@ var Game = function(opt)
         this.ambient_light.position.set(100+object.position.x, 200, 80+object.position.z);
         this.perso_light.position.set(object.position.x, 50, object.position.z);
 
-        this.camera.position.x = object.position.x + camera_decal_x;
-        this.camera.position.y = object.position.y + camera_decal_y;
-        this.camera.position.z = object.position.z + camera_decal_z;
+        this.camera.position.x = object.position.x + this.current_camera_decal_x;
+        this.camera.position.y = object.position.y + this.current_camera_decal_y;
+        this.camera.position.z = object.position.z + this.current_camera_decal_z;
 
         this.camera.lookAt(object.position);
     };
@@ -227,6 +227,7 @@ var Game = function(opt)
 
     this.restart_level = function()
     {
+        game.resetCamera();
         this.current_item.restart();
         var pos = this.current_item.get_start_pos();
         game.focus_perso.restart(pos);
@@ -241,7 +242,14 @@ var Game = function(opt)
         else if(this.zoominDestination)
         {
             this.zoominAngle-= 0.01;
-            this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
+            if(this.zoominRotation)
+            {
+                this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
+            }
+            else
+            {
+                this.current_radius=0;
+            }
 
             this.current_camera_decal_x *=0.96;
             this.current_camera_decal_y *=0.96;
@@ -264,8 +272,15 @@ var Game = function(opt)
             if(this.camera.position.y<this.zoominDestination)
             {
                 this.zoomOutDestination=0;
-                this.zoominCallback();
+                if(this.zoominCallback)
+                {
+                    this.zoominCallback();
+                }
                 this.zoominDestination=null;
+            }
+            if(!this.zoominRotation)
+            {
+                this.setFocus(this.focus_perso.container);
             }
         }
         else
@@ -374,23 +389,44 @@ var Game = function(opt)
         return 'item_'+(++current_item_id);
     };
 
+    this.zoomInLevel = function(level,callback)
+    {
+        this.zoominAngle = 0;
+        this.zoominDestination = level;
+        this.zoominRotation = false;
+        if(callback)
+        {
+            this.zoominCallback=callback;
+        }
+
+        this.current_radius = 0;
+    };
+
     this.zoomInCircle = function(callback)
     {
         this.zoominAngle = 0;
-        this.zoominDestination=50;
-        this.zoominCallback=callback;
+        this.zoominDestination = 50;
+        this.zoominRotation = true;
+        if(callback)
+        {
+            this.zoominCallback=callback;
+        }
 
         this.current_radius = 0;
-        this.current_camera_decal_x = camera_decal_x;
-        this.current_camera_decal_y = camera_decal_y;
-        this.current_camera_decal_z = camera_decal_z;
+        this.current_camera_decal_x = this.max_camera_decal_x;
+        this.current_camera_decal_y = this.max_camera_decal_y;
+        this.current_camera_decal_z = this.max_camera_decal_z;
     };
 
     this.resetCamera = function()
     {
-        this.camera.position.x = this.focus_perso.container.position.x + camera_decal_x;
-        this.camera.position.y = this.focus_perso.container.position.y + camera_decal_y;
-        this.camera.position.z = this.focus_perso.container.position.z + camera_decal_z;
+        this.current_camera_decal_x = this.max_camera_decal_x;
+        this.current_camera_decal_y = this.max_camera_decal_y;
+        this.current_camera_decal_z = this.max_camera_decal_z;
+
+        this.camera.position.x = this.focus_perso.container.position.x + this.current_camera_decal_x;
+        this.camera.position.y = this.focus_perso.container.position.y + this.current_camera_decal_y;
+        this.camera.position.z = this.focus_perso.container.position.z + this.current_camera_decal_z;
 
         this.camera.lookAt(this.focus_perso.container.position);
     }
@@ -627,5 +663,15 @@ var Game = function(opt)
     {
         game.gui.close_menu();
         game.reload();
+    };
+    this.set_zoom_level = function(x)
+    {
+        switch(x)
+        {
+            case 0:
+                this.zoominDestination=20;
+                this.zoominRotation=false;
+                break;
+        }
     };
 };

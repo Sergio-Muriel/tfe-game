@@ -194,7 +194,6 @@ Path.prototype.build = function()
             break;
     }
 
-
     if(this.options.parent)
     {
         this.level.start_cell= { x: 0 , z: 0, i : this.get_opposide_door(this.options.parent.level.next_maze.i) };

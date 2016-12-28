@@ -764,6 +764,7 @@ Maze.prototype.enter = function()
             close_mesh1.position.z = cell.position.z;
             this.set_mesh_orientation(close_mesh1, this.level.start_cell.i);
         }
+        game.set_zoom_level(this.level.zoom_level);
     }
     this.buildNext();
 };
