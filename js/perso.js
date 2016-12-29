@@ -322,7 +322,7 @@ var Perso = function(game, options)
         self.dying_action.stop();
         self.dying_action.play();
 
-        game.zoomLevel({ level: 50,angle: 180,distance: 10,steps: 100,callback: function()
+        game.zoomLevel({ level: 10,angle: 180,distance: 10,time: 2.5,callback: function()
         {
             game.gui.open_menu();
         }});

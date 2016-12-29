@@ -237,21 +237,13 @@ var Game = function(opt)
         if(this.zoomOut)
         {
         }
-        else if(this.zoomCondition)
+        else if(this.zoomCondition>0)
         {
-            if(this.zoomRotation)
-            {
-                this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
-            }
-            else
-            {
-                this.current_radius=0;
-            }
+            this.current_camera_decal_y += this.zoomDelta*delta;
+            this.setCameraAngle(this.zoomAngle + this.zoomAngleDelta*delta, this.zoomDistance + this.zoomDistanceDelta*delta);
 
-            this.current_camera_decal_y += this.zoomDelta;
-            this.setCameraAngle(this.zoomAngle + this.zoomAngleDelta, this.zoomDistance + this.zoomDistanceDelta);
-
-            if(!--this.zoomCondition)
+            this.zoomCondition-=delta;
+            if(this.zoomCondition<0)
             {
                 this.zoomOutDestination=0;
                 if(this.zoomCallback)
@@ -260,15 +252,8 @@ var Game = function(opt)
                 }
                 this.zoomDestination=null;
             }
-            if(!this.zoomRotation)
-            {
-                this.setFocus(this.focus_perso.container);
-            }
         }
-        else
-        {
-            this.setFocus(this.focus_perso.container);
-        }
+        this.setFocus(this.focus_perso.container);
     },
 
     this.render = function()
@@ -388,17 +373,16 @@ var Game = function(opt)
         this.zoomDistanceDestination = opt.distance;
 
         this.zoomDestination = opt.level/100 * this.max_camera_decal_y;
-        this.zoomDelta = Math.abs(this.current_camera_decal_y - this.zoomDestination) / opt.steps;
+        this.zoomDelta = Math.abs(this.current_camera_decal_y - this.zoomDestination) / opt.time;
         this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? -this.zoomDelta  : this.zoomDelta;
 
-        this.zoomAngleDelta = Math.abs(this.zoomAngle - this.zoomAngleDestination) / opt.steps;
+        this.zoomAngleDelta = Math.abs(this.zoomAngle - this.zoomAngleDestination) / opt.time;
         this.zoomAngleDelta = this.zoomAngle > this.zoomAngleDestination ? -this.zoomAngleDelta  : this.zoomAngleDelta;
 
-        this.zoomDistanceDelta = Math.abs(this.zoomDistance - this.zoomDistanceDestination) / opt.steps;
+        this.zoomDistanceDelta = Math.abs(this.zoomDistance - this.zoomDistanceDestination) / opt.time;
         this.zoomDistanceDelta = this.zoomDistance > this.zoomDistanceDestination ? -this.zoomDistanceDelta  : this.zoomDistanceDelta;
-        this.zoomCondition = opt.steps;
+        this.zoomCondition = opt.time;
 
-        this.zoomRotation = false;
         if(opt.callback)
         {
             this.zoomCallback=opt.callback;
@@ -649,9 +633,9 @@ var Game = function(opt)
         x = parseInt(x,10);
         switch(x)
         {
-            case 0: this.zoomLevel({level:50, angle:-90, distance:50, steps: 50}); break;
-            case 1: this.zoomLevel({level:100, angle:-90, distance:50, steps: 50}); break;
-            case 2: this.zoomLevel({level:200, angle:-90, distance:150, steps: 50}); break;
+            case 0: this.zoomLevel({level:50, angle:-90, distance:50, time: 2}); break;
+            case 1: this.zoomLevel({level:100, angle:-90, distance:50, time: 2}); break;
+            case 2: this.zoomLevel({level:200, angle:-90, distance:150, time: 2}); break;
         }
     };
 };
