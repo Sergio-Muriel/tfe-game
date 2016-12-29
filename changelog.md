@@ -6,6 +6,7 @@
 - audio system with global volume
 - change menu sound volume with global/ambient/music
 - enable/disable graphics shadows
+- rotate camera
 
 ## 22
 
