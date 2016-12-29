@@ -193,10 +193,10 @@ var Game = function(opt)
         pos.z += Math.sin(angle) * 20;
 
 
-        this.current_item.enter();
-
         // Look at player
         this.resetCamera();
+
+        this.current_item.enter();
     };
 
     this.add_character= function(params)
@@ -239,10 +239,10 @@ var Game = function(opt)
         if(this.zoomOut)
         {
         }
-        else if(this.zoominDestination)
+        else if(this.zoomDestination)
         {
-            this.zoominAngle-= 0.01;
-            if(this.zoominRotation)
+            this.zoomAngle-= 0.01;
+            if(this.zoomRotation)
             {
                 this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
             }
@@ -251,34 +251,34 @@ var Game = function(opt)
                 this.current_radius=0;
             }
 
-            this.current_camera_decal_x *=0.96;
-            this.current_camera_decal_y *=0.96;
-            this.current_camera_decal_z *=0.96;
+            this.current_camera_decal_x *= this.zoomDelta;
+            this.current_camera_decal_y *= this.zoomDelta;
+            this.current_camera_decal_z *= this.zoomDelta;
 
             this.camera.position.x =
                     this.focus_perso.container.position.x + 
                     this.current_camera_decal_x +
-                    this.current_radius * Math.cos( this.zoominAngle);
+                    this.current_radius * Math.cos( this.zoomAngle);
 
             this.camera.position.y *= 0.99;
 
             this.camera.position.z =
                     this.focus_perso.container.position.z + 
                     this.current_camera_decal_z +
-                    this.current_radius * Math.sin( this.zoominAngle);
+                    this.current_radius * Math.sin( this.zoomAngle);
 
             this.camera.lookAt(this.focus_perso.container.position);
 
-            if(this.camera.position.y<this.zoominDestination)
+            if(this.zoomCondition())
             {
                 this.zoomOutDestination=0;
-                if(this.zoominCallback)
+                if(this.zoomCallback)
                 {
-                    this.zoominCallback();
+                    this.zoomCallback();
                 }
-                this.zoominDestination=null;
+                this.zoomDestination=null;
             }
-            if(!this.zoominRotation)
+            if(!this.zoomRotation)
             {
                 this.setFocus(this.focus_perso.container);
             }
@@ -389,14 +389,26 @@ var Game = function(opt)
         return 'item_'+(++current_item_id);
     };
 
-    this.zoomInLevel = function(level,callback)
+    this.zoomInEnd = function()
     {
-        this.zoominAngle = 0;
-        this.zoominDestination = level;
-        this.zoominRotation = false;
+        return this.current_camera_decal_y<this.zoomDestination;
+    };
+    this.zoomOutEnd = function()
+    {
+        return this.current_camera_decal_y>this.zoomDestination;
+    };
+    this.zoomLevel = function(level,callback)
+    {
+        this.zoomAngle = 0;
+        this.zoomDestination = level/100 * this.max_camera_decal_y;
+        this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? 0.96 : 1.10;
+        this.zoomCondition = this.current_camera_decal_y > this.zoomDestination ? this.zoomInEnd.bind(this): this.zoomOutEnd.bind(this);
+
+        console.log('Zoomin level: ',this.zoomDestination, this.zoomDelta, this.current_camera_decal_y);
+        this.zoomRotation = false;
         if(callback)
         {
-            this.zoominCallback=callback;
+            this.zoomCallback=callback;
         }
 
         this.current_radius = 0;
@@ -404,12 +416,13 @@ var Game = function(opt)
 
     this.zoomInCircle = function(callback)
     {
-        this.zoominAngle = 0;
-        this.zoominDestination = 50;
-        this.zoominRotation = true;
+        this.zoomDestination = 0.2 * this.max_camera_decal_y;
+        this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? 0.96 : 1.10;
+        this.zoomCondition = this.current_camera_decal_y > this.zoomDestination ? this.zoomInEnd.bind(this): this.zoomOutEnd.bind(this);
+        this.zoomRotation = true;
         if(callback)
         {
-            this.zoominCallback=callback;
+            this.zoomCallback=callback;
         }
 
         this.current_radius = 0;
@@ -420,6 +433,7 @@ var Game = function(opt)
 
     this.resetCamera = function()
     {
+        console.log('reset camera ');
         this.current_camera_decal_x = this.max_camera_decal_x;
         this.current_camera_decal_y = this.max_camera_decal_y;
         this.current_camera_decal_z = this.max_camera_decal_z;
@@ -666,12 +680,13 @@ var Game = function(opt)
     };
     this.set_zoom_level = function(x)
     {
+        x = parseInt(x,10);
+        console.log('set zoom level ',x);
         switch(x)
         {
-            case 0:
-                this.zoominDestination=20;
-                this.zoominRotation=false;
-                break;
+            case 0: this.zoomLevel(20); break;
+            case 1: this.zoomLevel(70); break;
+            case 2: this.zoomLevel(100); break;
         }
     };
 };
