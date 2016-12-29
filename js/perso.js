@@ -10,7 +10,7 @@ var Perso = function(game, options)
     self.vision_distance = game.opt.door_size*3;
 
     self.walk_speed= game.opt.debug_level > 1 ? 0.50 : 0.50;
-    self.run_speed= game.opt.debug_level > 1 ? 2.00 : 35;
+    self.run_speed= game.opt.debug_level > 1 ? 35 : 35;
     self.move_speed= self.run_speed;
 
     self.open_range = 12;
