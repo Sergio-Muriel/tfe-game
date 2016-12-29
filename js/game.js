@@ -14,16 +14,14 @@ var Game = function(opt)
 
     var animations = [];
 
-    this.max_camera_decal_x = 10;
     this.max_camera_decal_y = 200;
-    this.max_camera_decal_z = 100;
+    this.max_camera_distance = 50;
 
     var drop_delay_multiple=50;
     if(opt.debug_level>1)
     {
-        this.max_camera_decal_x = 10;
         this.max_camera_decal_y = 200;
-        this.max_camera_decal_z = 100;
+        this.max_camera_distance = 50;
     }
 
     var current_item_id = 0;
@@ -165,7 +163,7 @@ var Game = function(opt)
         this.camera.position.z = object.position.z + this.current_camera_decal_z;
 
         this.camera.lookAt(object.position);
-    };
+   };
 
     this.start = function()
     {
@@ -239,9 +237,8 @@ var Game = function(opt)
         if(this.zoomOut)
         {
         }
-        else if(this.zoomDestination)
+        else if(this.zoomCondition)
         {
-            this.zoomAngle-= 0.01;
             if(this.zoomRotation)
             {
                 this.current_radius = Math.min(this.current_radius+1, this.opt.door_size);
@@ -251,25 +248,10 @@ var Game = function(opt)
                 this.current_radius=0;
             }
 
-            this.current_camera_decal_x *= this.zoomDelta;
-            this.current_camera_decal_y *= this.zoomDelta;
-            this.current_camera_decal_z *= this.zoomDelta;
+            this.current_camera_decal_y += this.zoomDelta;
+            this.setCameraAngle(this.zoomAngle + this.zoomAngleDelta, this.zoomDistance + this.zoomDistanceDelta);
 
-            this.camera.position.x =
-                    this.focus_perso.container.position.x + 
-                    this.current_camera_decal_x +
-                    this.current_radius * Math.cos( this.zoomAngle);
-
-            this.camera.position.y *= 0.99;
-
-            this.camera.position.z =
-                    this.focus_perso.container.position.z + 
-                    this.current_camera_decal_z +
-                    this.current_radius * Math.sin( this.zoomAngle);
-
-            this.camera.lookAt(this.focus_perso.container.position);
-
-            if(this.zoomCondition())
+            if(!--this.zoomCondition)
             {
                 this.zoomOutDestination=0;
                 if(this.zoomCallback)
@@ -389,60 +371,47 @@ var Game = function(opt)
         return 'item_'+(++current_item_id);
     };
 
-    this.zoomInEnd = function()
+    this.setCameraAngle = function(angle, distance)
     {
-        return this.current_camera_decal_y<this.zoomDestination;
-    };
-    this.zoomOutEnd = function()
-    {
-        return this.current_camera_decal_y>this.zoomDestination;
-    };
-    this.zoomLevel = function(level,callback)
-    {
-        this.zoomAngle = 0;
-        this.zoomDestination = level/100 * this.max_camera_decal_y;
-        this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? 0.96 : 1.10;
-        this.zoomCondition = this.current_camera_decal_y > this.zoomDestination ? this.zoomInEnd.bind(this): this.zoomOutEnd.bind(this);
+        this.zoomAngle = angle;
+        this.zoomDistance = distance;
 
-        console.log('Zoomin level: ',this.zoomDestination, this.zoomDelta, this.current_camera_decal_y);
+        var t = new THREE.Vector3(distance, 0, 0);
+        t.applyAxisAngle(new THREE.Vector3(0,1,0), Math.radians(angle));
+        this.current_camera_decal_x = t.x;
+        this.current_camera_decal_z = t.z;
+    };
+
+    this.zoomLevel = function(opt)
+    {
+        this.zoomAngleDestination = opt.angle;
+        this.zoomDistanceDestination = opt.distance;
+
+        this.zoomDestination = opt.level/100 * this.max_camera_decal_y;
+        this.zoomDelta = Math.abs(this.current_camera_decal_y - this.zoomDestination) / opt.steps;
+        this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? -this.zoomDelta  : this.zoomDelta;
+
+        this.zoomAngleDelta = Math.abs(this.zoomAngle - this.zoomAngleDestination) / opt.steps;
+        this.zoomAngleDelta = this.zoomAngle > this.zoomAngleDestination ? -this.zoomAngleDelta  : this.zoomAngleDelta;
+
+        this.zoomDistanceDelta = Math.abs(this.zoomDistance - this.zoomDistanceDestination) / opt.steps;
+        this.zoomDistanceDelta = this.zoomDistance > this.zoomDistanceDestination ? -this.zoomDistanceDelta  : this.zoomDistanceDelta;
+        this.zoomCondition = opt.steps;
+
         this.zoomRotation = false;
-        if(callback)
+        if(opt.callback)
         {
-            this.zoomCallback=callback;
+            this.zoomCallback=opt.callback;
         }
 
         this.current_radius = 0;
-    };
-
-    this.zoomInCircle = function(callback)
-    {
-        this.zoomDestination = 0.2 * this.max_camera_decal_y;
-        this.zoomDelta = this.current_camera_decal_y > this.zoomDestination ? 0.96 : 1.10;
-        this.zoomCondition = this.current_camera_decal_y > this.zoomDestination ? this.zoomInEnd.bind(this): this.zoomOutEnd.bind(this);
-        this.zoomRotation = true;
-        if(callback)
-        {
-            this.zoomCallback=callback;
-        }
-
-        this.current_radius = 0;
-        this.current_camera_decal_x = this.max_camera_decal_x;
-        this.current_camera_decal_y = this.max_camera_decal_y;
-        this.current_camera_decal_z = this.max_camera_decal_z;
     };
 
     this.resetCamera = function()
     {
-        console.log('reset camera ');
-        this.current_camera_decal_x = this.max_camera_decal_x;
         this.current_camera_decal_y = this.max_camera_decal_y;
-        this.current_camera_decal_z = this.max_camera_decal_z;
-
-        this.camera.position.x = this.focus_perso.container.position.x + this.current_camera_decal_x;
-        this.camera.position.y = this.focus_perso.container.position.y + this.current_camera_decal_y;
-        this.camera.position.z = this.focus_perso.container.position.z + this.current_camera_decal_z;
-
-        this.camera.lookAt(this.focus_perso.container.position);
+        this.setCameraAngle(0, 50);
+        this.setFocus(this.focus_perso.container);
     }
 
     this.enterType = function(item)
@@ -578,15 +547,12 @@ var Game = function(opt)
         text_mesh.position.y= -( text_geo.boundingBox.max.y - text_geo.boundingBox.min.y)/2;
         text_mesh.position.z= -( text_geo.boundingBox.max.z - text_geo.boundingBox.min.z)/2;
         
-        text_mesh.rotation.x = Math.radians(-45);
-        text_mesh.rotation.y = 0;
-        text_mesh.rotation.z = Math.radians(0);
+        text_mesh.quaternion.copy( this.camera.quaternion )
+        //text_mesh.lookAt(this.camera.position);
 
         text_container.position.x = position.x;
         text_container.position.y = position.y + delta_y;
         text_container.position.z = position.z;
-
-        text_container.rotation.y = Math.radians(3);
 
         if(params.anim_callback)
         {
@@ -681,12 +647,11 @@ var Game = function(opt)
     this.set_zoom_level = function(x)
     {
         x = parseInt(x,10);
-        console.log('set zoom level ',x);
         switch(x)
         {
-            case 0: this.zoomLevel(20); break;
-            case 1: this.zoomLevel(70); break;
-            case 2: this.zoomLevel(100); break;
+            case 0: this.zoomLevel({level:50, angle:-90, distance:50, steps: 50}); break;
+            case 1: this.zoomLevel({level:100, angle:-90, distance:50, steps: 50}); break;
+            case 2: this.zoomLevel({level:200, angle:-90, distance:150, steps: 50}); break;
         }
     };
 };
