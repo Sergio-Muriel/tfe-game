@@ -280,7 +280,7 @@ Character.prototype.targeted=function(from)
                 from.add_follower(this);
                 self.is_running=true;
                 self.moveTo(from.container.position);
-                game.add_friend_text({ text:game.labels.get('follow me'), position: from.container.position});
+                game.add_friend_text({ text:game.labels.get('follow_me'), position: from.container.position});
                 from.open();
 
                 window.setTimeout(self.untargeted.bind(self), 500);
@@ -327,6 +327,11 @@ Character.prototype.die=function()
     }, 1000);
 
     window.setTimeout(this.remove.bind(this), 5000);
+};
+Character.prototype.rescue = function(destination)
+{
+    game.add_friend_text({ text:game.labels.get('thank_you'), position: this.container.position});
+    this.remove();
 };
 Character.prototype.remove = function(destination)
 {

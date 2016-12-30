@@ -294,6 +294,17 @@ Path.prototype.build = function()
         this.line_callbacks.push(line);
     }
 
+    rescue_container = new THREE.Object3D();
+    rescue_container.position.y=1;
+    rescue_container.rotation.x = Math.radians(90);
+
+    var rescue_zone = new THREE.CircleGeometry(game.opt.door_size*1.1, 6, 0, Math.PI*2);
+    var rescue_material=  new THREE.MeshPhongMaterial( { color: 0x004400, side: THREE.DoubleSide, visible: true, transparent:true, opacity:0.4 } );
+    var rescue_mesh = new THREE.Mesh(rescue_zone, rescue_material);
+
+    rescue_container.add(rescue_mesh);
+    last_cells[0].add(rescue_container);
+
     this.container.position.x = current_x;
     this.container.position.y = 0;
     this.container.position.z = current_z;

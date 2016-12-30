@@ -850,7 +850,7 @@ var Perso = function(game, options)
         this.followers.forEach(function(follower)
         {
             self.remove_follower(follower);
-            window.setTimeout(follower.remove.bind(follower), timer);
+            window.setTimeout(follower.rescue.bind(follower), timer);
             timer+=100;
         });
     };
