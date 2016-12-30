@@ -1,4 +1,5 @@
 - add bear
+- /* RELEASE */
 - moveable camera
 - auto play scenario
 - add snow like / blizzard particles
