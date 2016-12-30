@@ -1,4 +1,3 @@
-- fix restart bug after entering a new maze level (level 2)
 - add bear
 - moveable camera
 - auto play scenario
