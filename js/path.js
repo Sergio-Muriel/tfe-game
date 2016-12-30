@@ -213,8 +213,11 @@ Path.prototype.build = function()
             has_neighbor = self.level.cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; }).length>0;
             has_already_wall = cell.walls.filter(function(wall) { return wall.i === i ; }).length>0;
 
-
-            var is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===self.level.start_cell.i) : false;
+            var is_start=false;
+            if(self.options.parent)
+            {
+                is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===self.level.start_cell.i) : false;
+            }
             var is_end = (
                        cell.x == self.level.end_cell.x && cell.z == self.level.end_cell.z &&
                         nearcell[0]== self.level.next_maze.x && nearcell[1] == self.level.next_maze.z
