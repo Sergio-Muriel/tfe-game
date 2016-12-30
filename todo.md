@@ -1,4 +1,3 @@
-- pinga ask for help
 - pinga disappear animation
 - mark end pinga position (end cell) with a flag or something else
 - fix restart bug after entering a new maze level (level 2)
