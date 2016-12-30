@@ -187,7 +187,6 @@ Character.prototype.create =function()
     this.walkingClip = this.mesh_geo.animations[2];
     this.attackingClip = this.mesh_geo.animations[3];
     this.dyingClip = this.mesh_geo.animations[4];
-    this.helpClip = this.mesh_geo.animations[5];
 
     this.idle_action = this.mixer.clipAction(this.iddlingClip, null ).setDuration(5);
     this.idle_action.name='idle';
@@ -207,21 +206,13 @@ Character.prototype.create =function()
     this.dying_action.setLoop(THREE.LoopOnce, 0);
     this.dying_action.clampWhenFinished = true;
 
-    this.help_action = this.mixer.clipAction(this.helpClip, null ).setDuration(5);
-    this.help_action.name='idle';
-
     this.move_action.play();
     this.idle_action.play();
-    if(this.friend)
-    {
-        this.help_action.play();
-    }
 
     this.attack_action.setEffectiveWeight(0);
     this.dying_action.setEffectiveWeight(0);
     this.move_action.setEffectiveWeight(0);
     this.idle_action.setEffectiveWeight(1);
-    this.help_action.setEffectiveWeight(0);
 
     this.walk();
 };
@@ -717,6 +708,10 @@ Character.prototype.check_vision_end  = function()
 
 Character.prototype.move_weight  = function()
 {
+    if(this.move_weight_custom)
+    {
+        this.move_weight_custom();
+    }
     if(this.move_weight_destination!==null)
     {
         var c = this.move_action.getEffectiveWeight();

@@ -56,4 +56,29 @@ var Pinga = function(game, options)
 Pinga.prototype = Object.create(Character.prototype);
 Pinga.prototype.constructor = Character;
 
+Pinga.prototype.custom = function()
+{
+    this.helpClip = this.mesh_geo.animations[5];
+    this.help_action = this.mixer.clipAction(this.helpClip, null ).setDuration(1);
+    this.help_action.name='idle';
+
+    this.help_action.play();
+    this.idle_action.setEffectiveWeight(0);
+    this.help_action.setEffectiveWeight(1);
+    console.log('custom pinga');
+};
+
+Pinga.prototype.move_weight_custom = function()
+{
+    if(this.following)
+    {
+        this.idle_action.setEffectiveWeight(1);
+        this.help_action.setEffectiveWeight(0);
+    }
+    else
+    {
+        this.idle_action.setEffectiveWeight(0);
+        this.help_action.setEffectiveWeight(1);
+    }
+};
 
