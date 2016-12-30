@@ -24,19 +24,24 @@ var hidden_fields =
     'patrol_id'
 ];
 
-        document.addEventListener('mousemove', function(e)
+document.addEventListener('mousemove', function(e)
+{
+    if(moving_item)
+    {
+        if(e.target!= moving_hexa)
         {
-            if(moving_item)
-            {
-                var pos = get_pos(e, moving_hexa);
-                update_pos(moving_item, pos);
-            }
-        });
-        document.addEventListener('mouseup', function()
-        {
-            moving_item=null;
-            moving_hexa=null;
-        });
+            moving_hexa=e.target;
+            e.target.appendChild(moving_item);
+        }
+        var pos = get_pos(e, moving_hexa);
+        update_pos(moving_item, pos);
+    }
+});
+document.addEventListener('mouseup', function()
+{
+    moving_item=null;
+    moving_hexa=null;
+});
 
 
 var levels_container = document.getElementById('levels');
