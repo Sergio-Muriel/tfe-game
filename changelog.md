@@ -1,5 +1,9 @@
 # Three.js
 
+## 24
+
+- pinga play help animation when not following
+
 ## 23
 
 - move step now include delta to have same speed across the browsers
