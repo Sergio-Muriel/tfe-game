@@ -68,20 +68,6 @@ Character.prototype.create =function()
     this.container = new THREE.Object3D();
     this.game.scene.add(this.container);
 
-    // Cube simulating ennemy, for collision detection
-    var cube_material = new THREE.MeshPhongMaterial( { visible:false   } );
-    if(game.opt.debug_level>1)
-    {
-        cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe: true, transparent:true, opacity: 1   } );
-    }
-    var cube_geo = new THREE.BoxGeometry(10 , 10, 10);
-    this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-    this.container_mesh.name=this.type;
-    this.container_mesh.position.y=1;
-    this.container_mesh.id= game.getNewId();
-
-    this.container_mesh.object = this;
-    this.container.add(this.container_mesh);
 
     this.life_container = new THREE.Object3D();
     this.life_container.name=this.type;
@@ -181,6 +167,28 @@ Character.prototype.create =function()
     this.mesh.position.y = 1;
     this.mesh.position.z = 0;
 
+    // add bounding box
+    this.mesh.geometry.computeBoundingBox();
+    var bbox = this.mesh.geometry.boundingBox;
+    var bbox_x = (bbox.max.x - bbox.min.x) * this.mesh.scale.x + 0;
+    var bbox_y = (bbox.max.y - bbox.min.y) * this.mesh.scale.y + 0;
+    var bbox_z = (bbox.max.z - bbox.min.z) * this.mesh.scale.z + 0;
+
+    // Cube simulating ennemy, for collision detection
+    var cube_material = new THREE.MeshPhongMaterial( { visible:false   } );
+    if(game.opt.debug_level>1)
+    {
+        cube_material = new THREE.MeshPhongMaterial( { color: 0xbbbbff, wireframe: true, transparent:true, opacity: 1   } );
+    }
+    var cube_geo = new THREE.BoxGeometry(bbox_x, 10, bbox_z);
+    this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
+    this.container_mesh.name=this.type;
+    this.container_mesh.position.y=1;
+    this.container_mesh.id= game.getNewId();
+
+    this.container_mesh.object = this;
+    this.container.add(this.container_mesh);
+
     this.mixer = new THREE.AnimationMixer( this.mesh );
 
     this.iddlingClip = this.mesh_geo.animations[1];
@@ -202,7 +210,7 @@ Character.prototype.create =function()
 
     this.mixer.addEventListener('finished', this.end_attack.bind(this));
 
-    this.dying_action = this.mixer.clipAction(this.dyingClip, null ).setDuration(1.0);
+    this.dying_action = this.mixer.clipAction(this.dyingClip, null ).setDuration(this.die_action_duration || 1.0);
     this.dying_action.setLoop(THREE.LoopOnce, 0);
     this.dying_action.clampWhenFinished = true;
 

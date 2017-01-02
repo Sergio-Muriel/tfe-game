@@ -19,18 +19,19 @@ var Bear = function(game, options)
     this.move_speed= 0.7;
     this.scale=2.0;
     this.move_action_duration = 0.40;
+    this.die_action_duration = 2.0;
 
     this.run_speed= 1.5;
     this.run_action_duration = 0.45;
 
     this.check_vision_every= 80;
-    this.attack_range = 10;
+    this.attack_range = 9;
     this.hovered=false;
     this.is_dead=false;
     this.type='bear';
 
     this.weapon_type='stick';
-    this.weapon_speed= 0.5;
+    this.weapon_speed= 1.0;
     this.weapon_range= 20;
     this.weapon_attack_damage = 1;
     this.weapon_hit_chance = 0.5;

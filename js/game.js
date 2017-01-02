@@ -633,7 +633,7 @@ var Game = function(opt)
         x = parseInt(x,10);
         switch(x)
         {
-            case 0: this.zoomLevel({level:50, angle:-90, distance:50, time: 2}); break;
+            case 0: this.zoomLevel({level:30, angle:-90, distance:30, time: 2}); break;
             case 1: this.zoomLevel({level:70, angle:-90, distance:100, time: 2}); break;
             case 2: this.zoomLevel({level:200, angle:-90, distance:150, time: 2}); break;
         }
