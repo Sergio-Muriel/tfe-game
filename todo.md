@@ -1,3 +1,4 @@
+- animated arrow to discribe items: "This is ...."
 - /* RELEASE */
 - moveable camera
 - auto play scenario
