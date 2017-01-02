@@ -3,6 +3,7 @@
 ## 24
 
 - pinga play help animation when not following
+- update patrol timers
 
 ## 23
 

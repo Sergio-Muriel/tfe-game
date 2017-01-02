@@ -1,4 +1,3 @@
-- add bear
 - /* RELEASE */
 - moveable camera
 - auto play scenario
