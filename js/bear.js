@@ -16,7 +16,7 @@ var Bear = function(game, options)
 
     this.options = options;
     this.game=game;
-    this.move_speed= 0.7;
+    this.move_speed= 0.5;
     this.scale=2.0;
     this.move_action_duration = 0.40;
     this.die_action_duration = 2.0;

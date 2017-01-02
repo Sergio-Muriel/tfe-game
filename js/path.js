@@ -368,6 +368,7 @@ Path.prototype.add_ennemys = function(items, type)
             x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
             y:1,
             z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
+            patrol_wait: ennemy.patrol_wait
         });
         ennemy.patrol_positions.forEach(function(patrol)
         {
@@ -375,7 +376,8 @@ Path.prototype.add_ennemys = function(items, type)
             patrols.push({
                 x: coord_pat.x + (game.opt.door_size * patrol.left)*2 - game.opt.door_size,
                 y: 1,
-                z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size
+                z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size,
+                patrol_wait: patrol.patrol_wait
             });
         });
         var drops = [];

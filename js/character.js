@@ -809,6 +809,8 @@ Character.prototype.get_next_patrol_point = function()
         return null;
     }
 
+    var previous_id = this.patrol_id;
+
     var next_id = this.patrol_id+this.patrol_inc;
     var next_inc = this.patrol_inc;
     this.patrol_id+= next_inc
@@ -818,10 +820,6 @@ Character.prototype.get_next_patrol_point = function()
     {
         next_inc=1;
         next_id=1;
-        if(!this.options.patrol_loop)
-        {
-            this.patrol_wait =this.options.patrol_wait;
-        }
     } 
     if(next_id>=this.options.patrol_positions.length)
     {
@@ -831,14 +829,15 @@ Character.prototype.get_next_patrol_point = function()
         }
         else
         {
-            next_id=this.options.patrol_positions.length-2;
             next_inc=-1;
-            this.patrol_wait =this.options.patrol_wait;
+            next_id=this.options.patrol_positions.length-2;
         }
     }
     this.patrol_id=next_id;
     this.patrol_inc=next_inc;
     var r = this.options.patrol_positions[next_id];
+
+    this.patrol_wait = this.options.patrol_positions[previous_id].patrol_wait;
     return new THREE.Vector3(r.x, r.y, r.z);
 };
 

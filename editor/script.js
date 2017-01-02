@@ -18,6 +18,8 @@ var objects={
 };
 var hidden_fields =
 [
+    'x',
+    'z',
     'style',
     'type',
     'class',
@@ -263,7 +265,7 @@ function load()
                 seal.patrol_positions.forEach(function(patrol)
                 {
                     var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
-                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
+                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left, patrol.patrol_wait);
                 });
             });
 
@@ -275,7 +277,7 @@ function load()
                 bear.patrol_positions.forEach(function(patrol)
                 {
                     var patrolnode = document.querySelector('.hexagone[row="'+patrol.x+'"][line="'+patrol.z+'"]');
-                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left);
+                    self.add_patrol_point(patrolnode, e_id, patrol.top, patrol.left, patrol.patrol_wait);
                 });
             });
 
@@ -391,6 +393,7 @@ function save()
                     z: parseInt(parent_patrol.getAttribute('line'),10),
                     top: parseFloat(patrol.getAttribute('top')),
                     left: parseFloat(patrol.getAttribute('left')),
+                    patrol_wait: parseFloat(patrol.getAttribute('patrol_wait')),
                 });
             });
             found = patrols.length;
@@ -491,7 +494,7 @@ function toggle(h, line, row, e)
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        self.add_patrol_point(h, mode_param, pos.top, pos.left);
+        self.add_patrol_point(h, mode_param, pos.top, pos.left, 0);
         e.stopPropagation();
     }
     else if(mode=='add_seal' || mode=='add_bear')
@@ -526,7 +529,7 @@ function toggle(h, line, row, e)
 
 }
 
-function add_patrol_point(h, e_id, top, left)
+function add_patrol_point(h, e_id, top, left, patrol_wait)
 {
     var num = Array.prototype.slice.call(document.querySelectorAll('.patrol_point[object_id="'+e_id+'"]')).length+1;
     var div = document.createElement('div');
@@ -543,6 +546,7 @@ function add_patrol_point(h, e_id, top, left)
 
     div.setAttribute('left', left);
     div.setAttribute('object_id', e_id);
+    div.setAttribute('patrol_wait', patrol_wait);
     div.setAttribute('patrol_id', num);
     div.setAttribute('top', top);
     div.style.left=(left*100)+'%';
