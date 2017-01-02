@@ -28,10 +28,17 @@ document.addEventListener('mousemove', function(e)
 {
     if(moving_item)
     {
-        if(e.target!= moving_hexa)
+        if(e.target!= moving_hexa && e.target.classList.contains('hexagone'))
         {
             moving_hexa=e.target;
-            e.target.appendChild(moving_item);
+            try
+            {
+                e.target.appendChild(moving_item);
+            }
+            catch(err)
+            {
+                console.error('moving ',moving_item,' to ',e.target);
+            }
         }
         var pos = get_pos(e, moving_hexa);
         update_pos(moving_item, pos);
