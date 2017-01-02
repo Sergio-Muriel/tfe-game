@@ -346,65 +346,63 @@ Path.prototype.build = function()
     this.walls_collision.name='walls';
     this.container.add(this.walls_collision);
 
-    this.add_seals();
+    this.add_ennemys(this.level.seals,'Seal');
+    this.add_ennemys(this.level.bears,'Bear');
     this.add_objects();
 
     game.scene.add(this.container);
 };
 
-Path.prototype.add_seals = function()
+Path.prototype.add_ennemys = function(items, type)
 {
     var self=this;
-    if(this.level.seals)
+    items.forEach(function(ennemy)
     {
-        this.level.seals.forEach(function(seal)
+        var coord = self.get_cell_pos_params({ x: ennemy.x, z: ennemy.z });
+
+        var view_x = coord.x + Math.cos(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
+        var view_z = coord.z + Math.sin(Math.radians(ennemy.rotation + 90)) * game.opt.door_size;
+
+        var patrols = [];
+        patrols.push({
+            x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
+            y:1,
+            z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
+        });
+        ennemy.patrol_positions.forEach(function(patrol)
         {
-            var coord = self.get_cell_pos_params({ x: seal.x, z: seal.z });
-
-            var view_x = coord.x + Math.cos(Math.radians(seal.rotation + 90)) * game.opt.door_size;
-            var view_z = coord.z + Math.sin(Math.radians(seal.rotation + 90)) * game.opt.door_size;
-
-            var patrols = [];
+            var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
             patrols.push({
-                x: coord.x + (game.opt.door_size * seal.left)*2 - (game.opt.door_size),
-                y:1,
-                z: coord.z + (game.opt.door_size * seal.top)*2 - (game.opt.door_size),
-            });
-            seal.patrol_positions.forEach(function(patrol)
-            {
-                var coord_pat = self.get_cell_pos_params({ x: patrol.x, z: patrol.z });
-                patrols.push({
-                    x: coord_pat.x + (game.opt.door_size * patrol.left)*2 - game.opt.door_size,
-                    y: 1,
-                    z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size
-                });
-            });
-            var drops = [];
-            seal.drops.split(/\s+/).forEach(function(drop)
-            {
-                if(drop)
-                {
-                    drops.push(
-                    {
-                        type:drop,
-                        params:{
-                        }
-                    });
-                }
-            });
-            self.add_interraction_item('Seal',
-            {
-                level: game.level,
-                x: coord.x + (game.opt.door_size * seal.left)*2 - (game.opt.door_size),
-                z: coord.z + (game.opt.door_size * seal.top)*2 - (game.opt.door_size),
-                patrol_positions: patrols,
-                view_direction:  { x: view_x, z: view_z } ,
-                patrol_loop:seal.patrol_loop,
-                drops: drops,
-                patrol_wait: seal.patrol_wait
+                x: coord_pat.x + (game.opt.door_size * patrol.left)*2 - game.opt.door_size,
+                y: 1,
+                z: coord_pat.z + (game.opt.door_size * patrol.top)*2 - game.opt.door_size
             });
         });
-    }
+        var drops = [];
+        ennemy.drops.split(/\s+/).forEach(function(drop)
+        {
+            if(drop)
+            {
+                drops.push(
+                {
+                    type:drop,
+                    params:{
+                    }
+                });
+            }
+        });
+        self.add_interraction_item(type,
+        {
+            level: game.level,
+            x: coord.x + (game.opt.door_size * ennemy.left)*2 - (game.opt.door_size),
+            z: coord.z + (game.opt.door_size * ennemy.top)*2 - (game.opt.door_size),
+            patrol_positions: patrols,
+            view_direction:  { x: view_x, z: view_z } ,
+            patrol_loop:ennemy.patrol_loop,
+            drops: drops,
+            patrol_wait: ennemy.patrol_wait
+        });
+    });
 };
 
 Path.prototype.add_objects = function()

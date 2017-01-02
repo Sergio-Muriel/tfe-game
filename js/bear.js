@@ -32,7 +32,7 @@ var Bear = function(game, options)
     this.weapon_type='stick';
     this.weapon_speed= 0.5;
     this.weapon_range= 20;
-    this.weapon_attack_damage = 100;
+    this.weapon_attack_damage = 1;
     this.weapon_hit_chance = 0.5;
 
     this.weapon_defense = 0.1;

@@ -116,6 +116,7 @@ h1
 
 .object,
 .seal,
+.bear,
 .chest,
 .patrol_point
 {
@@ -135,6 +136,7 @@ h1
     border:2px solid transparent;
 }
 .seal { background:red; }
+.bear { background:#97751a; }
 .pinga { background:#FFE4E1; color:black; }
 .fish { background:blue; }
 .key { background:yellow; color:black }
@@ -142,6 +144,7 @@ h1
 
 .chest:before,
 .seal:before,
+.bear:before,
 .pinga:before
 {
     content:'';
@@ -158,6 +161,7 @@ h1
     height:15px;
 }
 .seal:hover,
+.bear:hover,
 .chest:hover,
 .patrol_point:hover
 {
