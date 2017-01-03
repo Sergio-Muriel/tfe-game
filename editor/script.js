@@ -711,6 +711,17 @@ function build_form_cell(h)
     }
     container.appendChild(div);
 
+    var div = document.createElement('div');
+    div.className='cell_editor';
+    div.innerHTML+='<button class="full_walls">Full Walls</button>';
+    div.innerHTML+='<button class="full_smallwalls">Full Smallwalls</button>';
+    div.innerHTML+='<button class="no_walls">No walls</button>';
+    container.appendChild(div);
+
+    div.querySelector('.full_walls').addEventListener('click',toggle_walls.bind(this,  2));
+    div.querySelector('.full_smallwalls').addEventListener('click',toggle_walls.bind(this,  1));
+    div.querySelector('.no_walls').addEventListener('click',toggle_walls.bind(this,  ''));
+
     Array.prototype.slice.call(document.querySelectorAll('#edit_item select')).forEach(function(select)
     {
         select.addEventListener('submit', edit_wall);
@@ -720,6 +731,16 @@ function build_form_cell(h)
     });
 }
 
+function toggle_walls(x)
+{
+    console.log('toggle walls ',x);
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item select')).forEach(function(wall)
+    {
+        console.log('set ',wall, x);
+        wall.value = x;
+    });
+    edit_wall();
+}
 function edit_wall()
 {
     var select = document.querySelector('#edit_item select');
