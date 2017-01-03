@@ -599,7 +599,9 @@ Maze.prototype.create_separation_line= function(cell,params, i, callback)
 Maze.prototype.restart = function()
 {
     var self=this;
-    console.log('maze restart!');
+    var pos = this.get_start_pos();
+    game.focus_perso.restart(pos);
+    game.set_zoom_level(this.level.zoom_level);
 };
 
 Maze.prototype.getStaticObstacles = function()

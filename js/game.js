@@ -225,10 +225,7 @@ var Game = function(opt)
 
     this.restart_level = function()
     {
-        game.resetCamera();
         this.current_item.restart();
-        var pos = this.current_item.get_start_pos();
-        game.focus_perso.restart(pos);
     },
 
     // Camera refresh animation
@@ -386,6 +383,10 @@ var Game = function(opt)
         if(opt.callback)
         {
             this.zoomCallback=opt.callback;
+        }
+        else
+        {
+            this.zoomCallback=null;
         }
 
         this.current_radius = 0;
