@@ -68,17 +68,13 @@ Pinga.prototype.custom = function()
     console.log('custom pinga');
 };
 
-Pinga.prototype.move_weight_custom = function()
+Pinga.prototype.move_weight_custom = function(destination)
 {
-    if(this.following)
-    {
-        this.idle_action.setEffectiveWeight(1);
-        this.help_action.setEffectiveWeight(0);
-    }
-    else
-    {
-        this.idle_action.setEffectiveWeight(0);
-        this.help_action.setEffectiveWeight(1);
-    }
+    var ok_action =  this.following ?  this.idle_action : this.help_action;
+    var ko_action = !this.following ?  this.idle_action : this.help_action;
+
+    this.move_action.setEffectiveWeight(destination);
+    ok_action.setEffectiveWeight(1-destination);
+    ko_action.setEffectiveWeight(0);
 };
 

@@ -28,10 +28,6 @@ Character.prototype.build = function()
     }
 
     this.create();
-    if(this.custom)
-    {
-        this.custom();
-    }
 
     if(this.next_pos)
     {
@@ -217,12 +213,15 @@ Character.prototype.create =function()
     this.move_action.play();
     this.idle_action.play();
 
-    this.attack_action.setEffectiveWeight(0);
-    this.dying_action.setEffectiveWeight(0);
-    this.move_action.setEffectiveWeight(0);
-    this.idle_action.setEffectiveWeight(1);
 
     this.walk();
+
+    if(this.custom)
+    {
+        this.custom();
+    }
+    this.move_weight_destination=0;
+    this.move_weight();
 };
 
 Character.prototype.hover=function()
@@ -722,12 +721,13 @@ Character.prototype.check_vision_end  = function()
 
 Character.prototype.move_weight  = function()
 {
-    if(this.move_weight_custom)
-    {
-        this.move_weight_custom();
-    }
     if(this.move_weight_destination!==null)
     {
+        if(this.move_weight_custom)
+        {
+            this.move_weight_custom(this.move_weight_destination);
+            this.move_weight_destination=null;
+        }
         var c = this.move_action.getEffectiveWeight();
         var dest;
         if(c>this.move_weight_destination)
