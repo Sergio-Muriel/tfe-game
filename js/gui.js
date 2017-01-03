@@ -289,8 +289,12 @@ Game.prototype.gui =
         }
     },
 
-    box: function(title, text)
+    box: function(title, text, pause)
     {
+        if(pause)
+        {
+            game.pause();
+        }
         var div = document.createElement('div');
         div.className='textbox';
 
@@ -301,11 +305,15 @@ Game.prototype.gui =
                 '<p>'+text+'</p>'+
             '</div>';
         this.game_container.appendChild(div);
-        this.any_key_callback = this.remove_box.bind(this, div);
+        this.any_key_callback = this.remove_box.bind(this, div, pause);
         div.addEventListener('mousedown', this.any_key_callback);
     },
-    remove_box: function(div, e)
+    remove_box: function(div, pause, e)
     {
+        if(pause)
+        {
+            game.resume();
+        }
         div.parentElement.removeChild(div);
         this.any_key_callback = null;
         e.stopPropagation();
