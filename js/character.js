@@ -400,7 +400,7 @@ Character.prototype.lookAt= function(pos,view_pos)
 }
 
 
-Character.prototype.moveTo= function(pos)
+Character.prototype.moveTo = function(pos)
 {
     var current_pos = this.container.position;
     if(current_pos.equals(pos))
@@ -421,10 +421,6 @@ Character.prototype.moveTo= function(pos)
     // Last part of moving
     this.is_moving=true;
 
-    var distance = Math.sqrt(Math.pow(pos.x-current_pos.x,2)+Math.pow(pos.z-current_pos.z,2));
-    var directionX = (pos.x-current_pos.x) / distance;
-    var directionZ = (pos.z-current_pos.z) / distance;
-
     this.move_step_vector = pos.clone();
     this.move_step_vector.sub(this.container.position).normalize();
 
@@ -439,7 +435,7 @@ Character.prototype.moveTo= function(pos)
     }
 };
 
-Character.prototype.move_step= function()
+Character.prototype.move_step = function()
 {
     // Patrol right/left
     if(!this.is_running)
@@ -491,8 +487,10 @@ Character.prototype.move_step= function()
                     this.vision.position = this.move_destination;
                 }
             }
+            var distance = this.container.position.distanceTo(this.move_destination);
+            console.log('distance ',distance, this.move_destination);
             // Moving X restrictions
-            if(Math.abs(this.container.position.x - this.move_destination.x) > 1 || Math.abs(this.container.position.z - this.move_destination.z) > 1)
+            if(distance>10)
             {
                 this.container.position.add(this.move_step_vector);
             }
@@ -516,6 +514,11 @@ Character.prototype.move_step= function()
             this.move_weight_destination = 0;
             this.is_moving=false;
             this.move_destination=null;
+            console.log('not moving');
+            if(this.end_move_callback)
+            {
+                this.end_move_callback();
+            }
         }
 
     }
@@ -857,6 +860,7 @@ Character.prototype.remove_follower = function(target)
     this.followers.forEach(function(follower)
     {
         follower.following_idx=idx;
+        follower.following=null;
         idx++;
     });
 };

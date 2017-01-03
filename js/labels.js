@@ -26,6 +26,8 @@ Game.prototype.labels =
         'global_volume': 'Global',
         'ambient_volume': 'Ambient',
         'music_volume': 'Music',
-        'menu_shadow': 'Enable shadows'
+        'menu_shadow': 'Enable shadows',
+        'helpme_title': 'Help me!',
+        'helpme_message': 'My name is Pinga. I am lost! Please take me to the <i>Rescue zone</i>!',
     } 
 };
