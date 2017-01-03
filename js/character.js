@@ -474,26 +474,16 @@ Character.prototype.move_step = function()
         }
         if(distanceToTarget>this.attack_range*this.following_idx || !this.is_running)
         {
-            if(this.has_vision)
-            {
-                // Moving
-                if(Math.abs(this.container.position.x - this.move_destination.x) > 1 || Math.abs(this.container.position.z - this.move_destination.z) > 1)
-                {
-                    this.vision.position.add(this.move_step_vector);
-                }
-                else
-                {
-                    this.vision.position = this.move_destination;
-                }
-            }
             var distance = this.container.position.distanceTo(this.move_destination);
             // Moving X restrictions
             if(distance>10)
             {
                 this.container.position.add(this.move_step_vector);
+                this.vision && this.vision.position.add(this.move_step_vector);
             }
             else
             {
+                this.vision && (this.vision.position = this.move_destination);
                 this.container.position = this.move_destination;
                 moving=false;
             }
