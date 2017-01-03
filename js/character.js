@@ -488,7 +488,6 @@ Character.prototype.move_step = function()
                 }
             }
             var distance = this.container.position.distanceTo(this.move_destination);
-            console.log('distance ',distance, this.move_destination);
             // Moving X restrictions
             if(distance>10)
             {
@@ -514,7 +513,6 @@ Character.prototype.move_step = function()
             this.move_weight_destination = 0;
             this.is_moving=false;
             this.move_destination=null;
-            console.log('not moving');
             if(this.end_move_callback)
             {
                 this.end_move_callback();
@@ -849,7 +847,6 @@ Character.prototype.add_follower = function(target)
     this.followers.push(target);
     target.following_idx = this.followers.indexOf(target)+1;
     target.following= this;
-    console.log('idx  = ',target.following_idx);
 };
 Character.prototype.remove_follower = function(target)
 {
