@@ -1,3 +1,4 @@
+- enter cell callback
 - animated arrow to discribe items: "This is ...."
 - /* RELEASE */
 - moveable camera
