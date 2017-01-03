@@ -201,6 +201,7 @@ function reset()
     nodes.forEach(function(node)
     {
         node.innerText='';
+        node.setAttribute('script','');
         if(node.getAttribute('row')!=="0" || node.getAttribute('line')!=="0")
         {
             node.classList.add('disabled');
