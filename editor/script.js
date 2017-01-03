@@ -78,6 +78,7 @@ for(var line=0; line<30; line++)
         h.className='hexagone '+(line==0 && row==0 ? 'start_cell' : 'disabled');
         h.setAttribute('line',real_line);
         h.setAttribute('row',real_row);
+        h.setAttribute('script','');
         h.addEventListener('click',toggle.bind(this,h, real_line, real_row), false);
         l.appendChild(h);
     }
@@ -92,7 +93,7 @@ var mode_param=null;
 document.getElementById('new').addEventListener('click',function() { if(confirm('Are you sure you want to create a new map?')) { create_new(); }}, false);
 document.getElementById('reset').addEventListener('click',function() { if(confirm('Are you sure you want to reset the map?')) { reset(); }}, false);
 document.getElementById('edit_map').addEventListener('click',toggle_mode.bind(this,'edit_map'), false);
-document.getElementById('wall_properties').addEventListener('click',toggle_mode.bind(this,'wall_properties'), false);
+document.getElementById('cell_properties').addEventListener('click',toggle_mode.bind(this,'cell_properties'), false);
 document.getElementById('mark_end').addEventListener('click',toggle_mode.bind(this,'mark_end'), false);
 document.getElementById('mark_next').addEventListener('click',toggle_mode.bind(this,'mark_next'), false);
 document.getElementById('add_object').addEventListener('click',add_object_toggle, false);
@@ -235,6 +236,10 @@ function load()
             data.cells.forEach(function(cell)
             {
                 var node = document.querySelector('.hexagone[row="'+cell.x+'"][line="'+cell.z+'"]');
+                if(cell.script)
+                {
+                    node.setAttribute('script', cell.script);
+                }
                 node.classList.remove('disabled');
 
                 if(cell.walls)
@@ -330,7 +335,12 @@ function save()
     var nodes = Array.prototype.slice.call(document.querySelectorAll('.hexagone:not(.disabled)'));
     nodes.forEach(function(node)
     {
-        var item = { x: parseInt(node.getAttribute('row'),10), z: parseInt(node.getAttribute('line'),10), walls: [] };
+        var item = {
+            x: parseInt(node.getAttribute('row'),10),
+            z: parseInt(node.getAttribute('line'),10),
+            walls: [],
+            script: node.getAttribute('script')
+        };
 
         // Add extra walls
         var subnodes = Array.prototype.slice.call(node.querySelectorAll('.walltype'));
@@ -466,9 +476,9 @@ function toggle(h, line, row, e)
             }
         }
     }
-    else if(mode=='wall_properties')
+    else if(mode=='cell_properties')
     {
-        build_form_wall(h);
+        build_form_cell(h);
     }
     else if(mode=='mark_end')
     {
@@ -665,10 +675,20 @@ function build_form_item()
     });
 }
 
-function build_form_wall(h)
+function build_form_cell(h)
 {
     var container = document.getElementById('edit_item');
     container.innerText='';
+
+    var div = document.createElement('div');
+    div.className='cell_editor';
+    div.innerHTML='<p>Enter area script:</p><p><textarea class="enter_area_script" line="'+h.getAttribute('line')+'" row="'+h.getAttribute('row')+'"></textarea></p>';
+    container.appendChild(div);
+    container.appendChild(document.createElement('hr'));
+
+    var script = div.querySelector('textarea');
+    script.addEventListener('change',  edit_cell_script);
+    script.value = h.getAttribute('script');
 
     var div = document.createElement('div');
     div.className='wall_editor';
@@ -713,6 +733,13 @@ function edit_wall()
         select = document.querySelector('#edit_item .type'+i);
         add_walltype(node, i, select.value);
     }
+}
+
+function edit_cell_script()
+{
+    var input = document.querySelector('.enter_area_script');
+    var node = document.querySelector('.hexagone[row="'+input.getAttribute('row')+'"][line="'+input.getAttribute('line')+'"]');
+    node.setAttribute('script', input.value);
 }
 
 function add_walltype(node,i,type)

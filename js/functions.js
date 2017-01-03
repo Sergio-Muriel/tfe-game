@@ -92,3 +92,17 @@ function throttle(fn, threshhold, scope) {
   };
 }
 
+function create_function_once(script)
+{
+    var used=0;
+    return function()
+    {
+        if(!used)
+        {
+            used=1;
+            eval(script);
+        }
+    };
+};
+
+

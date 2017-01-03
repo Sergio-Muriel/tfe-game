@@ -260,6 +260,21 @@ Path.prototype.build = function()
     this.level.cells.forEach(function(cell)
     {
         self.add_cell(cell);
+        if(cell.script)
+        {
+            var script = create_function_once(cell.script);
+            for(var i=0;i<6;i++)
+            {
+                var params = { x: cell.x, z: cell.z, real_x:cell.x, real_z:cell.z };
+                var line = self.create_separation_line(
+                    self.generated_doors[cell.x][cell.z],
+                    params,
+                    i,
+                    script
+                );
+                self.line_callbacks.push(line);
+            }
+        }
     });
 
     // Set start and end door/cell
