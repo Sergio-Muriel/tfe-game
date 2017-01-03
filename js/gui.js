@@ -264,6 +264,16 @@ Game.prototype.gui =
     },
     keydown: function(e)
     {
+        if(this.any_key_callback)
+        {
+            switch(e.key)
+            {
+                case ' ' : /*Space key */
+                case 'Escape' :
+                case 'Enter' :
+                    return this.any_key_callback(e);
+            }
+        }
         switch(e.key)
         {
             case 'Escape' :  this.toggle_menu(); break;
@@ -291,11 +301,13 @@ Game.prototype.gui =
                 '<p>'+text+'</p>'+
             '</div>';
         this.game_container.appendChild(div);
-        div.addEventListener('mousedown', this.remove_box.bind(this, div));
+        this.any_key_callback = this.remove_box.bind(this, div);
+        div.addEventListener('mousedown', this.any_key_callback);
     },
     remove_box: function(div, e)
     {
         div.parentElement.removeChild(div);
+        this.any_key_callback = null;
         e.stopPropagation();
     },
 
