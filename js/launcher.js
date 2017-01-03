@@ -18,6 +18,6 @@ options.assets = assets;
 
 var game = new Game(options);
 
-game.init({ level: 1 });
+game.init({ level: level });
 
 
