@@ -494,6 +494,7 @@ Character.prototype.move_step = function()
         }
         else if(!this.attack_target.is_dying)
         {
+            console.log('attack!');
             this.attack(this.attack_target);
         }
 
@@ -625,36 +626,43 @@ Character.prototype.check_vision = function()
     this.friends = game.getFriends();
     this.friends.forEach(function(friend)
     {
-        // Trace 1 raycast to check if it is visible to the user (no cone)
-        var localVertex = friend.object.container.position.clone();
-        var globalVertex = localVertex.sub(originPoint);
-
-        var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
-        var collisionResults = ray.intersectObjects(obstacles_with_player);
-
-        if (collisionResults.length > 0)
+        if(friend.object.visible_from_ennemy)
         {
-            // It is visible to the user by distance, let's check if the user is looking at it
-            if(collisionResults[0].object.object && collisionResults[0].object.object.friend)
+            // Trace 1 raycast to check if it is visible to the user (no cone)
+            var localVertex = friend.object.container.position.clone();
+            var globalVertex = localVertex.sub(originPoint);
+
+            var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
+            var collisionResults = ray.intersectObjects(obstacles_with_player);
+
+            if (collisionResults.length > 0)
             {
-                if(collisionResults[0].distance < self.vision_distance)
+                // It is visible to the user by distance, let's check if the user is looking at it
+                if(collisionResults[0].object.object && collisionResults[0].object.object.friend)
                 {
-                    var angle = find_angle(collisionResults[0].object.object.container.position,self.container.position, self.vision_destination);
-                    angle = angle*180/Math.PI;
-                    if(angle<self.vision_angle)
+                    if(collisionResults[0].distance < self.vision_distance)
                     {
-                        if(collisionResults[0].distance < collision_distance)
+                        var angle = find_angle(collisionResults[0].object.object.container.position,self.container.position, self.vision_destination);
+                        angle = angle*180/Math.PI;
+                        if(angle<self.vision_angle)
                         {
-                            collision_object = collisionResults[0].object.object;
-                            collision_distance = collisionResults[0].distance;
+                            if(collisionResults[0].distance < collision_distance)
+                            {
+                                collision_object = collisionResults[0].object.object;
+                                collision_distance = collisionResults[0].distance;
+                            }
                         }
                     }
                 }
             }
+            if(collision_object)
+            {
+                self.set_target(collision_object);
+            }
         }
-        if(collision_object)
+        else
         {
-            self.set_target(collision_object);
+            console.log('not1 ',friend.visible_from_ennemy);
         }
     });
 
@@ -834,6 +842,7 @@ Character.prototype.get_next_patrol_point = function()
 
 Character.prototype.add_follower = function(target)
 {
+    this.visible_from_ennemy=true;
     this.followers.push(target);
     target.following_idx = this.followers.indexOf(target)+1;
     target.following= this;

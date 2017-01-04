@@ -25,7 +25,7 @@ var Bear = function(game, options)
     this.run_action_duration = 0.45;
 
     this.check_vision_every= 80;
-    this.attack_range = 9;
+    this.attack_range = 10;
     this.hovered=false;
     this.is_dead=false;
     this.type='bear';

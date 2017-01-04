@@ -3,6 +3,7 @@ var Perso = function(game, options)
     var self=this;
     self.id=game.getNewId();
     self.friend=true;
+    self.visible_from_ennemy=true;
     self.type='perso';
     self.followers=[];
     self.following_idx=1;
