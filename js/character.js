@@ -494,7 +494,6 @@ Character.prototype.move_step = function()
         }
         else if(!this.attack_target.is_dying)
         {
-            console.log('attack!');
             this.attack(this.attack_target);
         }
 
@@ -659,10 +658,6 @@ Character.prototype.check_vision = function()
             {
                 self.set_target(collision_object);
             }
-        }
-        else
-        {
-            console.log('not1 ',friend.visible_from_ennemy);
         }
     });
 
