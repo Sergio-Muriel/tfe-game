@@ -331,7 +331,6 @@ Character.prototype.rescue = function(destination)
 };
 Character.prototype.remove = function(destination)
 {
-    console.log('removing! ',this);
     this.removed=true;
     game.clear_interval(this.following_timer);
 
@@ -846,7 +845,6 @@ Character.prototype.add_follower = function(target)
 };
 Character.prototype.remove_follower = function(target)
 {
-    console.log('remove follower');
     game.clear_interval(this.following_timer);
     target.following=null;
     var idx = this.followers.indexOf(target);
@@ -868,7 +866,6 @@ Character.prototype.start_following_timer = function()
 };
 Character.prototype.search_following_path = function()
 {
-    console.log('searching!',this.removed);
     if(!this.following || this.following.is_dead) { 
         window.clearInterval(this.following_timer);
         this.destination_positions = [];

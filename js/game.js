@@ -213,10 +213,8 @@ var Game = function(opt)
         var self=this;
         this.intervals.forEach(function(interval)
         {
-            console.log('clearing ! ',interval);
             self.clear_interval(interval);
         });
-        console.log('intervals ',this.intervals);
         this.focus_perso.notmoveable();
         this.gui.add_loading(this.labels.get('reloading'));
         this.gui.unload();
@@ -645,13 +643,11 @@ var Game = function(opt)
     this.add_interval = function(callback, time)
     {
         var id = window.setInterval(callback,time);
-        console.log('add interval ',id);
         this.intervals.push(id);
         return id;
     };
     this.clear_interval = function(timer)
     {
-        console.log('clear interval ',timer);
         window.clearInterval(timer);
         var idx = this.intervals.indexOf(timer);
         this.intervals.splice(idx, 1);
