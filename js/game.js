@@ -9,6 +9,8 @@ var Game = function(opt)
     var mazes= {};
     var paused=false;
 
+    this.intervals = [];
+
     this.started=true;
     this.assets = opt.assets;
 
@@ -209,6 +211,12 @@ var Game = function(opt)
     this.reload = function()
     {
         var self=this;
+        this.intervals.forEach(function(interval)
+        {
+            console.log('clearing ! ',interval);
+            self.clear_interval(interval);
+        });
+        console.log('intervals ',this.intervals);
         this.focus_perso.notmoveable();
         this.gui.add_loading(this.labels.get('reloading'));
         this.gui.unload();
@@ -259,7 +267,7 @@ var Game = function(opt)
             var delta = clock.getDelta();
             if(delta>0.070)
             {
-                console.warn('SLOW RENDERING DELTA: ',delta);
+                //console.warn('SLOW RENDERING DELTA: ',delta);
                 delta=0.070;
             }
 
@@ -633,5 +641,19 @@ var Game = function(opt)
             case 1: this.zoomLevel({level:70, angle:-90, distance:100, time: 1.5}); break;
             case 2: this.zoomLevel({level:200, angle:-90, distance:150, time: 1.5}); break;
         }
+    };
+    this.add_interval = function(callback, time)
+    {
+        var id = window.setInterval(callback,time);
+        console.log('add interval ',id);
+        this.intervals.push(id);
+        return id;
+    };
+    this.clear_interval = function(timer)
+    {
+        console.log('clear interval ',timer);
+        window.clearInterval(timer);
+        var idx = this.intervals.indexOf(timer);
+        this.intervals.splice(idx, 1);
     };
 };

@@ -304,8 +304,6 @@ var Perso = function(game, options)
 
     this.die = function()
     {
-        window.clearInterval(this.loose_life_timer);
-
         var self=this;
         // Already dead?
         if(this.is_dying)
@@ -767,22 +765,6 @@ var Perso = function(game, options)
 
     this.update_temperature = function(delta)
     {
-        delta*=0.1;
-        this.temperature = Math.max(0, this.temperature+delta);
-        this.temperature = Math.min(this.max_temperature, this.temperature);
-
-        if(this.temperature===0 && this.is_running)
-        {
-            if(!this.loose_life_timer)
-            {
-                this.loose_life_timer = window.setInterval(this.loose_life.bind(this), 1000);
-            }
-        }
-        else if(this.temperature>0)
-        {
-            window.clearInterval(this.loose_life_timer);
-        }
-        this.temperature_value.style.width=(((this.temperature/this.max_temperature)*100))+'%';
     };
 
     this.loose_life = function()
