@@ -583,14 +583,6 @@ Maze.prototype.create_separation_line= function(cell,params, i, callback)
     return line;
 };
 
-Maze.prototype.restart = function()
-{
-    var self=this;
-    var pos = this.get_start_pos();
-    game.focus_perso.restart(pos);
-    game.set_zoom_level(this.level.zoom_level);
-};
-
 Maze.prototype.getStaticObstacles = function()
 {
     var obstacles = [this.walls_collision];

@@ -442,30 +442,6 @@ var Perso = function(game, options)
         }
     }
 
-    this.restart = function(pos)
-    {
-        window.clearInterval(this.loose_life_timer);
-
-        this.is_dead=false;
-        this.is_dying=false;
-        this.is_attacking=false;
-        this.is_opening=false;
-        this.is_moving=false;
-        this.move_destination=null;
-
-
-        this.life = this.max_life;
-        this.update_life();
-
-        this.container.position.x = pos.x;
-        this.container.position.z = pos.z;
-
-        this.move_weight_destination=null;
-        this.move_action.setEffectiveWeight(0);
-        this.dying_action.setEffectiveWeight(0);
-        this.idle_action.setEffectiveWeight(1);
-    };
-
     this.mouseMoveCallback= function(event)
     {
         var pos = this.mouseEvent(event, true);

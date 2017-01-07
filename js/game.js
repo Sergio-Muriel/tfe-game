@@ -223,11 +223,6 @@ var Game = function(opt)
         }, 100);
     },
 
-    this.restart_level = function()
-    {
-        this.current_item.restart();
-    },
-
     // Camera refresh animation
     this.update = function(delta)
     {
