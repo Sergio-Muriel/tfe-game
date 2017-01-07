@@ -65,7 +65,6 @@ Pinga.prototype.custom = function()
     this.help_action.play();
     this.idle_action.setEffectiveWeight(0);
     this.help_action.setEffectiveWeight(1);
-    console.log('custom pinga');
 };
 
 Pinga.prototype.move_weight_custom = function(destination)

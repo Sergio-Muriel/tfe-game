@@ -3,7 +3,6 @@ var re;
 if(re = location.href.match(/level=(\d+)/))
 {
     level=re[1];
-    console.log('level ',level);
 }
 var options = {
     root: document.getElementById('game_container'),

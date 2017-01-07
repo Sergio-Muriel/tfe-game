@@ -498,7 +498,7 @@ var Game = function(opt)
         params.anim_callback = this.inc_scale_fadeout.bind(this, { move_y: 0.10, scale:  0, opacity: 0.01});
         params.bevelSize= 0;
 
-        params.delta_y=15;
+        params.delta_y=30;
         params.size= this.config.text_friend_size;
         params.color= this.config.text_friend_color;
         params.anim_time = 1000;

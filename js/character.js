@@ -498,7 +498,7 @@ Character.prototype.move_step = function()
             this.move_weight_destination = 0;
             this.is_moving=false;
             this.move_destination=null;
-            if(this.end_move_callback)
+            if(this.end_move_callback && this.destination_positions.length<2)
             {
                 this.end_move_callback();
             }
@@ -711,10 +711,9 @@ Character.prototype.check_vision_end  = function()
 
 Character.prototype.start_follow  = function(object, idx)
 {
-    console.log('start follow ',object, idx);
     this.visible_from_ennemy=true;
     this.following_idx = idx;
-    this.following= object;
+    this.following = object;
 
     this.next_pos = this.container.position;
     game.clear_interval(this.following_timer);
@@ -723,10 +722,10 @@ Character.prototype.start_follow  = function(object, idx)
 
 Character.prototype.stop_follow  = function()
 {
+    game.clear_interval(this.following_timer);
     this.following_idx = 1;
     this.following= null;
 
-    game.clear_interval(this.following_timer);
     this.destination_positions = [];
     this.patrol_positions = [].concat(this.options.patrol_positions || []);
     this.move_weight_destination=0;

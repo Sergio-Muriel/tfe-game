@@ -27,14 +27,12 @@ Key.prototype.open = function()
     if(!this.opened)
     {
         this.opened=true;
-        console.log('opening! ',this.options);
         var type = this.options.type;
 
         var reg = new RegExp('Key(\\d+)\-(\\d+)\-(\\d+)','i');
         var result;
         if(result = type.match(reg))
         {
-            console.log('call ',this.options.parent, result);
             this.options.parentStructure.openDoor(result[1], result[2], result[3]);
             this.remove();
         }

@@ -791,6 +791,7 @@ var Perso = function(game, options)
     };
     this.remove_follower = function(target)
     {
+        var self=this;
         game.clear_interval(this.following_timer);
         this.destination_positions = [];
         target.stop_follow();
@@ -800,7 +801,7 @@ var Perso = function(game, options)
         var idx=1;
         this.followers.forEach(function(follower)
         {
-            follower.start_follow(this, idx);
+            follower.start_follow(self, idx);
             idx++;
         });
     };
