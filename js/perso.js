@@ -31,7 +31,7 @@ var Perso = function(game, options)
     self.is_dead=false;
     self.is_running=true;
 
-    self.max_life=game.opt.debug_level>1 ? 10000 : 100;
+    self.max_life=game.opt.debug_level>1 ? 10000 : 1;
     self.life=self.max_life;
 
     self.max_temperature = game.opt.debug_level>1 ? 1000 : 100;

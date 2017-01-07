@@ -514,6 +514,7 @@ Character.prototype.move_step = function()
 
 Character.prototype.attack = function(target, reload)
 {
+    this.following = target;
     if(!this.attacking || reload)
     {
         if(reload)
