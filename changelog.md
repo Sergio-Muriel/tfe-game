@@ -2,8 +2,9 @@
 
 ## 24
 
+- cell scripts (editor+front)
 - pinga play help animation when not following
-- update patrol timers
+- Pinga now follows with pathFinding
 
 ## 23
 
