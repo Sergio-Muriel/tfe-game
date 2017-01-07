@@ -12,8 +12,8 @@ Character.prototype.build = function()
     this.patrol_right_left_inc = 3;
     this.patrol_right_left_deg = 180;
 
+    this.patrol_positions = [].concat(this.options.patrol_positions || []);
     this.next_pos = this.get_next_patrol_point();
-    this.patrol_positions = [].concat(this.patrol_positions || []);
 
     this.create();
 
