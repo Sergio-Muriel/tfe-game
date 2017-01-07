@@ -787,19 +787,20 @@ var Perso = function(game, options)
     this.add_follower = function(target)
     {
         this.followers.push(target);
-        target.visible_from_ennemy=true;
-        target.following_idx = this.followers.indexOf(target)+1;
-        target.following= this;
+        target.start_follow(this, this.followers.indexOf(target)+1);
     };
     this.remove_follower = function(target)
     {
-        target.following=null;
+        game.clear_interval(this.following_timer);
+        this.destination_positions = [];
+        target.stop_follow();
+
         var idx = this.followers.indexOf(target);
         this.followers.splice(idx, 1);
         var idx=1;
         this.followers.forEach(function(follower)
         {
-            follower.following_idx=idx;
+            follower.start_follow(this, idx);
             idx++;
         });
     };

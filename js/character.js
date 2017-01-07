@@ -709,6 +709,28 @@ Character.prototype.check_vision_end  = function()
     this.check_vision();
 };
 
+Character.prototype.start_follow  = function(object, idx)
+{
+    console.log('start follow ',object, idx);
+    this.visible_from_ennemy=true;
+    this.following_idx = idx;
+    this.following= object;
+
+    this.next_pos = this.container.position;
+    game.clear_interval(this.following_timer);
+    this.following_timer = game.add_interval(this.search_following_path.bind(this), 700);
+};
+
+Character.prototype.stop_follow  = function()
+{
+    this.following_idx = 1;
+    this.following= null;
+
+    game.clear_interval(this.following_timer);
+    this.destination_positions = [];
+    this.patrol_positions = [].concat(this.options.patrol_positions || []);
+    this.move_weight_destination=0;
+};
 Character.prototype.move_weight  = function()
 {
     if(this.move_weight_destination!==null)
@@ -774,10 +796,6 @@ Character.prototype.update= function(delta)
             }
         }
     }
-    else if(this.following && !this.following_timer)
-    {
-        this.start_following_timer();
-    }
     else if(this.destination_positions.length>0)
     {
         this.moveTo(this.destination_positions[0]);
@@ -836,40 +854,11 @@ Character.prototype.get_next_patrol_point = function()
     return new THREE.Vector3(r.x, r.y, r.z);
 };
 
-Character.prototype.add_follower = function(target)
-{
-    this.followers.push(target);
-    target.visible_from_ennemy=true;
-    target.following_idx = this.followers.indexOf(target)+1;
-    target.following= this;
-};
-Character.prototype.remove_follower = function(target)
-{
-    game.clear_interval(this.following_timer);
-    target.following=null;
-    var idx = this.followers.indexOf(target);
-    this.followers.splice(idx, 1);
-    var idx=1;
-    this.followers.forEach(function(follower)
-    {
-        follower.following_idx=idx;
-        follower.following=null;
-        idx++;
-    });
-};
 
-Character.prototype.start_following_timer = function()
-{
-    this.next_pos = this.container.position;
-    game.clear_interval(this.following_timer);
-    this.following_timer = game.add_interval(this.search_following_path.bind(this), 700);
-};
 Character.prototype.search_following_path = function()
 {
     if(!this.following || this.following.is_dead) { 
-        window.clearInterval(this.following_timer);
-        this.destination_positions = [];
-        this.patrol_positions = [].concat(this.options.patrol_positions || []);
+        return this.stop_follow();
     }
     this.destination_positions = game.current_item.findPath(this, this.following);
     if(this.destination_positions.length>1 && this.destination_positions[1]== this.move_destination)
