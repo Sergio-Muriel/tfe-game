@@ -849,9 +849,7 @@ var Perso = function(game, options)
         var self=this;
         this.followers.forEach(function(follower)
         {
-            self.remove_follower(follower);
             follower.end_move_callback = follower.rescue.bind(follower);
-            follower.moveTo(self.container.position.clone());
         });
     };
     this.build();

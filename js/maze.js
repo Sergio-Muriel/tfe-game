@@ -25,10 +25,6 @@ var Maze = function(game, options)
     // Cells, by line/row
     this.generated_doors = {};
 
-    this.closed_doors = {};
-    this.closed_doors_collision = {};
-
-
     // Load / Save structure
     this.maze_data = [];
     this.load_data = [];
@@ -146,16 +142,7 @@ Maze.prototype.near_cells = function(initial_x, initial_z, only_connected)
 
     var check = [];
     var door = this.generated_doors[initial_x] ? this.generated_doors[initial_x][initial_z] : null;
-    var add_check = only_connected ?
-        [
-            door.opened_doors.indexOf(0)!==-1 ? 1 : 0,
-            door.opened_doors.indexOf(1)!==-1 ? 1 : 0,
-            door.opened_doors.indexOf(2)!==-1 ? 1 : 0,
-            door.opened_doors.indexOf(3)!==-1 ? 1 : 0,
-            door.opened_doors.indexOf(4)!==-1 ? 1 : 0,
-            door.opened_doors.indexOf(5)!==-1 ? 1 : 0
-        ] :
-        [ 1, 1, 1, 1, 1, 1 ];
+    var add_check = [ 1, 1, 1, 1, 1, 1 ];
 
     for(var i=0; i<6;i++)
     {
@@ -237,8 +224,6 @@ Maze.prototype.create_cell = function(params)
     cell.id=cellid;
     cell.name='pos '+params.x+' / '+params.z;
     cell.separation_lines=[];
-    cell.opened_doors=[];
-    cell.closed_doors=[];
     var pos = this.get_pos(params);
     cell.position.x=pos.x;
     cell.position.y=0;
@@ -468,90 +453,92 @@ Maze.prototype.set_mesh_orientation = function(mesh,i)
     mesh.updateMatrix();
 };
 
-Maze.prototype.findPath = function(origin, destination)
+Maze.prototype.findPath = function(char1, char2)
+{
+    if(!char2) { return []; }
+    var origin = char1.container.position.clone();
+    origin.y=5;
+    var destination = char2.container.position.clone();
+    destination.y=5;
+
+    // Search the char1/char2 cell
+    var char1Cell = null;
+    var char2Cell = null;
+    this.cells.forEach(function(cell, idx)
+    {
+        var distanceToChar1 = char1.container.position.distanceTo(cell.position);
+        var distanceToChar2 = char2.container.position.distanceTo(cell.position);
+        if(distanceToChar1<game.opt.door_size) { char1Cell = idx; }
+        if(distanceToChar2<game.opt.door_size) { char2Cell = idx; }
+    });
+    if(char1Cell===char2Cell)
+    {
+        return [char2.container.position];
+    }
+
+    // Search path across cells
+    var res = this.findPathCells( char2Cell, char1Cell, {}, []);
+    if(!res)
+    {
+        return [char2.container.position];
+    }
+
+    // Build real path positions
+    var start= char1Cell;
+    var positions= [];
+    while(start !== char2Cell)
+    {
+        var through = this.level.cells[start].connectedTo.filter(function(x) { return x.idx=== res[start]; });
+        var cell = this.level.cells[start];
+        var pos = this.get_cell_pos_params(cell);
+        through = through[0].door;
+
+        var rotation = new THREE.Vector3(game.opt.door_size, 0, 0);
+        rotation.applyAxisAngle(new THREE.Vector3(0,1,0), Math.radians(through*60 - 90));
+
+        var position = new THREE.Vector3(pos.x, 5, pos.z);
+        position.add(rotation);
+
+        positions.push(position);
+        start = res[start];
+    }
+    var prev_position = positions.length>0 ? positions[positions.length-1].clone() : char1.container.position.clone();
+
+    // For last position, depends on following_idx value
+    var vector = prev_position;
+    vector.sub(char2.container.position).normalize();
+    vector.multiplyScalar(char1.following_idx * game.opt.door_size * 0.1);
+    var last_pos = char2.container.position.clone();
+    last_pos.add(vector);
+
+    positions.push(last_pos);
+    return positions;
+};
+
+Maze.prototype.findPathCells = function(cell1, cell2, path, to_visit)
 {
     var self=this;
-    if(this.findPath_cache[origin.name+' to '+destination.name])
+    if(cell1===cell2 || cell2===undefined || !this.level.cells[cell1])
     {
-        var res = this.findPath_cache[origin.name+' to '+destination.name].concat();
-        return res;
+        return path;
     }
 
-    var parent_paths= {};
-
-    var to_visit = [];
-    var correct_path= null;
-
-    var doors = this.near_cells(origin.params.x, origin.params.z, true);
-    var i=0;
-    while(i<doors.length && !correct_path)
+    this.level.cells[cell1].connectedTo.forEach(function(cell)
     {
-        var door_data = doors[i];
-        var cell = this.generated_doors[door_data[0]][door_data[1]];
-        parent_paths[cell.name] = { i : (door_data[2]), cell: origin };
-        correct_path = (cell===destination);
-        if(!correct_path)
+        if(path[cell.idx]===undefined)
         {
-            to_visit.push({ parent: origin.name, cell: cell});
+            path[cell.idx] = cell1;
+            to_visit.push(cell.idx);
         }
-        i++;
-    }
-
-    while(!correct_path && to_visit.length>0)
+    });
+    to_visit.concat(this.level.cells[cell1].connectedTo);
+    if(to_visit.length>0)
     {
-        var next = to_visit.shift();
-        var cell = next.cell;
-
-        this.near_cells(cell.params.x, cell.params.z, true).forEach(function(door_data)
-        {
-            var near_cell = self.generated_doors[door_data[0]][door_data[1]];
-            if(!parent_paths[near_cell.name])
-            {
-                parent_paths[near_cell.name] = { i : (door_data[2]), cell: cell };
-                if(near_cell===destination)
-                {
-                    correct_path = true;
-                }
-                to_visit.push({ parent: cell.name, cell: near_cell});
-            }
-        });
+        var current = to_visit.shift();
+        return this.findPathCells(current, cell2, path, to_visit);
     }
-
-    var path = [];
-    // There is a path to this
-    if(correct_path)
-    {
-        var current = destination;
-        var loop_avoid=0;
-        var next_i = this.get_opposide_door(parent_paths[destination.name].i);
-
-        path.push(this.getFindPathCoord(destination, parent_paths[destination.name].i));
-        while(parent_paths[current.name] && parent_paths[current.name].cell!==origin)
-        {
-            var old_current = current;
-            current = parent_paths[current.name].cell;
-            path.push(this.getFindPathCoord(parent_paths[old_current.name].cell, next_i));
-
-            next_i = this.get_opposide_door(parent_paths[current.name].i);
-            path.push(this.getFindPathCoord(parent_paths[old_current.name].cell, parent_paths[current.name].i));
-
-            loop_avoid++;
-        }
-        path.push(this.getFindPathCoord(origin, next_i));
-    }
-    this.findPath_cache[origin.name+' to '+destination.name] = path.concat();
-    return path;
 };
 
-Maze.prototype.getFindPathCoord = function(cell, i)
-{
-    var origin = cell.position.clone().add(this.container.position);
-    var dot = new THREE.Vector3(0, 1, game.opt.door_size*0.7);
-    dot.applyAxisAngle(new THREE.Vector3(0,1,0), Math.radians(i*60));
-
-    dot.add(origin);
-    return dot;
-};
 
 
 Maze.prototype.create_separation_line= function(cell,params, i, callback)

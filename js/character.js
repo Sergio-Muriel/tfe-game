@@ -7,25 +7,13 @@ Character.prototype.build = function()
     this.patrol_id = 0;
     this.patrol_inc = 1;
     this.patrol_waiting_timer = null;
+    this.destination_positions = [];
 
     this.patrol_right_left_inc = 3;
     this.patrol_right_left_deg = 180;
 
     this.next_pos = this.get_next_patrol_point();
-    var path = this.options.patrol_positions || [];
-
-    // Debug draw path
-    for(var i=1; i<path.length;i++)
-    {
-        draw_line({
-            visible: game.opt.debug_level>1,
-            opacity:game.opt.debug_level>1 ? 1 : 0,
-            container: game.scene,
-            color: Math.random()*0xffffff,
-            origin: path[i-1],
-            destination: path[i]
-        });
-    }
+    this.patrol_positions = [].concat(this.patrol_positions || []);
 
     this.create();
 
@@ -261,7 +249,7 @@ Character.prototype.targeted=function(from)
             }
         }
 
-        // Frien stopping following
+        // Friend stopping following
         else if(this.following)
         {
             if(distance<from.open_range)
@@ -273,7 +261,7 @@ Character.prototype.targeted=function(from)
                 this.is_running=true;
                 from.open();
                 game.add_friend_text({ text:game.labels.get('dont move'), position: from.container.position});
-                window.setTimeout(self.untargeted.bind(self), 500);
+                window.setTimeout(self.untargeted.bind(self), 2000);
                 return true;
             }
         }
@@ -283,10 +271,10 @@ Character.prototype.targeted=function(from)
             if(distance<from.open_range)
             {
                 this.is_targeted=true;
-                self.lookAt(from.container.position);
+                //self.lookAt(from.container.position);
                 from.add_follower(this);
                 self.is_running=true;
-                self.moveTo(from.container.position);
+                //self.moveTo(from.container.position);
                 game.add_friend_text({ text:game.labels.get('follow_me'), position: from.container.position});
                 from.open();
 
@@ -338,6 +326,7 @@ Character.prototype.die=function()
 Character.prototype.rescue = function(destination)
 {
     game.add_friend_text({ text:game.labels.get('thank_you'), position: this.container.position});
+    this.following.remove_follower(this);
     this.remove();
 };
 Character.prototype.remove = function(destination)
@@ -362,7 +351,7 @@ Character.prototype.run = function(destination)
         this.is_running=true;
         this.move_action.setDuration(this.run_action_duration);
     }
-    this.running_timer = window.setTimeout(this.walk.bind(this), 2000);
+    this.running_timer = window.setTimeout(this.walk.bind(this), 500);
 };
 
 Character.prototype.walk = function()
@@ -476,7 +465,7 @@ Character.prototype.move_step = function()
         {
             var distance = this.container.position.distanceTo(this.move_destination);
             // Moving X restrictions
-            if(distance>10)
+            if(distance>3)
             {
                 this.container.position.add(this.move_step_vector);
                 this.vision && this.vision.position.add(this.move_step_vector);
@@ -486,6 +475,10 @@ Character.prototype.move_step = function()
                 this.vision && (this.vision.position = this.move_destination);
                 this.container.position = this.move_destination;
                 moving=false;
+                if(this.destination_positions.length>0)
+                {
+                    this.moveTo(this.destination_positions.shift());
+                }
             }
         }
         else if(this.friend)
@@ -760,7 +753,7 @@ Character.prototype.update= function(delta)
     {
         this.life_container.rotation.z += 0.03;
     }
-    if(!this.move_destination && this.options.patrol_positions && this.options.patrol_positions.length>0)
+    if(!this.move_destination && this.patrol_positions && this.patrol_positions.length>0)
     {
         if(!this.patrol_waiting_timer)
         {
@@ -777,9 +770,13 @@ Character.prototype.update= function(delta)
             }
         }
     }
-    else if(this.following)
+    else if(this.following && !this.following_timer)
     {
-        self.moveTo(this.following.container.position);
+        this.start_following_timer();
+    }
+    else if(this.destination_positions.length>0)
+    {
+        this.moveTo(this.destination_positions[0]);
     }
 
     if(!this.is_dying)
@@ -798,7 +795,7 @@ Character.prototype.update= function(delta)
 
 Character.prototype.get_next_patrol_point = function()
 {
-    if(!this.options.patrol_positions || this.options.patrol_positions.length<2)
+    if(!this.patrol_positions || this.patrol_positions.length<2)
     {
         return null;
     }
@@ -815,23 +812,23 @@ Character.prototype.get_next_patrol_point = function()
         next_inc=1;
         next_id=1;
     } 
-    if(next_id>=this.options.patrol_positions.length)
+    if(next_id>=this.patrol_positions.length)
     {
-        if(this.options.patrol_loop)
+        if(this.patrol_loop)
         {
             next_id=0;
         }
         else
         {
             next_inc=-1;
-            next_id=this.options.patrol_positions.length-2;
+            next_id=this.patrol_positions.length-2;
         }
     }
     this.patrol_id=next_id;
     this.patrol_inc=next_inc;
-    var r = this.options.patrol_positions[next_id];
+    var r = this.patrol_positions[next_id];
 
-    this.patrol_wait = this.options.patrol_positions[previous_id].patrol_wait;
+    this.patrol_wait = this.patrol_positions[previous_id].patrol_wait;
     return new THREE.Vector3(r.x, r.y, r.z);
 };
 
@@ -844,6 +841,7 @@ Character.prototype.add_follower = function(target)
 };
 Character.prototype.remove_follower = function(target)
 {
+    window.clearInterval(this.following_timer);
     target.following=null;
     var idx = this.followers.indexOf(target);
     this.followers.splice(idx, 1);
@@ -854,5 +852,38 @@ Character.prototype.remove_follower = function(target)
         follower.following=null;
         idx++;
     });
+};
+
+Character.prototype.start_following_timer = function()
+{
+    this.next_pos = this.container.position;
+    this.following_timer = window.setInterval(this.search_following_path.bind(this), 700);
+};
+Character.prototype.search_following_path = function()
+{
+    if(!this.following) { 
+        window.clearInterval(this.following_timer);
+    }
+    this.destination_positions = game.current_item.findPath(this, this.following);
+    if(this.destination_positions.length>1 && this.destination_positions[1]== this.move_destination)
+    {
+        this.destination_positions.shift();
+    }
+
+    // Debug visible walkable path
+    if(game.opt.debug_level>1)
+    {
+        for(var i=0; i< this.destination_positions.length-1; i++)
+        {
+            draw_line({
+                visible: true,
+                opacity: 1,
+                container: game.scene,
+                color: 0x999999 + Math.random()* 0xffffff,
+                origin: this.destination_positions[i],
+                destination: this.destination_positions[i+1]
+            });
+        }
+    }
 };
 

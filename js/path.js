@@ -161,6 +161,7 @@ Path.prototype.add_cell = function(params)
         });
 
     });
+    return cell;
 };
 
 Path.prototype.build = function()
@@ -202,18 +203,38 @@ Path.prototype.build = function()
     var connected_end = this.get_coord_next_door(this.level.end_cell.x, this.level.end_cell.z, 4);
 
     var last_cell = null;
+
     // Auto add walls on outside cells
-    this.level.cells.forEach(function(cell)
+    this.level.cells.forEach(function(cell, cell_idx)
     {
+        cell.connectedTo=[];
+
         for(var i=0; i<6; i++)
         {
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
 
             // Check if not already put
+            neighbor = self.level.cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; });
             has_neighbor = self.level.cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; }).length>0;
             has_already_wall = cell.walls.filter(function(wall) { return wall.i === i ; }).length>0;
 
             var is_start=false;
+
+
+            if(has_neighbor)
+            {
+                neighbor = neighbor[0];
+                var inv_door = self.get_opposide_door(i);
+
+                var wall_closed = cell.walls.filter(function(x) { return x.i == i && (x.type=='2' || x.type=='1'); });
+                var neighor_closed = neighbor.walls.filter(function(x) { return x.i == inv_door && (x.type=='2' || x.type=='1'); });
+
+                var is_closed = wall_closed.length>0 || neighor_closed.length>0;
+                if(cell.connectedTo.indexOf(neighbor)===-1 && !is_closed)
+                {
+                    cell.connectedTo.push({neighbor:neighbor, x:  neighbor.x, z: neighbor.z, door: i, idx: self.level.cells.indexOf(neighbor)});
+                }
+            }
             if(self.options.parent)
             {
                 is_start = self.level.start_cell ? (cell.x == self.level.start_cell.x && cell.z == self.level.start_cell.z && i===self.level.start_cell.i) : false;
@@ -259,7 +280,12 @@ Path.prototype.build = function()
 
     this.level.cells.forEach(function(cell)
     {
-        self.add_cell(cell);
+        var mesh_cell = self.add_cell(cell);
+
+        detection_container = new THREE.Object3D();
+        detection_container.position.y=1;
+        detection_container.rotation.x = Math.radians(90);
+
         if(cell.script)
         {
             var script = create_function_once(cell.script);
@@ -366,6 +392,7 @@ Path.prototype.build = function()
     this.add_objects();
 
     game.scene.add(this.container);
+
 };
 
 Path.prototype.add_ennemys = function(items, type)
