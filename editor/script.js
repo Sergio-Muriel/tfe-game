@@ -229,7 +229,7 @@ function load()
 
         var c = document.getElementById('zoom_level');
         var zoom_level =  c.options[c.selectedIndex].value;
-        c.selectedIndex = data.type || 0;
+        c.selectedIndex = data.zoom_level || 0;
 
         if(data && data.cells)
         {
