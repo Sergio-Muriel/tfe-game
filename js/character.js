@@ -835,8 +835,8 @@ Character.prototype.get_next_patrol_point = function()
 
 Character.prototype.add_follower = function(target)
 {
-    this.visible_from_ennemy=true;
     this.followers.push(target);
+    target.visible_from_ennemy=true;
     target.following_idx = this.followers.indexOf(target)+1;
     target.following= this;
 };
@@ -862,8 +862,10 @@ Character.prototype.start_following_timer = function()
 };
 Character.prototype.search_following_path = function()
 {
-    if(!this.following) { 
+    if(!this.following || this.following.is_dead) { 
         window.clearInterval(this.following_timer);
+        this.destination_positions = [];
+        this.patrol_positions = [].concat(this.options.patrol_positions || []);
     }
     this.destination_positions = game.current_item.findPath(this, this.following);
     if(this.destination_positions.length>1 && this.destination_positions[1]== this.move_destination)

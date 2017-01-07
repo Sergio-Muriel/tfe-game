@@ -805,6 +805,7 @@ var Perso = function(game, options)
     this.add_follower = function(target)
     {
         this.followers.push(target);
+        target.visible_from_ennemy=true;
         target.following_idx = this.followers.indexOf(target)+1;
         target.following= this;
     };
