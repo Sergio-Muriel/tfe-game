@@ -1,3 +1,4 @@
+- follow bug when from a previous level
 - close main door until all pingas rescued
 - eat fish to have more life
 - animated arrow to discribe items: "This is ...."
