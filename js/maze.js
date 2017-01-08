@@ -230,6 +230,8 @@ Maze.prototype.create_cell = function(params)
     cell.position.z=pos.z;
     cell.incell=false;
     cell.params=params;
+
+    cell.absolute_position = new THREE.Vector3(cell.position.x + this.options.x, cell.position.y, cell.position.z + this.options.z);
     this.cells.push(cell);
     this.container.add(cell);
 
@@ -466,8 +468,8 @@ Maze.prototype.findPath = function(char1, char2)
     var char2Cell = null;
     this.cells.forEach(function(cell, idx)
     {
-        var distanceToChar1 = char1.container.position.distanceTo(cell.position);
-        var distanceToChar2 = char2.container.position.distanceTo(cell.position);
+        var distanceToChar1 = char1.container.position.distanceTo(cell.absolute_position);
+        var distanceToChar2 = char2.container.position.distanceTo(cell.absolute_position);
         if(distanceToChar1<game.opt.door_size) { char1Cell = idx; }
         if(distanceToChar2<game.opt.door_size) { char2Cell = idx; }
     });
