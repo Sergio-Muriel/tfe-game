@@ -18,6 +18,10 @@ function draw_line(params)
     positions[4]=params.force_y || params.destination.y;
     positions[5]=params.destination.z;
 
+    if(params.autodelete)
+    {
+        window.setTimeout(params.container.remove.bind(params.container, line), 1500);
+    }
     return line;
 }
 

@@ -872,6 +872,7 @@ Character.prototype.search_following_path = function()
         {
             draw_line({
                 visible: true,
+                autodelete:true,
                 opacity: 1,
                 container: game.scene,
                 color: 0x999999 + Math.random()* 0xffffff,
