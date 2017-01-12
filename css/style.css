@@ -219,28 +219,6 @@ canvas { width: 100%; height: 100% }
     display:block;
 }
 
-.temperaturebar
-{
-    pointer-events:none;
-    display:inline-block;
-    position:relative;
-    top:50%;
-    left:10vh;
-    transform:translateY(-50%);
-    width:10vw;
-    background:#808080;
-    height:5vh;
-}
-.temperaturebar_filled
-{
-    display:block;
-    position:absolute;
-    top:0px;
-    left:0px;
-    width:30%;
-    height:100%;
-    background:#c0c17e;
-}
 .life
 {
     pointer-events:none;

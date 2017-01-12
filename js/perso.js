@@ -34,9 +34,6 @@ var Perso = function(game, options)
     self.max_life=game.opt.debug_level>1 ? 10000 : 1000;
     self.life=self.max_life;
 
-    self.max_temperature = game.opt.debug_level>1 ? 1000 : 100;
-    self.temperature = self.max_temperature;
-
     self.is_attacking=false;
     self.is_opening=false;
     self.is_moving=false;
@@ -66,7 +63,6 @@ var Perso = function(game, options)
     this.bind = function()
     {
         this.life_value = document.querySelector('.life_value');
-        this.temperature_value = document.querySelector('.temperaturebar_filled');
     };
 
     this.create =function()
@@ -761,10 +757,6 @@ var Perso = function(game, options)
     {
         this.is_running=true;
         this.move_speed = this.run_speed;
-    };
-
-    this.update_temperature = function(delta)
-    {
     };
 
     this.loose_life = function()

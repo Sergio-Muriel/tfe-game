@@ -804,7 +804,6 @@ Maze.prototype.update= function(delta)
     {
         item.update(delta);
     });
-    game.focus_perso.update_temperature(-delta*100);
 };
 
 Maze.prototype.buildNext = function()

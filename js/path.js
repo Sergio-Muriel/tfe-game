@@ -37,7 +37,6 @@ Path.prototype.update = function(delta)
     {
         item.update(delta);
     });
-    game.focus_perso.update_temperature(delta*500);
 };
 
 Path.prototype.get_end_pos = function()
