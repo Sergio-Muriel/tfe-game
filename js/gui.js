@@ -83,7 +83,7 @@ Game.prototype.gui =
         // Open dead menu
         else if(game.focus_perso.is_dead)
         {
-            this.menu_header.innerText = game.labels.get('you_died');
+            this.menu_header.innerText = game.labels.get('gameover');
             this.create_menu_option('menu_retry', game.reload.bind(game));
         }
         // Open menu when playing

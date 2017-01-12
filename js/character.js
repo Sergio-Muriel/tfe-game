@@ -322,6 +322,12 @@ Character.prototype.die=function()
     }, 1000);
 
     window.setTimeout(this.remove.bind(this), 5000);
+    // If the character who died was a friend, we stop the game
+    if(this.friend)
+    {
+        this.dead=true;
+        game.focus_perso.gameover();
+    }
 };
 Character.prototype.rescued = function(destination)
 {
@@ -840,7 +846,7 @@ Character.prototype.get_next_patrol_point = function()
     } 
     if(next_id>=this.patrol_positions.length)
     {
-        if(this.patrol_loop)
+        if(this.options.patrol_loop)
         {
             next_id=0;
         }

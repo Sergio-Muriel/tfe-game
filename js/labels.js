@@ -19,7 +19,7 @@ Game.prototype.labels =
         'menu_restart': 'Restart level',
         'menu_retry': 'Retry',
         'menu_options': 'Options',
-        'you_died': 'You died!',
+        'gameover': 'Game over!',
         'menu_sound': 'Sound',
         'menu_graphic': 'Graphic',
         'menu_back': 'Back',
@@ -29,5 +29,7 @@ Game.prototype.labels =
         'menu_shadow': 'Enable shadows',
         'helpme_title': 'Help me!',
         'helpme_message': 'My name is Pinga. I am lost! Please take me to the <i>Rescue zone</i>!',
+        'level2_title': 'Be careful!',
+        'level2_message':'I just saw a big bear who doesn\'t look very kind!<br><br><i>Avoid</i> entering his <i>green vision zone</i> to get attacked!'
     } 
 };

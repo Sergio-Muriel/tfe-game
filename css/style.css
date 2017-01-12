@@ -241,6 +241,11 @@ canvas { width: 100%; height: 100% }
     cursor:pointer;
     font-size:13px;
 }
+.textbox i
+{
+    font-weight:bold;
+    font-size:1.1em;
+}
 .textbox-content
 {
     position:absolute;
