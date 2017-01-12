@@ -68,7 +68,8 @@ var Assets = function(opt)
         // Ennemys
         this.add_sound('sounds/seal_hit.mp3','seal_hit', false, 0.5);
         this.add_sound('sounds/seal_die.mp3','seal_die', false, 1);
-        this.add_sound('sounds/bear_hit.mp3','bear_hit', false, 0.5);
+        this.add_sound('sounds/bear_attack.mp3','bear_attack', false, 1.0);
+        this.add_sound('sounds/bear_hit.mp3','bear_hit', false, 1.0);
         this.add_sound('sounds/bear_die.mp3','bear_die', false, 1);
         this.add_sound('sounds/pinga_hit.mp3','pinga_hit', false, 1);
         this.add_sound('sounds/pinga_die.mp3','pinga_die', false, 1);
@@ -100,8 +101,8 @@ var Assets = function(opt)
         this.add_sound('sounds/weapon_switch.mp3','weapon_switch', false, 1);
 
         // Music
-        this.add_sound('sounds/music/path.mp3','path',true, 0.8);
-        this.add_sound('sounds/music/maze.mp3','maze',true, 0.8);
+        this.add_sound('sounds/music/path.mp3','path',true, 0.1);
+        this.add_sound('sounds/music/maze.mp3','maze',true, 0.1);
 
         // Effects
         this.add_sound('sounds/ambient/blizzard.mp3','blizzard',true, 1);

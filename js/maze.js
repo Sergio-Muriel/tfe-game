@@ -466,12 +466,14 @@ Maze.prototype.findPath = function(char1, char2)
     // Search the char1/char2 cell
     var char1Cell = null;
     var char2Cell = null;
+    var char1Distance= 99999;
+    var char2Distance= 99999;
     this.cells.forEach(function(cell, idx)
     {
         var distanceToChar1 = char1.container.position.distanceTo(cell.absolute_position);
         var distanceToChar2 = char2.container.position.distanceTo(cell.absolute_position);
-        if(distanceToChar1<game.opt.door_size) { char1Cell = idx; }
-        if(distanceToChar2<game.opt.door_size) { char2Cell = idx; }
+        if(distanceToChar1<char1Distance) { char1Cell = idx; }
+        if(distanceToChar2<char2Distance) { char2Cell = idx; }
     });
     if(char1Cell===char2Cell)
     {

@@ -584,7 +584,7 @@ var Game = function(opt)
         if(!looping)
         {
             audio.setAttribute('volume_target_type', target);
-            target = game.gui.get_value(target) * game.gui.get_value('global_volume');
+            target = game.gui.get_value(target) * game.gui.get_value('global_volume') * audio.getAttribute('initial_volume');
             audio.volume=0;
         }
         if(audio.volume<target)

@@ -214,9 +214,6 @@ var Perso = function(game, options)
 
             if(value>0)
             {
-                play_multiple(game.assets[from.weapon_type+'_attack_sound']);
-                play_multiple(game.assets.perso_hit_sound);
-
                 this.life= Math.max(0,this.life-value);
                 game.add_damage_text({ text:value, position: this.container.position});
                 this.update_life();
@@ -266,6 +263,7 @@ var Perso = function(game, options)
             var value = get_attack_value(this, target);
             if(value>0)
             {
+                console.log('play target ',target);
                 play_multiple(game.assets[this.weapon_type+'_attack_sound']);
                 play_multiple(game.assets[target.type+'_hit_sound']);
 

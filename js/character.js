@@ -552,7 +552,8 @@ Character.prototype.attack = function(target, reload)
         var value = get_attack_value(this, target);
         if(value>0)
         {
-            play_multiple(game.assets[this.weapon_type+'_attack_sound']);
+            console.log('play for ',game.assets[this.type+'_attack_sound']);
+            play_multiple(game.assets[this.type+'_attack_sound']);
             play_multiple(game.assets[target.type+'_hit_sound']);
 
             game.add_damage_text({ text:value, position: target.container.position});

@@ -158,6 +158,7 @@ Game.prototype.gui =
     },
     set_value: function(data, value)
     {
+        console.log('set ',data ,value);
         localStorage.setItem(data,value);
     },
     get_value: function(data)

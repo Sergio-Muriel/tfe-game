@@ -2,8 +2,8 @@ Game.prototype.config =
 {
     // Those items can be modified in the options section
     global_volume: 0.7,
-    music_volume: 0.01,
-    ambient_volume: 0.01,
+    music_volume: 0.50,
+    ambient_volume: 0.60,
     shadow: false,
 
 
