@@ -323,9 +323,14 @@ Character.prototype.die=function()
 
     window.setTimeout(this.remove.bind(this), 5000);
 };
-Character.prototype.rescue = function(destination)
+Character.prototype.rescued = function(destination)
 {
     game.add_friend_text({ text:game.labels.get('thank_you'), position: this.container.position});
+    game.current_item.num_friends--;
+    if(!game.current_item.num_friends)
+    {
+        game.current_item.open_last();
+    }
     this.following.remove_follower(this);
     this.remove();
 };

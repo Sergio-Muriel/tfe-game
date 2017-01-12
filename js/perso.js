@@ -810,7 +810,7 @@ var Perso = function(game, options)
         var self=this;
         this.followers.forEach(function(follower)
         {
-            follower.end_move_callback = follower.rescue.bind(follower);
+            follower.end_move_callback = follower.rescued.bind(follower);
         });
     };
     this.build();

@@ -790,6 +790,11 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     this.interraction_items.push(item);
     this.all_interraction_items.push(item);
     game.updateCollisionsCache();
+
+    if(item.friend)
+    {
+        this.num_friends++;
+    }
     return item;
 };
 

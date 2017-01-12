@@ -5,6 +5,7 @@ var Path = function(game, options)
     this.options = options;
 
     this.nextType='Path';
+    this.num_friends=0;
 
     this.num_items_line=2;
     this.width = 2;
@@ -248,7 +249,8 @@ Path.prototype.build = function()
             {
                 last_cell = cell;
                 self.level.next_maze.i = i;
-                cell.walls.push({ type: '3', i: i});
+                self.last_cell = {x: cell.x, z:cell.z, i: i};
+                cell.walls.push({ type: '4', i: i});
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
             {
@@ -483,7 +485,7 @@ Path.prototype.add_objects = function()
                         }
                     });
                 }
-                self.add_interraction_item(classtype,{
+                var item = self.add_interraction_item(classtype,{
                     level: game.level,
                     mazeid: self.id,
                     type: object.key || type,
@@ -525,6 +527,11 @@ Path.prototype.stop_step = function()
     }
 };
 
+Path.prototype.open_last = function()
+{
+    console.log('open last');
+    this.openDoor(this.last_cell.x, this.last_cell.z, this.last_cell.i);
+};
 Path.prototype.enterEndCell = function()
 {
     game.focus_perso.rescue();
