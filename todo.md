@@ -1,5 +1,5 @@
-- eat fish to have more life
 - /* RELEASE */
+- eat fish to have more life
 - moveable camera
 - auto play scenario
 - add snow like / blizzard particles
