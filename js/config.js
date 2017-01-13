@@ -6,6 +6,8 @@ Game.prototype.config =
     ambient_volume: 0.60,
     shadow: false,
 
+    play_attack_sound_random: 0.2,
+
 
     // Configurable, but not by the player ;)
     text_hit_color: 0x550000,

@@ -46,6 +46,14 @@ function  play_multiple(audio, delay)
     }
 }
 
+function  play_multiple_random(audio, percent)
+{
+    if(audio.paused && Math.random()<percent)
+    {
+        audio.play();
+    }
+}
+
 function search_bone_name(name,childrens)
 {
     var found=false;

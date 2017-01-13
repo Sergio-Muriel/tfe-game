@@ -550,10 +550,10 @@ Character.prototype.attack = function(target, reload)
 
         // Effective life lost
         var value = get_attack_value(this, target);
+
+        play_multiple_random(game.assets[this.type+'_attack_sound'], game.config.play_attack_sound_random);
         if(value>0)
         {
-            console.log('play for ',game.assets[this.type+'_attack_sound']);
-            play_multiple(game.assets[this.type+'_attack_sound']);
             play_multiple(game.assets[target.type+'_hit_sound']);
 
             game.add_damage_text({ text:value, position: target.container.position});
