@@ -726,14 +726,19 @@ Character.prototype.start_follow  = function(object, idx)
     this.visible_from_ennemy=true;
     this.following_idx = idx;
     this.following = object;
+    play_multiple(game.assets[this.type+'_follow_sound'], 0);
 
     this.next_pos = this.container.position;
     game.clear_interval(this.following_timer);
     this.following_timer = game.add_interval(this.search_following_path.bind(this), 700);
 };
 
-Character.prototype.stop_follow  = function()
+Character.prototype.stop_follow  = function(play)
 {
+    if(play)
+    {
+        play_multiple(game.assets[this.type+'_stopfollow_sound'], 0);
+    }
     game.clear_interval(this.following_timer);
     this.following_idx = 1;
     this.following= null;
@@ -869,7 +874,7 @@ Character.prototype.get_next_patrol_point = function()
 Character.prototype.search_following_path = function()
 {
     if(!this.following || this.following.is_dead) { 
-        return this.stop_follow();
+        return this.stop_follow(false);
     }
     this.destination_positions = game.current_item.findPath(this, this.following);
     if(this.destination_positions.length>1 && this.destination_positions[1]== this.move_destination)

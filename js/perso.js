@@ -263,7 +263,6 @@ var Perso = function(game, options)
             var value = get_attack_value(this, target);
             if(value>0)
             {
-                console.log('play target ',target);
                 play_multiple(game.assets[this.weapon_type+'_attack_sound']);
                 play_multiple(game.assets[target.type+'_hit_sound']);
 
@@ -790,7 +789,7 @@ var Perso = function(game, options)
         var self=this;
         game.clear_interval(this.following_timer);
         this.destination_positions = [];
-        target.stop_follow();
+        target.stop_follow(true);
 
         var idx = this.followers.indexOf(target);
         this.followers.splice(idx, 1);

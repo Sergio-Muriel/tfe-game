@@ -68,11 +68,15 @@ var Assets = function(opt)
         // Ennemys
         this.add_sound('sounds/seal_hit.mp3','seal_hit', false, 0.5);
         this.add_sound('sounds/seal_die.mp3','seal_die', false, 1);
-        this.add_sound('sounds/bear_attack.mp3','bear_attack', false, 1.0);
-        this.add_sound('sounds/bear_hit.mp3','bear_hit', false, 1.0);
-        this.add_sound('sounds/bear_die.mp3','bear_die', false, 1);
+
+        this.add_sound('sounds/bear_attack.mp3','bear_attack', false, 0.2);
+        this.add_sound('sounds/bear_hit.mp3','bear_hit', false, 0.5);
+        this.add_sound('sounds/bear_die.mp3','bear_die', false, 0.6);
+
         this.add_sound('sounds/pinga_hit.mp3','pinga_hit', false, 1);
         this.add_sound('sounds/pinga_die.mp3','pinga_die', false, 1);
+        this.add_sound('sounds/pinga_follow.mp3','pinga_follow', false, 1);
+        this.add_sound('sounds/pinga_stopfollow.mp3','pinga_stopfollow', false, 1);
 
         // Items
         this.add_sound('sounds/chest_open.mp3','chest_open', false, 0.3);
