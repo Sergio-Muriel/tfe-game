@@ -805,6 +805,15 @@ var Perso = function(game, options)
         var self=this;
         this.followers.forEach(function(follower)
         {
+            self.remove_follower(follower);
+
+            // Create follow fake item to destination
+            var obj = new THREE.Object3D();
+            obj.position.x = self.container.position.x
+            obj.position.y = self.container.position.y
+            obj.position.z = self.container.position.z;
+
+            follower.start_follow({container: obj}, 1);
             follower.end_move_callback = follower.rescued.bind(follower);
         });
     };

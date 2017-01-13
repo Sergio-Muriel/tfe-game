@@ -337,7 +337,6 @@ Character.prototype.rescued = function(destination)
     {
         game.current_item.open_last();
     }
-    this.following.remove_follower(this);
     this.remove();
 };
 Character.prototype.remove = function(destination)
