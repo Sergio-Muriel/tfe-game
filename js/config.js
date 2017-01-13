@@ -6,7 +6,7 @@ Game.prototype.config =
     ambient_volume: 0.60,
     shadow: false,
 
-    play_attack_sound_random: 0.2,
+    play_attack_sound_random: 0.6,
 
 
     // Configurable, but not by the player ;)
