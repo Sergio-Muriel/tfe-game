@@ -63,9 +63,10 @@ var Assets = function(opt)
 
         this.add_sound('sounds/miss.mp3','miss', false, 1);
         this.add_sound('sounds/perso_die.mp3','perso_die', false, 1);
-        this.add_sound('sounds/perso_hit.mp3','perso_hit', false, 0.5);
+        this.add_sound('sounds/perso_hit.mp3','perso_hit', false, 1.0);
 
         // Ennemys
+        this.add_sound('sounds/seal_attack.mp3','seal_attack', false, 0.6);
         this.add_sound('sounds/seal_hit.mp3','seal_hit', false, 0.5);
         this.add_sound('sounds/seal_die.mp3','seal_die', false, 1);
 
