@@ -472,8 +472,8 @@ Maze.prototype.findPath = function(char1, char2)
     {
         var distanceToChar1 = char1.container.position.distanceTo(cell.absolute_position);
         var distanceToChar2 = char2.container.position.distanceTo(cell.absolute_position);
-        if(distanceToChar1<char1Distance) { char1Cell = idx; }
-        if(distanceToChar2<char2Distance) { char2Cell = idx; }
+        if(distanceToChar1<char1Distance) { char1Cell = idx; char1Distance = distanceToChar1; }
+        if(distanceToChar2<char2Distance) { char2Cell = idx; char2Distance = distanceToChar2; }
     });
     if(char1Cell===char2Cell)
     {

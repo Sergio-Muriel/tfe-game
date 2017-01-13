@@ -38,7 +38,7 @@ var Bear = function(game, options)
 
     this.weapon_defense = 0;
 
-    this.max_life=50;
+    this.max_life=1;
     this.life=this.max_life;
 
     this.is_running= false;
