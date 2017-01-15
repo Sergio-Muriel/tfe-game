@@ -36,7 +36,7 @@ Stick.prototype.equip= function()
 {
     if(!this.deleted)
     {
-        game.gui.add_weapon('stick');
+        game.gui.add_weapon('stick', true);
         this.remove();
     }
 };

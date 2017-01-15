@@ -5,9 +5,10 @@ var Fish = function(game, options)
 
     this.deleted=false;
 
-    this.is_hoverable=false;
+    this.is_hoverable=true;
     this.is_static_collision=false;
     this.can_walk_through=true;
+    this.hover_color =  0x050533;
 
     this.scale=15;
 
@@ -29,7 +30,7 @@ Fish.prototype.bind = function()
     }
 
     this.equip_script
-    this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
+    //this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
     console.log('add ',this.options);
 
     this.rotatingClip = this.object_geo.animations[1];
@@ -37,6 +38,15 @@ Fish.prototype.bind = function()
     this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
     this.rotate_action.play();
     this.rotate_action.setEffectiveWeight(1);
+};
+
+Fish.prototype.targeted = function(from)
+{
+    var distance = from.container.position.distanceTo(this.container.position);
+    if(distance<from.open_range)
+    {
+        this.equip();
+    }
 };
 
 Fish.prototype.equip= function()
