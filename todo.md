@@ -1,3 +1,4 @@
+- fish to make ennemys move
 - /* RELEASE */
 - eat fish to have more life
 - moveable camera
