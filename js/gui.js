@@ -242,6 +242,7 @@ Game.prototype.gui =
     loaded: function()
     {
         this.add_weapon('punch',true);
+        this.add_weapon('noise',false);
     },
 
     unload: function()
