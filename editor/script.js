@@ -534,7 +534,7 @@ function toggle(h, line, row, e)
     {
         if(h.classList.contains('disabled')) { return; }
         var pos = get_pos(e,h);
-        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , trigger: ''});
+        this.add_object(mode.replace('add_',''),h, { top: pos.top, left:pos.left, rotation:0 , script: ''});
         e.stopPropagation();
     }
 
@@ -607,6 +607,7 @@ function add_object(type,h, params)
         });
 
         div.setAttribute('rotation',params.rotation);
+        div.setAttribute('script',params.script || '');
         div.style.transform='rotate('+params.rotation+'deg)';
         for(var param in params)
         {
@@ -662,12 +663,20 @@ function build_form_item()
                 case 'top': 
                     type = 'range'; extra='min="0" max="1" step="0.01"'; break; 
             };
-            div.innerHTML='<label>'+attribute.name+'</label><input '+extra+' type="'+type+'" name="'+attribute.name+'" />';
-            div.querySelector('input').setAttribute('value', attribute.value);
+            if(attribute.name=='script')
+            {
+                div.innerHTML='<label>'+attribute.name+'</label><textarea '+extra+' name="'+attribute.name+'"></textarea>';
+                div.querySelector('textarea').innerText=attribute.value;
+            }
+            else
+            {
+                div.innerHTML='<label>'+attribute.name+'</label><input '+extra+' type="'+type+'" name="'+attribute.name+'" />';
+                div.querySelector('input').setAttribute('value', attribute.value);
+            }
             container.appendChild(div);
         }
     });
-    Array.prototype.slice.call(document.querySelectorAll('#edit_item input')).forEach(function(input)
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item input, #edit_item textarea')).forEach(function(input)
     {
         input.addEventListener('submit', edit_submit);
         input.addEventListener('keyup', edit_submit);
@@ -809,7 +818,7 @@ function remove(e)
 
 function edit_submit()
 {
-    Array.prototype.slice.call(document.querySelectorAll('#edit_item input')).forEach(function(input)
+    Array.prototype.slice.call(document.querySelectorAll('#edit_item input, #edit_item textarea')).forEach(function(input)
     {
         if(input.type=='checkbox')
         {

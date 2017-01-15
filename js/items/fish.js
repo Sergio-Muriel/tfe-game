@@ -9,7 +9,7 @@ var Fish = function(game, options)
     this.is_static_collision=false;
     this.can_walk_through=true;
 
-    this.scale=2;
+    this.scale=15;
 
     this.object_material = game.assets.fish_mat;
     this.object_geo = game.assets.fish_geo;
@@ -23,13 +23,33 @@ Fish.prototype.constructor = Common;
 
 Fish.prototype.bind = function()
 {
-    this.walk_through_callback = this.remove.bind(this, this.options.walk_through_callback);
+    if(this.options.parameters.script)
+    {
+        this.equip_script =create_function_once(this.options.parameters.script);
+    }
+
+    this.equip_script
+    this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
+    console.log('add ',this.options);
 
     this.rotatingClip = this.object_geo.animations[1];
     var duration  = Math.random()*2 + 1;
     this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);
     this.rotate_action.play();
     this.rotate_action.setEffectiveWeight(1);
+};
+
+Fish.prototype.equip= function()
+{
+    if(this.equip_script)
+    {
+        this.equip_script();
+    }
+    if(!this.deleted)
+    {
+        game.gui.add_weapon('fish');
+        this.remove();
+    }
 };
 
 
