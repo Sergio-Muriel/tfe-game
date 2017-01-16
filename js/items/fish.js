@@ -11,6 +11,7 @@ var Fish = function(game, options)
     this.hover_color =  0x050533;
 
     this.scale=15;
+    this.droppable = true;
 
     this.object_material = game.assets.fish_mat;
     this.object_geo = game.assets.fish_geo;
@@ -61,8 +62,10 @@ Fish.prototype.equip= function()
         this.remove();
     }
 };
-Fish.prototype.use_callback= function()
+Fish.prototype.use_callback= function(from)
 {
+    from.open();
+    // Put a new fish on the floor and remove it
     console.log('use callback');
 };
 

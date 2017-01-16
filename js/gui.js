@@ -320,23 +320,25 @@ Game.prototype.gui =
 
     add_weapon: function(type, autoswitch)
     {
-        if(this.weapons.indexOf(type)!==-1)
+        if(this.weapons.indexOf(type)===-1)
         {
-            return;
+            var div = document.createElement('div');
+            div.setAttribute('class', 'bone_attachment '+type);
+            div.setAttribute('data-type', type);
+
+            var div_hover = document.createElement('div');
+            div_hover.setAttribute('class', 'bone_attachment-hover');
+            div_hover.innerHTML = 'Select <span>['+(this.bone_attachments.length+1)+']</span>';
+
+            div.addEventListener('mousedown', this.toggle_weapon.bind(this,div));
+
+            this.bone_attachments_container.appendChild(div);
+            this.bind();
         }
         this.weapons.push(type);
-        var div = document.createElement('div');
-        div.setAttribute('class', 'bone_attachment '+type);
-        div.setAttribute('data-type', type);
+        var num = this.weapons.filter(function(x) { return x === type; }).length;
+        document.querySelector('.bone_attachment.'+type).innerText = num;
 
-        var div_hover = document.createElement('div');
-        div_hover.setAttribute('class', 'bone_attachment-hover');
-        div_hover.innerHTML = 'Select <span>['+(this.bone_attachments.length+1)+']</span>';
-
-        div.addEventListener('mousedown', this.toggle_weapon.bind(this,div));
-
-        this.bone_attachments_container.appendChild(div);
-        this.bind();
         if(autoswitch)
         {
             this.toggle_weapon(div);
