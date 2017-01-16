@@ -899,3 +899,13 @@ Character.prototype.search_following_path = function()
     }
 };
 
+Character.prototype.disturb = function(source, range)
+{
+    var distance = this.container.position.distanceTo(source);
+
+    // If the character ear the sound
+    if(distance<range)
+    {
+        console.log(this.type+' disturbed ',source);
+    }
+};

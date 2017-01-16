@@ -162,7 +162,7 @@ var Perso = function(game, options)
         var item  = new window[className](game, {});
         if(item.use_callback)
         {
-            item.use_callback();
+            item.use_callback(this);
             return false;
         }
         if(!item.equipable)

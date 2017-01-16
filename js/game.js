@@ -317,6 +317,10 @@ var Game = function(opt)
     {
         return this.friends;
     };
+    this.getEnnemis = function()
+    {
+        return this.ennemis;
+    };
     this.getCollisionCallbacks = function()
     {
         return this.collision_callbacks;
@@ -342,6 +346,7 @@ var Game = function(opt)
         this.static_obstacles = this.current_item.getStaticObstacles();
         this.moving_obstacles = this.current_item.getMovingObstacles();
         this.friends = [].concat(this.current_item.getFriends(), this.focus_perso.container_mesh);
+        this.ennemis = this.current_item.getEnnemis();
         this.obstacles_with_player = [].concat(this.static_obstacles, this.friends);
 
         this.moving_and_static_obstacles = [].concat(this.static_obstacles).concat(this.moving_obstacles);

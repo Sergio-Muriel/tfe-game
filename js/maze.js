@@ -638,6 +638,18 @@ Maze.prototype.getFriends = function()
     });
     return obstacles;
 };
+Maze.prototype.getEnnemis = function()
+{
+    var obstacles=[];
+    this.interraction_items.forEach(function(item)
+    {
+        if(!item.friend && !item.is_dying)
+        {
+            obstacles.push(item.container_mesh);
+        }
+    });
+    return obstacles;
+};
 
 Maze.prototype.getHovers = function()
 {

@@ -1,4 +1,5 @@
 - new weapon to "call" the ennemies and make move their vision for X seconds
+- visual sound effect for the noise
 - fish to make ennemys move
 - /* RELEASE */
 - eat fish to have more life
