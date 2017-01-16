@@ -921,6 +921,9 @@ Character.prototype.restore= function()
     this.patrol_positions = [].concat(this.options.patrol_positions || []);
     this.next_pos = this.get_next_patrol_point();
 
+    // Skip patrol wait when restoring
+    this.patrol_wait=0;
+
     if(this.next_pos)
     {
         this.create_view_vector(this.next_pos);
