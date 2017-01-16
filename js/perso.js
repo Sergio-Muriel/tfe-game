@@ -151,15 +151,25 @@ var Perso = function(game, options)
 
     };
 
-    this.hand_equip = function(type)
+    this.use_item = function(type)
     {
         if(this.weapon_type===type)
         {
-            return;
+            return false;
         }
 
         var className = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase(); 
         var item  = new window[className](game, {});
+        if(item.use_callback)
+        {
+            item.use_callback();
+            return false;
+        }
+        if(!item.equipable)
+        {
+            return false;
+        }
+        play_multiple(game.assets.weapon_switch_sound);
 
         this.weapon_type = type;
         this.weapon_speed=item.weapon_speed;
@@ -194,9 +204,7 @@ var Perso = function(game, options)
 
             this.weapon_mesh = weapon;
         }
-        else
-        {
-        }
+        return true;
     };
 
     this.targeted=function(from)

@@ -13,6 +13,7 @@ var Hammer = function(game, options)
     this.weapon_range = 20;
     this.weapon_attack_damage = 45;
     this.weapon_hit_chance = 1.0;
+    this.equipable = true;
 
     this.weapon_defense = 0.3;
 

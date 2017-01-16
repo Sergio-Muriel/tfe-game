@@ -196,24 +196,21 @@ Game.prototype.gui =
             return false;
         }
         var self=this;
-        this.bone_attachments.forEach(function(subbone)
+        if(game.focus_perso.use_item(bone.getAttribute('data-type')))
         {
-            if(subbone!==bone)
+            this.bone_attachments.forEach(function(subbone)
             {
-                subbone.classList.remove('selected');
-            }
-        });
-        game.focus_perso.hand_equip(bone.getAttribute('data-type'));
-        bone.classList.add('selected');
+                if(subbone!==bone)
+                {
+                    subbone.classList.remove('selected');
+                }
+            });
+            bone.classList.add('selected');
+        }
         if(e)
         {
             e.stopPropagation();
         }
-        if(this.weapons.length>1)
-        {
-            play_multiple(game.assets.weapon_switch_sound);
-        }
-
         return false;
     },
     update_loading: function(current, total)

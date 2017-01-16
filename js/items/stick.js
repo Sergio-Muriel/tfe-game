@@ -13,6 +13,7 @@ var Stick = function(game, options)
     this.weapon_range = 15;
     this.weapon_attack_damage = 10;
     this.weapon_hit_chance = 1.0;
+    this.equipable = true;
 
     this.weapon_defense = 0.5;
     this.increase_life_value = 10;

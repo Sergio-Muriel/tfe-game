@@ -61,5 +61,9 @@ Fish.prototype.equip= function()
         this.remove();
     }
 };
+Fish.prototype.use_callback= function()
+{
+    console.log('use callback');
+};
 
 

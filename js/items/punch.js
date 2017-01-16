@@ -5,5 +5,5 @@ var Punch = function(game, options)
     this.weapon_attack_damage = 10;
     this.weapon_hit_chance = 0.5;
     this.weapon_defense = 0;
+    this.equipable = true;
 };
-

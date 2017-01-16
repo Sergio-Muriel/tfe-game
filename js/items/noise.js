@@ -7,7 +7,9 @@ var Noise = function(game, options)
 Noise.prototype = Object.create(Common.prototype);
 Noise.prototype.constructor = Noise;
 
-Noise.prototype.bind = function()
+Noise.prototype.use_callback = function()
 {
+    console.log('make some noise!');
+    play_multiple(game.assets.perso_noise_sound);
 };
 

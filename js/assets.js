@@ -61,9 +61,10 @@ var Assets = function(opt)
         this.add_sound('sounds/step_floor.mp3','step_floor',true, 0.4);
         this.add_sound('sounds/step_snow.mp3','step_snow',true, 0.3);
 
-        this.add_sound('sounds/miss.mp3','miss', false, 1);
+        this.add_sound('sounds/miss.mp3','miss', false, 0.6);
         this.add_sound('sounds/perso_die.mp3','perso_die', false, 1);
         this.add_sound('sounds/perso_hit.mp3','perso_hit', false, 1.0);
+        this.add_sound('sounds/perso_noise.mp3','perso_noise', false, 1.0);
 
         // Ennemys
         this.add_sound('sounds/seal_attack.mp3','seal_attack', false, 0.6);
@@ -76,8 +77,8 @@ var Assets = function(opt)
         this.add_sound('sounds/bear_die.mp3','bear_die', false, 0.6);
 
         // Friends
-        this.add_sound('sounds/pinga_hit.mp3','pinga_hit', false, 1);
-        this.add_sound('sounds/pinga_die.mp3','pinga_die', false, 1);
+        this.add_sound('sounds/perso_hit.mp3','pinga_hit', false, 1);
+        this.add_sound('sounds/perso_die.mp3','pinga_die', false, 1);
         this.add_sound('sounds/pinga_follow.mp3','pinga_follow', false, 1);
         this.add_sound('sounds/pinga_stopfollow.mp3','pinga_stopfollow', false, 1);
 
