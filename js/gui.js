@@ -318,9 +318,23 @@ Game.prototype.gui =
         e.stopPropagation();
     },
 
+    remove_weapon: function(type)
+    {
+        var idx = this.weapons.indexOf(type);
+        this.weapons.splice(idx, 1);
+        var num = this.weapons.filter(function(x) { return x === type; }).length;
+        document.querySelector('.bone_attachment.'+type).innerText = num;
+    },
+    is_available(type)
+    {
+        var num = this.weapons.filter(function(x) { return x === type; }).length;
+        document.querySelector('.bone_attachment.'+type).innerText = num;
+        return num>0;
+    },
+
     add_weapon: function(type, autoswitch)
     {
-        if(this.weapons.indexOf(type)===-1)
+        if(!document.querySelector('.bone_attachment.'+type))
         {
             var div = document.createElement('div');
             div.setAttribute('class', 'bone_attachment '+type);

@@ -58,15 +58,34 @@ Fish.prototype.equip= function()
     }
     if(!this.deleted)
     {
+        game.focus_perso.open();
         game.gui.add_weapon('fish');
         this.remove();
     }
 };
 Fish.prototype.use_callback= function(from)
 {
+    var type = this.type.toLowerCase();
+    if(!game.gui.is_available(type))
+    {
+        return false;
+    }
+
     from.open();
+    game.gui.remove_weapon(type);
     // Put a new fish on the floor and remove it
-    console.log('use callback');
+    var item = game.current_item.add_interraction_item(this.type,{
+        level: game.level,
+        mazeid: game.current_item.id,
+        type: this.type,
+        callback: function() { },
+        rotate: Math.random()*Math.PI,
+        parameters: {},
+        drops: [],
+        x: from.container.position.x,
+        y: 1,
+        z: from.container.position.z
+    });
 };
 
 
