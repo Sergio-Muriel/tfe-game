@@ -2,6 +2,14 @@ var Character = function(game, options)
 {
 };
 
+Character.prototype.create_view_vector = function(pos)
+{
+    console.log('create view vector', pos);
+    var v = new THREE.Vector3(pos.x, pos.y, pos.z);
+    this.view_vector = v.sub(this.container.position);
+    this.view_vector.normalize().multiplyScalar(game.opt.door_size);
+};
+
 Character.prototype.build = function()
 {
     this.patrol_id = 0;
@@ -12,34 +20,9 @@ Character.prototype.build = function()
     this.patrol_right_left_inc = 3;
     this.patrol_right_left_deg = 180;
 
-    this.patrol_positions = [].concat(this.options.patrol_positions || []);
-    this.next_pos = this.get_next_patrol_point();
-
     this.create();
+    this.restore();
 
-    if(this.next_pos)
-    {
-        var v = new THREE.Vector3(this.next_pos.x, this.next_pos.y, this.next_pos.z);
-        this.view_vector = v.sub(this.container.position);
-    }
-    else if(this.options.view_direction)
-    {
-        var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
-        this.view_vector = v.clone().sub(this.container.position);
-        this.lookAt(v, v);
-    }
-    else if(this.options.rotate!==undefined)
-    {
-        var orig = new THREE.Vector3(0,2,0);
-
-        this.view_vector = new THREE.Vector3(100,2,100);
-        this.view_vector.applyAxisAngle(new THREE.Vector3(0,1,0), - Math.radians(30) + this.options.rotate);
-
-        this.view_vector.add(this.container.position);
-        orig.add(this.container.position);
-
-        this.lookAt(this.view_vector, this.view_vector);
-    }
 };
 
 Character.prototype.create =function()
@@ -274,7 +257,6 @@ Character.prototype.targeted=function(from)
                 //self.lookAt(from.container.position);
                 from.add_follower(this);
                 self.is_running=true;
-                //self.moveTo(from.container.position);
                 game.add_friend_text({ text:game.labels.get('follow_me'), position: from.container.position});
                 from.open();
 
@@ -386,7 +368,7 @@ Character.prototype.walk = function()
 };
 
 
-Character.prototype.lookAt= function(pos,view_pos)
+Character.prototype.lookAt = function(pos,view_pos)
 {
     if(pos)
     {
@@ -401,16 +383,30 @@ Character.prototype.lookAt= function(pos,view_pos)
 }
 
 
+Character.prototype.stop = function()
+{
+    this.move_weight_destination = 0;
+    this.is_moving=false;
+    this.move_destination=null;
+    if(this.end_move_callback && this.destination_positions.length<2)
+    {
+        this.end_move_callback();
+    }
+};
+
 Character.prototype.moveTo = function(pos)
 {
     var current_pos = this.container.position;
     if(current_pos.equals(pos))
     {
+        this.stop();
+        this.move_destination=null;
         return;
     }
-    var v = new THREE.Vector3(pos.x, pos.y, pos.z);
-    this.view_vector = v.sub(this.container.position);
 
+    this.create_view_vector(pos);
+
+    var distance = this.container.position.distanceTo(pos);
     var rad_ang = Math.radians(this.patrol_right_left_deg);
     var distance = game.opt.door_size;
     this.lookAt(pos, {
@@ -505,13 +501,7 @@ Character.prototype.move_step = function()
 
         if(!moving)
         {
-            this.move_weight_destination = 0;
-            this.is_moving=false;
-            this.move_destination=null;
-            if(this.end_move_callback && this.destination_positions.length<2)
-            {
-                this.end_move_callback();
-            }
+            this.stop();
         }
 
     }
@@ -906,6 +896,51 @@ Character.prototype.disturb = function(source, range)
     // If the character ear the sound
     if(distance<range)
     {
+        this.patrol_wait = 5000;
+        this.patrol_positions=[];
+        this.stop();
+        this.create_view_vector(source);
+        this.lookAt(source, source);
+        window.clearTimeout(this.disturb_timer);
+        this.disturb_timer = window.setTimeout(this.undisturb.bind(this), 1500);
+
         console.log(this.type+' disturbed ',source);
     }
 };
+
+Character.prototype.undisturb = function(source, range)
+{
+    console.log('undisturb!');
+    this.restore();
+};
+Character.prototype.restore= function()
+{
+    this.destination_positions = [];
+    this.patrol_positions = [].concat(this.options.patrol_positions || []);
+
+    this.patrol_positions = [].concat(this.options.patrol_positions || []);
+    this.next_pos = this.get_next_patrol_point();
+
+    if(this.next_pos)
+    {
+        this.create_view_vector(this.next_pos);
+        console.log('set view vector2');
+    }
+    else if(this.options.view_direction)
+    {
+        var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
+        v.add(this.container.position);
+        this.create_view_vector(v);
+        console.log('set view vector3');
+        this.lookAt(v, v);
+    }
+    else if(this.options.rotate!==undefined)
+    {
+        console.log('set view vector4');
+        var v= new THREE.Vector3(100,2,100);
+        v.applyAxisAngle(new THREE.Vector3(0,1,0), - Math.radians(30) + this.options.rotate);
+        this.create_view_vector(v);
+
+        this.lookAt(this.view_vector, this.view_vector);
+    }
+}
