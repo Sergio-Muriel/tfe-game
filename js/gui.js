@@ -241,7 +241,8 @@ Game.prototype.gui =
     },
     loaded: function()
     {
-        this.add_weapon('punch');
+        this.add_weapon('punch',true);
+        this.add_weapon('noise',false);
     },
 
     unload: function()
@@ -320,7 +321,7 @@ Game.prototype.gui =
         e.stopPropagation();
     },
 
-    add_weapon: function(type)
+    add_weapon: function(type, autoswitch)
     {
         if(this.weapons.indexOf(type)!==-1)
         {
@@ -337,10 +338,12 @@ Game.prototype.gui =
 
         div.addEventListener('mousedown', this.toggle_weapon.bind(this,div));
 
-
         this.bone_attachments_container.appendChild(div);
         this.bind();
-        this.toggle_weapon(div);
+        if(autoswitch)
+        {
+            this.toggle_weapon(div);
+        }
     },
 
 };

@@ -81,9 +81,9 @@ Character.prototype.create =function()
         // Vision geometry
         this.vision_geom = new THREE.Geometry();
         var current_deg_angle = -this.vision_angle;
-        var v1 = new THREE.Vector3(0, 1, 0);
-        var v2 = new THREE.Vector3(-Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
-        var v3 = new THREE.Vector3(Math.cos(angle)*this.vision_distance,1,Math.sin(angle)*this.vision_distance);
+        var v1 = new THREE.Vector3(0, 2, 0);
+        var v2 = new THREE.Vector3(-Math.cos(angle)*this.vision_distance,2,Math.sin(angle)*this.vision_distance);
+        var v3 = new THREE.Vector3(Math.cos(angle)*this.vision_distance,2,Math.sin(angle)*this.vision_distance);
 
         this.vision_orig_vertices=[v1];
         this.vision_geom.vertices.push(v1);
@@ -337,7 +337,6 @@ Character.prototype.rescued = function(destination)
     {
         game.current_item.open_last();
     }
-    this.following.remove_follower(this);
     this.remove();
 };
 Character.prototype.remove = function(destination)

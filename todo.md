@@ -1,5 +1,7 @@
-- eat fish to have more life
+- new weapon to "call" the ennemies and make move their vision for X seconds
+- fish to make ennemys move
 - /* RELEASE */
+- eat fish to have more life
 - moveable camera
 - auto play scenario
 - add snow like / blizzard particles

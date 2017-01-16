@@ -773,7 +773,8 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     options.parentStructure = this;
     options.game = game;
 
-    if(type.indexOf('key')!==-1)
+    options.type = type;
+    if(type.indexOf('Key')!==-1)
     {
         type='Key';
     }

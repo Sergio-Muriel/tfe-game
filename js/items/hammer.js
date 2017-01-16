@@ -36,7 +36,7 @@ Hammer.prototype.equip= function()
 {
     if(!this.deleted)
     {
-        game.gui.add_weapon('hammer');
+        game.gui.add_weapon('hammer', true);
         this.remove();
     }
 };

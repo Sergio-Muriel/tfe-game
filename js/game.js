@@ -429,6 +429,7 @@ var Game = function(opt)
         var items = params.drops;
         var delay=0;
         var distance=0;
+        var min_distance = opt.door_size*0.1;
         var distance_step= opt.door_size*0.1;
 
         var start_pos = new THREE.Vector3(params.x, params.y, params.z);
@@ -439,9 +440,9 @@ var Game = function(opt)
             var collisionResults=[1];
             while(collisionResults.length>0)
             {
-                item.params.x = params.x + Math.cos(distance)*distance_step;
+                item.params.x = params.x + Math.cos(distance)*distance_step + min_distance;
                 item.params.y = params.y;
-                item.params.z = params.z + Math.sin(distance)*distance_step;
+                item.params.z = params.z + Math.sin(distance)*distance_step + min_distance;
 
                 var new_pos = new THREE.Vector3(item.params.x, item.params.y, item.params.z);
                 var direction = new_pos.clone().sub(start_pos);
