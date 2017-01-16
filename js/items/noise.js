@@ -1,7 +1,7 @@
 var Noise = function(game, options)
 {
     this.default(options);
-    this.noise_range =50;
+    this.noise_range =80;
     this.type='Noise';
 };
 
