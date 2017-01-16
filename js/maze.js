@@ -643,7 +643,7 @@ Maze.prototype.getEnnemis = function()
     var obstacles=[];
     this.interraction_items.forEach(function(item)
     {
-        if(!item.friend && !item.is_dying)
+        if(item.friend===false && !item.is_dying)
         {
             obstacles.push(item.container_mesh);
         }
