@@ -573,10 +573,6 @@ function get_pos(e, h)
         var editorTop =  editor.offsetTop;
         var left = ((e.pageX - h.offsetLeft - editorLeft ) / h.offsetWidth).toFixed(2);
         var top = ((e.pageY - h.offsetTop - editorTop ) / h.offsetHeight).toFixed(2);
-        if(h.offsetLeft> 300) {  
-            left = ((e.pageX - h.offsetLeft ) / h.offsetWidth).toFixed(2); 
-            top = ((e.pageY - h.offsetTop ) / h.offsetHeight).toFixed(2);
-        }
     return { top: top, left: left};
 }
 function update_pos(div, params)
@@ -591,6 +587,7 @@ function update_pos(div, params)
 
 function add_object(type,h, params)
 {
+    console.log('add ',type, h ,params);
         object_id++;
 
         var div = document.createElement('div');

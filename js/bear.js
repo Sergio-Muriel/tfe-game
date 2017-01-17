@@ -49,7 +49,7 @@ var Bear = function(game, options)
     this.is_moving=false;
     this.in_cells=[];
     this.vision_angle = 55;
-    this.vision_distance=game.opt.door_size*2.0;
+    this.vision_distance=game.opt.door_size*1.5;
     this.ennemy_detection_distance = game.opt.door_size*2.0;
 };
 
