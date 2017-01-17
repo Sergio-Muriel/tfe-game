@@ -31,8 +31,8 @@ Game.prototype.labels =
         'helpme_message': 'My name is Pinga. I am lost! Please take me to the <i>Rescue zone</i>!',
         'level2_title': 'Be careful!',
         'level2_message':'I just saw a big bear who doesn\'t look very kind!<br><br><i>Avoid</i> entering his <i>green vision zone</i> to get attacked!',
-        'level_door_title':'Oh no!',
-        'level_door_message':'One of us is <i>trapped</i> in a cell! Find <i>the key</i> and rescue us!',
+        'level_door_title':'Help! Help!',
+        'level_door_message':'I am <i>trapped</i> in this cell! Please, find <i>the key</i> and rescue me!',
         'fishfound_title': 'Look at that!',
         'fishfound_message' :'This is a <i>fish</i>! We could use that <i>distract guards</i>.'
     } 
