@@ -345,7 +345,7 @@ var Game = function(opt)
         this.hovers=this.current_item.getHovers();
         this.static_obstacles = this.current_item.getStaticObstacles();
         this.moving_obstacles = this.current_item.getMovingObstacles();
-        this.friends = [].concat(this.current_item.getFriends(), this.focus_perso.container_mesh);
+        this.friends = [].concat(this.focus_perso.container_mesh, this.current_item.getFriends());
         this.ennemis = this.current_item.getEnnemis();
         this.obstacles_with_player = [].concat(this.static_obstacles, this.friends);
 

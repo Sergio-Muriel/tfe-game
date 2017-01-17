@@ -624,18 +624,20 @@ Character.prototype.check_vision = function()
     this.friends = game.getFriends();
 
     // If no target, search for new one
-    if(!this.attack_target)
+    var found_player=false;
+
+    if(!this.attack_target || this.attack_target.name!='p')
     {
         this.friends.forEach(function(friend)
         {
-            if(friend.object.visible_from_ennemy)
+            if(!found_player && friend.object.visible_from_ennemy)
             {
                 // Trace 1 raycast to check if it is visible to the user (no cone)
                 var localVertex = friend.object.container.position.clone();
                 var globalVertex = localVertex.sub(originPoint);
 
                 var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
-                var collisionResults = ray.intersectObjects(obstacles_with_player);
+                var collisionResults = ray.intersectObjects([].concat(static_obstacles, friend));
 
                 if (collisionResults.length > 0)
                 {
@@ -650,6 +652,7 @@ Character.prototype.check_vision = function()
                             {
                                 if(collisionResults[0].distance < collision_distance)
                                 {
+                                    found_player = friend.name=='p';
                                     collision_object = collisionResults[0].object.object;
                                     collision_distance = collisionResults[0].distance;
                                 }
@@ -664,6 +667,7 @@ Character.prototype.check_vision = function()
             }
         });
     }
+
     if(this.attack_target)
     {
         this.run(this.attack_target.container.position.clone());
