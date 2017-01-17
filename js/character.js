@@ -27,7 +27,6 @@ Character.prototype.build = function()
 Character.prototype.create =function()
 {
     var self=this;
-    this.attack_target = game.focus_perso;
     this.following_idx=1;
     this.followers = [];
 
@@ -623,43 +622,52 @@ Character.prototype.check_vision = function()
     var is_near= game.focus_perso.container.position.distanceTo(this.container.position) < game.focus_perso.vision_distance;
 
     this.friends = game.getFriends();
-    this.friends.forEach(function(friend)
+
+    // If no target, search for new one
+    if(!this.attack_target)
     {
-        if(friend.object.visible_from_ennemy)
+        this.friends.forEach(function(friend)
         {
-            // Trace 1 raycast to check if it is visible to the user (no cone)
-            var localVertex = friend.object.container.position.clone();
-            var globalVertex = localVertex.sub(originPoint);
-
-            var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
-            var collisionResults = ray.intersectObjects(obstacles_with_player);
-
-            if (collisionResults.length > 0)
+            if(friend.object.visible_from_ennemy)
             {
-                // It is visible to the user by distance, let's check if the user is looking at it
-                if(collisionResults[0].object.object && collisionResults[0].object.object.friend)
+                // Trace 1 raycast to check if it is visible to the user (no cone)
+                var localVertex = friend.object.container.position.clone();
+                var globalVertex = localVertex.sub(originPoint);
+
+                var ray = new THREE.Raycaster( originPoint, globalVertex.clone().normalize(),0);
+                var collisionResults = ray.intersectObjects(obstacles_with_player);
+
+                if (collisionResults.length > 0)
                 {
-                    if(collisionResults[0].distance < self.vision_distance)
+                    // It is visible to the user by distance, let's check if the user is looking at it
+                    if(collisionResults[0].object.object && collisionResults[0].object.object.friend)
                     {
-                        var angle = find_angle(collisionResults[0].object.object.container.position,self.container.position, self.vision_destination);
-                        angle = angle*180/Math.PI;
-                        if(angle<self.vision_angle)
+                        if(collisionResults[0].distance < self.vision_distance)
                         {
-                            if(collisionResults[0].distance < collision_distance)
+                            var angle = find_angle(collisionResults[0].object.object.container.position,self.container.position, self.vision_destination);
+                            angle = angle*180/Math.PI;
+                            if(angle<self.vision_angle)
                             {
-                                collision_object = collisionResults[0].object.object;
-                                collision_distance = collisionResults[0].distance;
+                                if(collisionResults[0].distance < collision_distance)
+                                {
+                                    collision_object = collisionResults[0].object.object;
+                                    collision_distance = collisionResults[0].distance;
+                                }
                             }
                         }
                     }
                 }
+                if(collision_object)
+                {
+                    self.attack_target = collision_object;
+                }
             }
-            if(collision_object)
-            {
-                self.set_target(collision_object);
-            }
-        }
-    });
+        });
+    }
+    if(this.attack_target)
+    {
+        this.run(this.attack_target.container.position.clone());
+    }
 
     this.vision.material.visible=is_near;
     // Update vision mesh if needed
