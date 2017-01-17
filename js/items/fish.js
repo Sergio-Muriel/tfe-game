@@ -1,14 +1,27 @@
 var Fish = function(game, options)
 {
     this.default(options);
-    this.type='Fish';
+    this.type='fish';
 
     this.deleted=false;
+    this.friend=true;
+    this.visible_from_ennemy=true;
 
     this.is_hoverable=true;
     this.is_static_collision=false;
     this.can_walk_through=true;
     this.hover_color =  0x050533;
+
+    this.max_life=10;
+    this.life=this.max_life;
+
+    this.weapon_type='stick';
+    this.weapon_speed= 0;
+    this.weapon_range= 20;
+    this.weapon_attack_damage = 0;
+    this.weapon_hit_chance = 0;
+
+    this.weapon_defense = 0.1;
 
     this.scale=15;
     this.droppable = true;
@@ -22,6 +35,31 @@ var Fish = function(game, options)
 
 Fish.prototype = Object.create(Common.prototype);
 Fish.prototype.constructor = Common;
+
+Fish.prototype.update_life=function()
+{
+    var life_value = (this.life/this.max_life) * (Math.PI*2);
+};
+
+Fish.prototype.die=function()
+{
+    var self=this;
+    // Already dead?
+    if(this.is_dying)
+    {
+        return;
+    }
+    this.is_dying=true;
+    game.updateCollisionsCache();
+    play_multiple(game.assets[this.type+'_die_sound'], 200);
+
+    self.is_hoverable=false;
+    self.is_dead=true;
+    game.updateCollisionsCache();
+
+    this.remove();
+};
+
 
 Fish.prototype.bind = function()
 {

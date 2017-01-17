@@ -4,7 +4,6 @@ var Character = function(game, options)
 
 Character.prototype.create_view_vector = function(pos)
 {
-    console.log('create view vector', pos);
     var v = new THREE.Vector3(pos.x, pos.y, pos.z);
     this.view_vector = v.sub(this.container.position);
     this.view_vector.normalize().multiplyScalar(game.opt.door_size);
@@ -314,8 +313,8 @@ Character.prototype.die=function()
 Character.prototype.rescued = function(destination)
 {
     game.add_friend_text({ text:game.labels.get('thank_you'), position: this.container.position});
-    game.current_item.num_friends--;
-    if(!game.current_item.num_friends)
+    game.current_item.num_to_rescue--;
+    if(!game.current_item.num_to_rescue)
     {
         game.current_item.open_last();
     }
@@ -613,6 +612,7 @@ Character.prototype.check_vision = function()
     // Collision callbacks
     var originPoint = this.container.position;
     var obstacles_with_player = game.getObstaclesWithPlayer();
+    // For vision
     var static_obstacles = game.getStaticObstacles();
 
     var collision_distance = 999;

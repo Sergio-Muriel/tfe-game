@@ -4,6 +4,7 @@ var Pinga = function(game, options)
     this.id=game.getNewId();
 
 
+    this.need_rescue=true;
     this.friend=true;
     this.has_vision=false;
     this.mesh_geo = game.assets.pinga_geo;

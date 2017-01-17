@@ -95,6 +95,8 @@ var Assets = function(opt)
 
         this.add_sound('sounds/fish_drop.mp3','fish_drop', false, 0.2);
         this.add_sound('sounds/fish_drop.mp3','fish_pick', false, 0.2);
+        this.add_sound('sounds/fish_eat.mp3','fish_hit', false, 0.2);
+        this.add_sound('sounds/fish_eat.mp3','fish_die', false, 0.2);
 
         this.add_sound('sounds/punch_attack.mp3','punch_attack', false, 0.4);
 

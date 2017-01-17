@@ -5,7 +5,7 @@ var Path = function(game, options)
     this.options = options;
 
     this.nextType='Path';
-    this.num_friends=0;
+    this.num_to_rescue=0;
 
     this.num_items_line=2;
     this.width = 2;

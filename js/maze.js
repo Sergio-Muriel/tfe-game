@@ -785,16 +785,17 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     options.parentStructure = this;
     options.game = game;
 
+    var classtype = type.substr(0,1).toUpperCase()+type.substr(1).toLowerCase()
     options.type = type;
     if(type.indexOf('Key')!==-1)
     {
-        type='Key';
+        classtype='Key';
     }
-    if(!window[type])
+    if(!window[classtype])
     {
-        return console.error('Cannot create interraction item ',type);
+        return console.error('Cannot create interraction item ',classtype);
     }
-    var item = new window[type](game,  options);
+    var item = new window[classtype](game,  options);
 
     item.build();
     if(dropping)
@@ -806,9 +807,9 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     this.all_interraction_items.push(item);
     game.updateCollisionsCache();
 
-    if(item.friend)
+    if(item.need_rescue)
     {
-        this.num_friends++;
+        this.num_to_rescue++;
     }
     return item;
 };
