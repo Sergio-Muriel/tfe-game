@@ -572,6 +572,8 @@ Character.prototype.end_attack = function(x)
             this.move_weight_destination=1;
             this.attack_action.setEffectiveWeight(0);
             this.idle_action.setEffectiveWeight(1);
+            this.attack_target=null;
+            this.restore();
         }
         else
         {
@@ -903,21 +905,21 @@ Character.prototype.disturb = function(source, range)
         this.lookAt(source, source);
         window.clearTimeout(this.disturb_timer);
         this.disturb_timer = window.setTimeout(this.undisturb.bind(this), 1500);
-
         console.log(this.type+' disturbed ',source);
     }
 };
 
 Character.prototype.undisturb = function(source, range)
 {
-    console.log('undisturb!');
-    this.restore();
+    if(!this.attack_target)
+    {
+        console.log('undisturb!');
+        this.restore();
+    }
 };
 Character.prototype.restore= function()
 {
     this.destination_positions = [];
-    this.patrol_positions = [].concat(this.options.patrol_positions || []);
-
     this.patrol_positions = [].concat(this.options.patrol_positions || []);
     this.next_pos = this.get_next_patrol_point();
 
@@ -927,23 +929,25 @@ Character.prototype.restore= function()
     if(this.next_pos)
     {
         this.create_view_vector(this.next_pos);
-        console.log('set view vector2');
     }
     else if(this.options.view_direction)
     {
         var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
         v.add(this.container.position);
         this.create_view_vector(v);
-        console.log('set view vector3');
         this.lookAt(v, v);
     }
     else if(this.options.rotate!==undefined)
     {
-        console.log('set view vector4');
         var v= new THREE.Vector3(100,2,100);
         v.applyAxisAngle(new THREE.Vector3(0,1,0), - Math.radians(30) + this.options.rotate);
         this.create_view_vector(v);
 
         this.lookAt(this.view_vector, this.view_vector);
+    }
+    if(this.patrol_positions.length===1)
+    {
+        var  vec = this.patrol_positions[0];
+        this.run(new THREE.Vector3(vec.x,  0, vec.z));
     }
 }
