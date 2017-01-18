@@ -68,10 +68,6 @@ Fish.prototype.bind = function()
         this.equip_script =create_function_once(this.options.parameters.script);
     }
 
-    this.equip_script
-    //this.walk_through_callback = this.equip.bind(this, this.options.walk_through_callback);
-    console.log('add ',this.options);
-
     this.rotatingClip = this.object_geo.animations[1];
     var duration  = Math.random()*2 + 1;
     this.rotate_action = this.mixer.clipAction(this.rotatingClip, null ).setDuration(duration);

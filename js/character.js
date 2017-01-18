@@ -938,6 +938,7 @@ Character.prototype.restore= function()
     // Skip patrol wait when restoring
     this.patrol_wait=0;
 
+    console.log('here restore');
     var pos = this.container.position;
     if(this.patrol_positions.length===1)
     {
@@ -948,11 +949,13 @@ Character.prototype.restore= function()
 
     if(this.next_pos)
     {
+        console.log('here next pos ');
         this.create_view_vector(this.next_pos);
     }
     else if(this.options.view_direction)
     {
         var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
+        console.log('pos ',pos, this.type);
         v.add(pos);
         this.create_view_vector(v);
         this.lookAt(v, v);

@@ -453,7 +453,7 @@ function save()
 
     var link = document.createElement('a');
     link.download = 'levels.js';
-    link.href = 'data:text/plain,var Levels = '+JSON.stringify(Levels, null , '\t');
+    link.href = 'data:text/plain,var Levels = '+encodeURIComponent(JSON.stringify(Levels, null , 2));
     link.innerText='Download';
     document.body.appendChild(link);
     link.click();
