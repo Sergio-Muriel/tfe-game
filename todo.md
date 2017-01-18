@@ -1,3 +1,4 @@
+- rotate speed instead of 1 frame to rotate
 - main game screen
 - visual sound effect for the noise
 - /* RELEASE */
