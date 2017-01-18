@@ -39,7 +39,7 @@ Game.prototype.labels =
         'lastlevelwin_title':'Congratulation',
         'lastlevelwin_message':'You just ended the last level of the game.',
         'credits_title':'Credits',
-        'credits_dev':'Development',
+        'credits_dev':'Developer',
         'credits_music':'Music',
 
     } 
