@@ -5,6 +5,7 @@ if(re = location.href.match(/level=(\d+)/))
     level=re[1];
 }
 var options = {
+    started:false,
     root: document.getElementById('game_container'),
     door_size: 30,
     debug_level: /debug/.test(location.href) ? 10 : 0,

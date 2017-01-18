@@ -1,4 +1,4 @@
-- fish make move ennemis for X seconds
+- main game screen
 - visual sound effect for the noise
 - /* RELEASE */
 - eat fish to have more life
