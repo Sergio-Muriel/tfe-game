@@ -34,7 +34,9 @@ Game.prototype.labels =
         'level_door_title':'Help! Help!',
         'level_door_message':'I am <i>trapped</i> in this cell! Please, find <i>the key</i> and rescue me!',
         'fishfound_title': 'Look at that!',
-        'fishfound_message' :'This is a <i>fish</i>! We could use that <i>distract guards</i>.<br>Use this item to put the Fish on the floor.'
+        'fishfound_message' :'This is a <i>fish</i>! We could use that <i>distract guards</i>.<br>Use this item to put the Fish on the floor.',
+        'lastlevelwin_title':'Congratulation',
+        'lastlevelwin_message':'You just ended the last level of the game.'
     } 
 
 };

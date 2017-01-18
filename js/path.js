@@ -55,14 +55,17 @@ Path.prototype.get_cell_pos_params = function(params)
 Path.prototype.getCollisionCallbacks = function()
 {
     var coll = this.line_callbacks;
-    if(!this.next_item)
+    if(!this.next_item && this.has_next_level)
     {
         this.buildNext();
     }
-    coll = coll.concat(this.next_item.getOutsideCollisionCallbacks());
-    if(this.options.parent)
+    if(this.has_next_level)
     {
-        coll = coll.concat(this.options.parent.getOutsideCollisionCallbacks());
+        coll = coll.concat(this.next_item.getOutsideCollisionCallbacks());
+        if(this.options.parent)
+        {
+            coll = coll.concat(this.options.parent.getOutsideCollisionCallbacks());
+        }
     }
     this.interraction_items.forEach(function(item)
     {
@@ -169,6 +172,8 @@ Path.prototype.build = function()
     var self=this;
     this.level_num = game.level-1;
     this.level = Levels[this.level_num];
+    this.has_next_level = this.level_num< Levels.length-1;
+
 
     if(!this.level)
     {
@@ -249,7 +254,21 @@ Path.prototype.build = function()
                 last_cell = cell;
                 self.level.next_maze.i = i;
                 self.last_cell = {x: cell.x, z:cell.z, i: i};
-                cell.walls.push({ type: '4', i: i});
+                if(self.has_next_level)
+                {
+                    cell.walls.push({ type: '4', i: i});
+                }
+                else
+                {
+                    if(self.level.type=='outside')
+                    {
+                        cell.walls.push({ type: '1', i: i});
+                    }
+                    else
+                    {
+                        cell.walls.push({ type: '2', i: i});
+                    }
+                }
             }
             else if(!has_neighbor && !has_already_wall && !is_start && !is_end)
             {
@@ -528,8 +547,17 @@ Path.prototype.stop_step = function()
 
 Path.prototype.open_last = function()
 {
-    console.log('open last');
-    this.openDoor(this.last_cell.x, this.last_cell.z, this.last_cell.i);
+    if(this.has_next_level)
+    {
+        this.openDoor(this.last_cell.x, this.last_cell.z, this.last_cell.i);
+    }
+    else
+    {
+        game.gui.box(
+                game.labels.get('lastlevelwin_title'),
+                game.labels.get('lastlevelwin_message'),
+                true);
+    }
 };
 Path.prototype.enterEndCell = function()
 {
