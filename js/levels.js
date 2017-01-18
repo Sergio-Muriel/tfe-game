@@ -715,7 +715,7 @@ var Levels = [
             "i": 0
           }
         ],
-        "script": "game.gui.box(\n  game.labels.get('fishfound_title'),\n  game.labels.get('fishfound_message'),\n  true\n);"
+        "script": ""
       },
       {
         "x": 1,
@@ -829,7 +829,7 @@ var Levels = [
         "top": 0.46,
         "left": 0.46,
         "rotation": 0,
-        "script": ""
+        "script": "game.gui.box(\n  game.labels.get('fishfound_title'),\n  game.labels.get('fishfound_message'),\n  true\n);"
       }
     ]
   }
