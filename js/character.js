@@ -938,6 +938,14 @@ Character.prototype.restore= function()
     // Skip patrol wait when restoring
     this.patrol_wait=0;
 
+    var pos = this.container.position;
+    if(this.patrol_positions.length===1)
+    {
+        var vec = this.patrol_positions[0];
+        pos = new THREE.Vector3(vec.x,  this.container.position.y, vec.z);
+        this.run(pos);
+    }
+
     if(this.next_pos)
     {
         this.create_view_vector(this.next_pos);
@@ -945,7 +953,7 @@ Character.prototype.restore= function()
     else if(this.options.view_direction)
     {
         var v = new THREE.Vector3(this.options.view_direction.x, this.container.position.y, this.options.view_direction.z);
-        v.add(this.container.position);
+        v.add(pos);
         this.create_view_vector(v);
         this.lookAt(v, v);
     }
@@ -956,10 +964,5 @@ Character.prototype.restore= function()
         this.create_view_vector(v);
 
         this.lookAt(this.view_vector, this.view_vector);
-    }
-    if(this.patrol_positions.length===1)
-    {
-        var  vec = this.patrol_positions[0];
-        this.run(new THREE.Vector3(vec.x,  0, vec.z));
     }
 }
