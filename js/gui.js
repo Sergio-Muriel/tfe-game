@@ -363,7 +363,7 @@ Game.prototype.gui =
     open_credits: function()
     {
         var txt ='';
-        txt+= game.labels.get('credits_dev')+' : <a href="mailto:tfe@tfeserver.be">Tfe</a> <br>';
+        txt+= game.labels.get('credits_dev')+' : Tfe<br>',
         txt+= game.labels.get('credits_music')+' : Gaybe Syn'
 
 
