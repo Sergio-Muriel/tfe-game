@@ -774,9 +774,17 @@ var Levels = [
       {
         "x": 2,
         "z": 2,
-        "top": 0.31,
-        "left": 0.21,
-        "patrol_positions": [],
+        "top": 0.34,
+        "left": 0.24,
+        "patrol_positions": [
+          {
+            "x": 2,
+            "z": 2,
+            "top": 0.69,
+            "left": 0.51,
+            "patrol_wait": 5000
+          }
+        ],
         "patrol_loop": true,
         "patrol_wait": 2000,
         "drops": "",
@@ -785,13 +793,13 @@ var Levels = [
       {
         "x": 3,
         "z": 2,
-        "top": 0.42,
+        "top": 0.36,
         "left": 0.62,
         "patrol_positions": [],
         "patrol_loop": true,
         "patrol_wait": 2000,
         "drops": "",
-        "rotation": 83
+        "rotation": 245
       }
     ],
     "bears": [],

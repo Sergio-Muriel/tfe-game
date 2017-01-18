@@ -12,7 +12,7 @@ var Fish = function(game, options)
     this.can_walk_through=true;
     this.hover_color =  0x050533;
 
-    this.max_life=10;
+    this.max_life=50;
     this.life=this.max_life;
 
     this.weapon_type='stick';
