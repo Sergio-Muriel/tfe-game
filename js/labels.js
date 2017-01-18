@@ -19,6 +19,7 @@ Game.prototype.labels =
         'menu_restart': 'Restart level',
         'menu_retry': 'Retry',
         'menu_options': 'Options',
+        'menu_credits': 'Credits',
         'gameover': 'Game over!',
         'menu_sound': 'Sound',
         'menu_graphic': 'Graphic',
@@ -36,7 +37,11 @@ Game.prototype.labels =
         'fishfound_title': 'Look at that!',
         'fishfound_message' :'A <i>fish</i>! You could use that to <i>distract guards</i>.<br><br>Tip: Use this item to put the Fish on the floor.',
         'lastlevelwin_title':'Congratulation',
-        'lastlevelwin_message':'You just ended the last level of the game.'
+        'lastlevelwin_message':'You just ended the last level of the game.',
+        'credits_title':'Credits',
+        'credits_dev':'Development',
+        'credits_music':'Music',
+
     } 
 
 };

@@ -92,6 +92,7 @@ Game.prototype.gui =
             this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_restart', game.reload.bind(game));
             this.create_menu_option('menu_options', this.open_menu.bind(this,'options'));
+            this.create_menu_option('menu_credits', this.open_credits.bind(this));
             this.create_menu_option('menu_back', this.close_menu.bind(this));
         }
         // Open menu when not playing (intro?)
@@ -100,6 +101,7 @@ Game.prototype.gui =
             this.menu_header.innerText = game.labels.get('game_name');
             this.create_menu_option('menu_play', game.reload.bind(game));
             this.create_menu_option('menu_options', this.open_menu.bind(this,'options'));
+            this.create_menu_option('menu_credits', this.open_credits.bind(this));
         }
 
 
@@ -357,6 +359,15 @@ Game.prototype.gui =
         {
             this.toggle_weapon(div);
         }
+    },
+    open_credits: function()
+    {
+        var txt ='';
+        txt+= game.labels.get('credits_dev')+' : <a href="mailto:tfe@tfeserver.be">Tfe</a> <br>';
+        txt+= game.labels.get('credits_music')+' : Gaybe Syn'
+
+
+        this.box(game.labels.get('credits_title'), txt,true);
     },
 
 };

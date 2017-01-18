@@ -5,6 +5,8 @@
 - cell scripts (editor+front)
 - pinga play help animation when not following
 - Pinga now follows with pathFinding
+- Add fish to make ennemies move
+- Make noise to disturn ennemies
 
 ## 23
 
