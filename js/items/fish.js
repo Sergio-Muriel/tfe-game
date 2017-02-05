@@ -23,7 +23,7 @@ var Fish = function(game, options)
 
     this.weapon_defense = 0.1;
 
-    this.scale=15;
+    this.scale=0.7;
     this.droppable = true;
 
     this.object_material = game.assets.fish_mat;
