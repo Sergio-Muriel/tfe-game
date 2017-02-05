@@ -218,52 +218,15 @@ var Levels = [
         "script": ""
       },
       {
-        "x": 2,
-        "z": 0,
-        "walls": [],
-        "script": ""
-      },
-      {
         "x": 1,
         "z": 0,
         "walls": [],
         "script": ""
       },
       {
-        "x": 0,
-        "z": 1,
-        "walls": [],
-        "script": ""
-      },
-      {
         "x": 2,
         "z": 1,
-        "walls": [
-          {
-            "type": 1,
-            "i": 0
-          },
-          {
-            "type": 1,
-            "i": 1
-          },
-          {
-            "type": 1,
-            "i": 2
-          },
-          {
-            "type": 1,
-            "i": 3
-          },
-          {
-            "type": 1,
-            "i": 4
-          },
-          {
-            "type": 3,
-            "i": 5
-          }
-        ],
+        "walls": [],
         "script": ""
       },
       {
@@ -275,37 +238,54 @@ var Levels = [
       {
         "x": 3,
         "z": 1,
-        "walls": [
-          {
-            "type": 1,
-            "i": 0
-          },
-          {
-            "type": 3,
-            "i": 1
-          },
-          {
-            "type": 1,
-            "i": 2
-          },
-          {
-            "type": 1,
-            "i": 3
-          },
-          {
-            "type": 1,
-            "i": 4
-          },
-          {
-            "type": 3,
-            "i": 5
-          }
-        ],
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 1,
+        "z": 2,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 3,
+        "z": 2,
+        "walls": [],
         "script": ""
       },
       {
         "x": 2,
-        "z": 2,
+        "z": 3,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 4,
+        "z": 3,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 2,
+        "z": 4,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 4,
+        "z": 4,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 3,
+        "z": 4,
+        "walls": [],
+        "script": ""
+      },
+      {
+        "x": 3,
+        "z": 5,
         "walls": [],
         "script": ""
       }
@@ -314,63 +294,82 @@ var Levels = [
       {
         "x": 1,
         "z": 1,
-        "top": 0.23,
-        "left": 0.4,
+        "top": 0.41,
+        "left": 0.49,
         "patrol_positions": [
           {
             "x": 1,
-            "z": 1,
-            "top": 0.55,
-            "left": 0.8,
-            "patrol_wait": 4000
+            "z": 2,
+            "top": 0.48,
+            "left": 0.49,
+            "patrol_wait": 1000
+          },
+          {
+            "x": 2,
+            "z": 3,
+            "top": 0.45,
+            "left": 0.47,
+            "patrol_wait": 0
           }
         ],
-        "patrol_loop": true,
+        "patrol_loop": false,
         "patrol_wait": 2000,
         "drops": "",
         "rotation": 0
       },
       {
-        "x": 2,
+        "x": 3,
         "z": 2,
-        "top": 0.34,
-        "left": 0.74,
-        "patrol_positions": [],
-        "patrol_loop": true,
+        "top": 0.51,
+        "left": 0.49,
+        "patrol_positions": [
+          {
+            "x": 4,
+            "z": 3,
+            "top": 0.52,
+            "left": 0.55,
+            "patrol_wait": 0
+          },
+          {
+            "x": 4,
+            "z": 4,
+            "top": 0.48,
+            "left": 0.45,
+            "patrol_wait": 1000
+          }
+        ],
+        "patrol_loop": false,
         "patrol_wait": 2000,
         "drops": "",
-        "rotation": 226
+        "rotation": 0
       }
     ],
     "bears": [],
     "extrawalls": [],
     "end_cell": {
       "x": 3,
-      "z": 1
+      "z": 5
     },
     "next_maze": {
       "x": 4,
-      "z": 2
+      "z": 6
     },
     "pinga": [
       {
         "x": 1,
-        "z": 0,
-        "top": 0.5,
-        "left": 0.44,
-        "rotation": 125,
-        "script": ""
-      }
-    ],
-    "chest": [
-      {
-        "x": 2,
         "z": 1,
-        "top": 0.49,
-        "left": 0.48,
-        "rotation": 62,
-        "script": "",
-        "drops": "stick"
+        "top": 0.56,
+        "left": 0.44,
+        "rotation": 0,
+        "script": ""
+      },
+      {
+        "x": 4,
+        "z": 3,
+        "top": 0.43,
+        "left": 0.35,
+        "rotation": 0,
+        "script": ""
       }
     ]
   },
