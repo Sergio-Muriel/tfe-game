@@ -309,7 +309,7 @@ var Levels = [
             "z": 3,
             "top": 0.45,
             "left": 0.47,
-            "patrol_wait": 0
+            "patrol_wait": 2000
           }
         ],
         "patrol_loop": false,
@@ -318,24 +318,24 @@ var Levels = [
         "rotation": 0
       },
       {
-        "x": 3,
-        "z": 2,
-        "top": 0.51,
-        "left": 0.49,
+        "x": 4,
+        "z": 3,
+        "top": 0.31,
+        "left": 0.24,
         "patrol_positions": [
           {
             "x": 4,
             "z": 3,
-            "top": 0.52,
-            "left": 0.55,
+            "top": 0.66,
+            "left": 0.47,
             "patrol_wait": 0
           },
           {
             "x": 4,
             "z": 4,
-            "top": 0.48,
-            "left": 0.45,
-            "patrol_wait": 1000
+            "top": 0.53,
+            "left": 0.47,
+            "patrol_wait": 2000
           }
         ],
         "patrol_loop": false,
