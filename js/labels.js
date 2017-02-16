@@ -7,7 +7,7 @@ Game.prototype.labels =
     },
     'en':
     {
-        'game_name': 'The Unnamed game',
+        'game_name': 'The Frozen Experience',
         'life': 'Life',
         'loading_assets': 'Loading game data',
         'loading_level': 'Loading level',
