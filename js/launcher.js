@@ -2,7 +2,7 @@ var level = 1;
 var re;
 if(re = location.href.match(/level=(\d+)/))
 {
-    level=re[1];
+    level = re[1];
 }
 var options = {
     started:false,

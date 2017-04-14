@@ -1,13 +1,13 @@
 var Path = function(game, options)
 {
-    var self=this;
+    var self = this;
 
     this.options = options;
 
     this.nextType='Path';
-    this.num_to_rescue=0;
+    this.num_to_rescue = 0;
 
-    this.num_items_line=2;
+    this.num_items_line = 2;
     this.width = 2;
     this.height = 2;
     this.id = game.getNewId();
@@ -87,7 +87,7 @@ Path.prototype.collisionCallbacks = function(perso,collisions)
 
 Path.prototype.add_cell = function(params)
 {
-    var self=this;
+    var self = this;
     var cell =this.create_cell(params);
 
     params.walls.forEach(function(wall)
@@ -169,7 +169,7 @@ Path.prototype.add_cell = function(params)
 
 Path.prototype.build = function()
 {
-    var self=this;
+    var self = this;
     this.level_num = game.level-1;
     this.level = Levels[this.level_num];
     this.has_next_level = this.level_num< Levels.length-1;
@@ -214,7 +214,7 @@ Path.prototype.build = function()
     {
         cell.connectedTo=[];
 
-        for(var i=0; i<6; i++)
+        for(var i = 0; i<6; i++)
         {
             var nearcell = self.get_coord_next_door(cell.x, cell.z, i);
 
@@ -223,7 +223,7 @@ Path.prototype.build = function()
             has_neighbor = self.level.cells.filter(function(item) { return item.x == nearcell[0] && item.z == nearcell[1]; }).length>0;
             has_already_wall = cell.walls.filter(function(wall) { return wall.i === i ; }).length>0;
 
-            var is_start=false;
+            var is_start = false;
 
 
             if(has_neighbor)
@@ -291,7 +291,7 @@ Path.prototype.build = function()
 
     this.depth = (Math.sqrt(3)/2) * game.opt.door_size*1.0;
     this.depth2 = (Math.sqrt(3)/2) * game.opt.door_size * Math.sqrt(3)/2 *1.35;
-    var self=this;
+    var self = this;
     var current_x = this.options.x;
     var current_z = this.options.z;
 
@@ -303,13 +303,13 @@ Path.prototype.build = function()
         var mesh_cell = self.add_cell(cell);
 
         detection_container = new THREE.Object3D();
-        detection_container.position.y=1;
+        detection_container.position.y = 1;
         detection_container.rotation.x = Math.radians(90);
 
         if(cell.script)
         {
             var script = create_function_once(cell.script);
-            for(var i=0;i<6;i++)
+            for(var i = 0;i<6;i++)
             {
                 var params = { x: cell.x, z: cell.z, real_x:cell.x, real_z:cell.z };
                 var line = self.create_separation_line(
@@ -325,7 +325,7 @@ Path.prototype.build = function()
 
     // Set start and end door/cell
     this.start_i = 4;
-    this.start_door=null;
+    this.start_door = null;
     if(this.level.start_cell)
     {
         this.start_door = this.generated_doors[this.level.start_cell.x][this.level.start_cell.z];
@@ -346,7 +346,7 @@ Path.prototype.build = function()
             
     });
 
-    for(var i=0;i<6;i++)
+    for(var i = 0;i<6;i++)
     {
         var params = { x: connected_end[0], z: connected_end[1], real_x:'outside',real_z:'outside'};
         var line = this.create_separation_line(
@@ -359,7 +359,7 @@ Path.prototype.build = function()
     }
 
     rescue_container = new THREE.Object3D();
-    rescue_container.position.y=1;
+    rescue_container.position.y = 1;
     rescue_container.rotation.x = Math.radians(90);
 
     var rescue_zone = new THREE.CircleGeometry(game.opt.door_size*1.1, 6, 0, Math.PI*2);
@@ -376,17 +376,17 @@ Path.prototype.build = function()
 
     this.floor_geom.computeVertexNormals();
     var floor = new THREE.Mesh( this.floor_geom, this.floor_material);
-    floor.receiveShadow=true;
-    floor.castShadow=true;
+    floor.receiveShadow = true;
+    floor.castShadow = true;
     this.container.add(floor);
 
 
     // Small walls
     var walls = new THREE.Mesh( this.walls_geom, game.assets.multi_path_wall_material);
     walls.name='walls';
-    walls.receiveShadow=true;
-    walls.castShadow=true;
-    walls.receiveShadow=true;
+    walls.receiveShadow = true;
+    walls.castShadow = true;
+    walls.receiveShadow = true;
     this.container.add(walls);
 
 
@@ -417,7 +417,7 @@ Path.prototype.build = function()
 
 Path.prototype.add_ennemys = function(items, type)
 {
-    var self=this;
+    var self = this;
     items.forEach(function(ennemy)
     {
         var coord = self.get_cell_pos_params({ x: ennemy.x, z: ennemy.z });
@@ -471,7 +471,7 @@ Path.prototype.add_ennemys = function(items, type)
 
 Path.prototype.add_objects = function()
 {
-    var self=this;
+    var self = this;
 
     var objects = [ 'stick','hammer','potion','chest','key','fish','pinga' ];
     objects.forEach(function(type)

@@ -26,8 +26,8 @@ Character.prototype.build = function()
 
 Character.prototype.create =function()
 {
-    var self=this;
-    this.following_idx=1;
+    var self = this;
+    this.following_idx = 1;
     this.followers = [];
 
     this.container = new THREE.Object3D();
@@ -35,8 +35,8 @@ Character.prototype.create =function()
 
 
     this.life_container = new THREE.Object3D();
-    this.life_container.name=this.type;
-    this.life_container.position.y=2;
+    this.life_container.name = this.type;
+    this.life_container.position.y = 2;
     this.life_container.rotation.x = Math.radians(90);
 
     var life_geo = new THREE.RingGeometry(5, 6, 6, 1, 3, Math.PI*2);
@@ -69,7 +69,7 @@ Character.prototype.create =function()
         this.vision_orig_vertices=[v1];
         this.vision_geom.vertices.push(v1);
 
-        var vIndex=2;
+        var vIndex = 2;
         var vision_step = this.vision_angle/10;
         for(true; current_deg_angle<=this.vision_angle; current_deg_angle+=vision_step)
         {
@@ -86,8 +86,8 @@ Character.prototype.create =function()
             vIndex+=1;
         }
         this.vision_geom.computeFaceNormals();
-        this.vision_geom.dynamic=true;
-        this.vision_geom.verticesNeedUpdate=true;
+        this.vision_geom.dynamic = true;
+        this.vision_geom.verticesNeedUpdate = true;
 
 
         var vision_material = new THREE.MeshPhongMaterial( { color: 0xaef8a8, wireframe:false, transparent:true, opacity: 0.3, visible:false  } );
@@ -97,7 +97,7 @@ Character.prototype.create =function()
         }
         this.vision = new THREE.Mesh( this.vision_geom, vision_material);
 
-        this.vision.rotation.y=Math.radians(0);
+        this.vision.rotation.y = Math.radians(0);
         this.vision.position.x = this.options.x;
         this.vision.position.y = 0;
         this.vision.position.z = this.options.z;
@@ -120,9 +120,9 @@ Character.prototype.create =function()
     }
     else
     {
-        this.mesh.scale.x=1.3;
-        this.mesh.scale.y=1.3;
-        this.mesh.scale.z=1.3;
+        this.mesh.scale.x = 1.3;
+        this.mesh.scale.y = 1.3;
+        this.mesh.scale.z = 1.3;
     }
     this.container.add(this.mesh);
     this.mesh.receiveShadow  = true;
@@ -147,8 +147,8 @@ Character.prototype.create =function()
     }
     var cube_geo = new THREE.BoxGeometry(bbox_x, 10, bbox_z);
     this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
-    this.container_mesh.name=this.type;
-    this.container_mesh.position.y=1;
+    this.container_mesh.name = this.type;
+    this.container_mesh.position.y = 1;
     this.container_mesh.id= game.getNewId();
 
     this.container_mesh.object = this;
@@ -189,34 +189,34 @@ Character.prototype.create =function()
     {
         this.custom();
     }
-    this.move_weight_destination=0;
+    this.move_weight_destination = 0;
     this.move_weight();
 };
 
-Character.prototype.hover=function()
+Character.prototype.hover = function()
 {
-    this.is_hovered=true;
-    this.life_material.visible=true;
+    this.is_hovered = true;
+    this.life_material.visible = true;
 };
-Character.prototype.unhover=function()
+Character.prototype.unhover = function()
 {
-    this.is_hovered=false;
-    this.life_material.visible=false;
+    this.is_hovered = false;
+    this.life_material.visible = false;
 };
 
 
-Character.prototype.untargeted=function(from)
+Character.prototype.untargeted = function(from)
 {
     if(this.is_targeted)
     {
-        this.is_targeted=false;
+        this.is_targeted = false;
         this.unhover();
     }
 };
 
-Character.prototype.targeted=function(from)
+Character.prototype.targeted = function(from)
 {
-    var self=this;
+    var self = this;
     if(!this.is_dying && !this.is_targeted)
     {
         this.hover();
@@ -235,11 +235,11 @@ Character.prototype.targeted=function(from)
         {
             if(distance<from.open_range)
             {
-                this.is_targeted=true;
+                this.is_targeted = true;
                 from.remove_follower(this);
-                this.move_destination=this.container.position;
+                this.move_destination = this.container.position;
                 window.pinga= this;
-                this.is_running=true;
+                this.is_running = true;
                 from.open();
                 game.add_friend_text({ text:game.labels.get('dont move'), position: from.container.position});
                 window.setTimeout(self.untargeted.bind(self), 2000);
@@ -251,10 +251,10 @@ Character.prototype.targeted=function(from)
         {
             if(distance<from.open_range)
             {
-                this.is_targeted=true;
+                this.is_targeted = true;
                 //self.lookAt(from.container.position);
                 from.add_follower(this);
-                self.is_running=true;
+                self.is_running = true;
                 game.add_friend_text({ text:game.labels.get('follow_me'), position: from.container.position});
                 from.open();
 
@@ -266,22 +266,22 @@ Character.prototype.targeted=function(from)
     return false;
 };
 
-Character.prototype.update_life=function()
+Character.prototype.update_life = function()
 {
     var life_value = (this.life/this.max_life) * (Math.PI*2);
     this.life_mesh.geometry.dispose();
     this.life_mesh.geometry = new THREE.RingGeometry(5, 6, 6, 1, 3, life_value)
 };
 
-Character.prototype.die=function()
+Character.prototype.die = function()
 {
-    var self=this;
+    var self = this;
     // Already dead?
     if(this.is_dying)
     {
         return;
     }
-    this.is_dying=true;
+    this.is_dying = true;
     game.updateCollisionsCache();
     play_multiple(game.assets[this.type+'_die_sound'], 200);
 
@@ -296,8 +296,8 @@ Character.prototype.die=function()
     window.setTimeout(game.drop.bind(game,{drops:self.options.drops, x: self.container.position.x, y:0, z:self.container.position.z}),300);
     window.setTimeout(function()
     {
-        self.is_hoverable=false;
-        self.is_dead=true;
+        self.is_hoverable = false;
+        self.is_dead = true;
         game.updateCollisionsCache();
     }, 1000);
 
@@ -305,7 +305,7 @@ Character.prototype.die=function()
     // If the character who died was a friend, we stop the game
     if(this.friend)
     {
-        this.dead=true;
+        this.dead = true;
         game.focus_perso.gameover();
     }
 };
@@ -321,7 +321,7 @@ Character.prototype.rescued = function(destination)
 };
 Character.prototype.remove = function(destination)
 {
-    this.removed=true;
+    this.removed = true;
     game.clear_interval(this.following_timer);
 
     this.options.parentStructure.remove_interraction_item(this);
@@ -334,14 +334,14 @@ Character.prototype.run = function(destination)
 {
     window.clearTimeout(this.patrol_waiting_timer);
     window.clearTimeout(this.running_timer);
-    this.patrol_waiting_timer=null;
-    this.running_timer=null;
+    this.patrol_waiting_timer = null;
+    this.running_timer = null;
 
     this.move_destination = destination;
     this.moveTo(this.move_destination);
     if(!this.is_running)
     {
-        this.is_running=true;
+        this.is_running = true;
         this.move_action.setDuration(this.run_action_duration);
     }
     this.running_timer = window.setTimeout(this.walk.bind(this), 500);
@@ -351,12 +351,12 @@ Character.prototype.walk = function()
 {
     window.clearTimeout(this.running_timer);
     window.clearTimeout(this.patrol_waiting_timer);
-    this.patrol_waiting_timer=null;
-    this.running_timer=null;
+    this.patrol_waiting_timer = null;
+    this.running_timer = null;
 
     if(this.is_running)
     {
-        this.is_running=false;
+        this.is_running = false;
         if(this.move_destination)
         {
             this.moveTo(this.move_destination);
@@ -370,7 +370,7 @@ Character.prototype.lookAt = function(pos,view_pos)
 {
     if(pos)
     {
-        pos.y=0;
+        pos.y = 0;
         this.container.lookAt(pos);
     }
     if(this.has_vision)
@@ -384,8 +384,8 @@ Character.prototype.lookAt = function(pos,view_pos)
 Character.prototype.stop = function()
 {
     this.move_weight_destination = 0;
-    this.is_moving=false;
-    this.move_destination=null;
+    this.is_moving = false;
+    this.move_destination = null;
     if(this.end_move_callback && this.destination_positions.length<2)
     {
         this.end_move_callback();
@@ -398,7 +398,7 @@ Character.prototype.moveTo = function(pos)
     if(current_pos.equals(pos))
     {
         this.stop();
-        this.move_destination=null;
+        this.move_destination = null;
         return;
     }
 
@@ -414,7 +414,7 @@ Character.prototype.moveTo = function(pos)
     });
 
     // Last part of moving
-    this.is_moving=true;
+    this.is_moving = true;
 
     this.move_step_vector = pos.clone();
     this.move_step_vector.sub(this.container.position).normalize();
@@ -449,7 +449,7 @@ Character.prototype.move_step = function()
     }
     if(this.is_moving)
     {
-        var moving=0;
+        var moving = 0;
 
 
         // Distance to player
@@ -466,7 +466,7 @@ Character.prototype.move_step = function()
 
         if(distanceToTarget<this.attack_range)
         {
-            moving=0;
+            moving = 0;
         }
         if(distanceToTarget>this.attack_range*this.following_idx || !this.is_running)
         {
@@ -481,7 +481,7 @@ Character.prototype.move_step = function()
             {
                 this.vision && (this.vision.position = this.move_destination);
                 this.container.position = this.move_destination;
-                moving=false;
+                moving = false;
                 if(this.destination_positions.length>0)
                 {
                     this.moveTo(this.destination_positions.shift());
@@ -490,7 +490,7 @@ Character.prototype.move_step = function()
         }
         else if(this.friend)
         {
-            moving=false;
+            moving = false;
         }
         else if(!this.attack_target.is_dying)
         {
@@ -527,7 +527,7 @@ Character.prototype.attack = function(target, reload)
             this.attack_action.stop();
             this.attack_action.play();
         }
-        this.attacking=true;
+        this.attacking = true;
         this.attack_target = target;
         target.targeted(this);
 
@@ -567,11 +567,11 @@ Character.prototype.end_attack = function(x)
     {
         if(this.attack_target.is_dying)
         {
-            this.attacking=false;
-            this.move_weight_destination=1;
+            this.attacking = false;
+            this.move_weight_destination = 1;
             this.attack_action.setEffectiveWeight(0);
             this.idle_action.setEffectiveWeight(1);
-            this.attack_target=null;
+            this.attack_target = null;
             this.restore();
         }
         else
@@ -584,8 +584,8 @@ Character.prototype.end_attack = function(x)
              }
              else
              {
-                this.attacking=false;
-                this.move_weight_destination=1;
+                this.attacking = false;
+                this.move_weight_destination = 1;
                 this.attack_action.setEffectiveWeight(0);
                 this.idle_action.setEffectiveWeight(1);
             }
@@ -595,7 +595,7 @@ Character.prototype.end_attack = function(x)
 
 Character.prototype.update_vision = function()
 {
-    this.check_vision_loop=1;
+    this.check_vision_loop = 1;
     if(!this.check_vision_timer)
     {
         this.check_vision();
@@ -603,10 +603,10 @@ Character.prototype.update_vision = function()
 };
 Character.prototype.check_vision = function()
 {
-    var self=this;
+    var self = this;
     if(!this.check_vision_loop)
     {
-        this.vision.material.visible=false;
+        this.vision.material.visible = false;
         return;
     }
 
@@ -624,7 +624,7 @@ Character.prototype.check_vision = function()
     this.friends = game.getFriends();
 
     // If no target, search for new one
-    var found_player=false;
+    var found_player = false;
 
     if(!this.attack_target || this.attack_target.name!='p')
     {
@@ -673,7 +673,7 @@ Character.prototype.check_vision = function()
         this.run(this.attack_target.container.position.clone());
     }
 
-    this.vision.material.visible=is_near;
+    this.vision.material.visible = is_near;
     // Update vision mesh if needed
     if(is_near)
     {
@@ -689,7 +689,7 @@ Character.prototype.check_vision = function()
             this.vision.geometry.vertices[vertexIndex].x = this.vision_orig_vertices[vertexIndex].x;
             this.vision.geometry.vertices[vertexIndex].y = this.vision_orig_vertices[vertexIndex].y;
             this.vision.geometry.vertices[vertexIndex].z = this.vision_orig_vertices[vertexIndex].z;
-            this.vision.geometry.verticesNeedUpdate=true;
+            this.vision.geometry.verticesNeedUpdate = true;
 
             if ( collisionResults.length > 0 && collisionResults[0].distance < this.vision_distance)
             {
@@ -708,7 +708,7 @@ Character.prototype.check_vision = function()
     if(this.has_vision)
     {
         // Loop check vision
-        this.check_vision_loop=0;
+        this.check_vision_loop = 0;
         this.check_vision_timer= window.setTimeout(this.check_vision_end.bind(this), this.check_vision_every);
     }
 };
@@ -720,13 +720,13 @@ Character.prototype.set_target  = function(obj)
 };
 Character.prototype.check_vision_end  = function()
 {
-    this.check_vision_timer=null;
+    this.check_vision_timer = null;
     this.check_vision();
 };
 
 Character.prototype.start_follow  = function(object, idx)
 {
-    this.visible_from_ennemy=true;
+    this.visible_from_ennemy = true;
     this.following_idx = idx;
     this.following = object;
     play_multiple(game.assets[this.type+'_follow_sound'], 0);
@@ -748,7 +748,7 @@ Character.prototype.stop_follow  = function(play)
 
     this.destination_positions = [];
     this.patrol_positions = [].concat(this.options.patrol_positions || []);
-    this.move_weight_destination=0;
+    this.move_weight_destination = 0;
 };
 Character.prototype.move_weight  = function()
 {
@@ -757,7 +757,7 @@ Character.prototype.move_weight  = function()
         if(this.move_weight_custom)
         {
             this.move_weight_custom(this.move_weight_destination);
-            this.move_weight_destination=null;
+            this.move_weight_destination = null;
         }
         var c = this.move_action.getEffectiveWeight();
         var dest;
@@ -767,33 +767,33 @@ Character.prototype.move_weight  = function()
 
             this.move_action.setEffectiveWeight(dest);
             this.idle_action.setEffectiveWeight(1-dest);
-            this.move_action_weight=dest;
+            this.move_action_weight = dest;
         }
         else if(c<this.move_weight_destination)
         {
             var dest = Math.min(1,c+0.3);
             this.move_action.setEffectiveWeight(dest);
             this.idle_action.setEffectiveWeight(1-dest);
-            this.move_action_weight=dest;
+            this.move_action_weight = dest;
         }
         else
         {
-            this.move_weight_destination=null;
+            this.move_weight_destination = null;
         }
-        this.move_action_weight=c;
+        this.move_action_weight = c;
     }
 };
 
 Character.prototype.update= function(delta)
 {
-    var self=this;
+    var self = this;
     if(this.is_dead)
     {
         return false;
     }
 
     this.mixer.update(delta);
-    this.delta=delta;
+    this.delta = delta;
     if(this.is_hovered)
     {
         this.life_container.rotation.z += 0.03;
@@ -805,10 +805,10 @@ Character.prototype.update= function(delta)
             var pos = this.next_pos;
             if(pos)
             {
-                this.patrol_waiting_timer=window.setTimeout(function()
+                this.patrol_waiting_timer = window.setTimeout(function()
                 {
-                    self.patrol_waiting_timer=null;
-                    self.move_weight_destination=1;
+                    self.patrol_waiting_timer = null;
+                    self.move_weight_destination = 1;
                     self.moveTo(pos);
                     self.next_pos = self.get_next_patrol_point();
                 }, this.patrol_wait);
@@ -850,23 +850,23 @@ Character.prototype.get_next_patrol_point = function()
     this.patrol_wait = 0;
     if(next_id<0)
     {
-        next_inc=1;
-        next_id=1;
+        next_inc = 1;
+        next_id = 1;
     } 
     if(next_id>=this.patrol_positions.length)
     {
         if(this.options.patrol_loop)
         {
-            next_id=0;
+            next_id = 0;
         }
         else
         {
             next_inc=-1;
-            next_id=this.patrol_positions.length-2;
+            next_id = this.patrol_positions.length-2;
         }
     }
-    this.patrol_id=next_id;
-    this.patrol_inc=next_inc;
+    this.patrol_id = next_id;
+    this.patrol_inc = next_inc;
     var r = this.patrol_positions[next_id];
 
     this.patrol_wait = this.patrol_positions[previous_id].patrol_wait;
@@ -888,7 +888,7 @@ Character.prototype.search_following_path = function()
     // Debug visible walkable path
     if(game.opt.debug_level>1)
     {
-        for(var i=0; i< this.destination_positions.length-1; i++)
+        for(var i = 0; i< this.destination_positions.length-1; i++)
         {
             draw_line({
                 visible: true,
@@ -936,7 +936,7 @@ Character.prototype.restore= function()
     this.next_pos = this.get_next_patrol_point();
 
     // Skip patrol wait when restoring
-    this.patrol_wait=0;
+    this.patrol_wait = 0;
 
     console.log('here restore');
     if(this.patrol_positions.length===1)

@@ -6,18 +6,18 @@ var Assets = function(opt)
     this.textures = [];
     this.sounds= [];
 
-    this.load_ended=false;
+    this.load_ended = false;
 
     this.current_loaded = 0;
 
-    this.add=function(file, name)
+    this.add = function(file, name)
     {
         this.load_meshes.push( { file: file, name: name});
     };
 
     this.load = function()
     {
-        var self=this;
+        var self = this;
         if(this.load_ended)
         {
             return Promise.resolve();
@@ -123,7 +123,7 @@ var Assets = function(opt)
     this.loaded= function()
     {
         this.update_volumes_delay();
-        this.load_ended=true;
+        this.load_ended = true;
         // transparent material
         this.transparent_material = new THREE.MeshPhongMaterial({ visible: false });
 
@@ -268,18 +268,18 @@ var Assets = function(opt)
         return this.current_loaded;
     };
 
-    this.add_texture=function(file, name)
+    this.add_texture = function(file, name)
     {
         this.load_textures.push( { file: file, name: name});
     };
-    this.add_sound=function(file, name, loop, volume)
+    this.add_sound = function(file, name, loop, volume)
     {
         this.load_sound.push( { file: file, name: name, loop:loop, volume: volume});
     };
 
     this._load = function()
     {
-        var self=this;
+        var self = this;
         var promises=[];
 
         this.load_meshes.forEach(function(json)
@@ -319,7 +319,7 @@ var Assets = function(opt)
                 self[json.name+'_sound'] = new Audio(json.file);
                 self[json.name+'_sound'].load();
                 self[json.name+'_sound'].loop=!!json.loop;
-                self[json.name+'_sound'].volume=json.volume;
+                self[json.name+'_sound'].volume = json.volume;
                 self[json.name+'_sound'].setAttribute('initial_volume',json.volume);
                 self.current_loaded++;
                 self.sounds.push(self[json.name+'_sound']);
@@ -360,7 +360,7 @@ var Assets = function(opt)
     {
         this.sounds.forEach(function(sound)
         {
-            var mul=1;
+            var mul = 1;
             if(sound.getAttribute('volume_target_type'))
             {
                 mul = game.gui.get_value(sound.getAttribute('volume_target_type'));

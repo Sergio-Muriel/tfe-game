@@ -1,6 +1,6 @@
 var Maze = function(game, options)
 {
-    var self=this;
+    var self = this;
     this.id = game.getNewId();
     this.music = game.assets.maze_sound;
     this.ambient = game.assets.cave_sound;
@@ -9,7 +9,7 @@ var Maze = function(game, options)
     this.ambient_light_color =  0xd9cba2;
     this.ambient_light_intensity =  0.20;
 
-    this.options=options;
+    this.options = options;
     options.maze_num = game.level;
 
     this.outside_separators = [];
@@ -73,15 +73,15 @@ Maze.prototype.getCellId = function(x, z)
 Maze.prototype.openDoor = function(x, z, i)
 {
     var door = this.doors[x+'-'+z+'-'+i];
-    door.opened=true;
+    door.opened = true;
     var closed_door_mesh = door.mesh;
     var closed_door_mesh_col = door.collision;
 
     play_multiple(game.assets.door_open_sound);
     if(closed_door_mesh)
     {
-        closed_door_mesh.material.visible=false;
-        closed_door_mesh_col.material.visible=false;
+        closed_door_mesh.material.visible = false;
+        closed_door_mesh_col.material.visible = false;
     }
     game.updateCollisionsCache();
 }
@@ -95,8 +95,8 @@ Maze.prototype.get_closed_door_id=  function(params,i)
     if(first_cellid>next_cellid)
     {
         var t = next_cellid;
-        next_cellid=first_cellid;
-        first_cellid=t;
+        next_cellid = first_cellid;
+        first_cellid = t;
     }
 
     return 'closed_from_'+first_cellid+'_to_'+next_cellid;
@@ -137,14 +137,14 @@ Maze.prototype.get_coord_next_door = function(initial_x, initial_z, i)
 
 Maze.prototype.near_cells = function(initial_x, initial_z, only_connected)
 {
-    var self=this;
+    var self = this;
     var next_doors = [];
 
     var check = [];
     var door = this.generated_doors[initial_x] ? this.generated_doors[initial_x][initial_z] : null;
     var add_check = [ 1, 1, 1, 1, 1, 1 ];
 
-    for(var i=0; i<6;i++)
+    for(var i = 0; i<6;i++)
     {
         if(add_check[i]) { check.push(this.get_coord_next_door(initial_x, initial_z, i)); }
     }
@@ -207,7 +207,7 @@ Maze.prototype.get_end_pos = function()
 
 Maze.prototype.create_cell = function(params)
 {
-    var self=this;
+    var self = this;
 
     var cellid = params.real_x=='outside' ? 'outside' : params.real_x*this.num_items_line + params.real_z;
 
@@ -221,15 +221,15 @@ Maze.prototype.create_cell = function(params)
     }
     this.generated_doors[params.x][params.z]  = cell;
 
-    cell.id=cellid;
+    cell.id = cellid;
     cell.name='pos '+params.x+' / '+params.z;
     cell.separation_lines=[];
     var pos = this.get_pos(params);
-    cell.position.x=pos.x;
-    cell.position.y=0;
-    cell.position.z=pos.z;
-    cell.incell=false;
-    cell.params=params;
+    cell.position.x = pos.x;
+    cell.position.y = 0;
+    cell.position.z = pos.z;
+    cell.incell = false;
+    cell.params = params;
 
     cell.absolute_position = new THREE.Vector3(cell.position.x + this.options.x, cell.position.y, cell.position.z + this.options.z);
     this.cells.push(cell);
@@ -421,7 +421,7 @@ Maze.prototype.create_cell = function(params)
 Maze.prototype.set_mesh_orientation = function(mesh,i)
 {
     var ratio = 0.6;
-    mesh.scale.x=ratio*game.opt.door_size;
+    mesh.scale.x = ratio*game.opt.door_size;
     mesh.scale.y= ratio*game.opt.door_size;
     mesh.scale.z= ratio*game.opt.door_size;
     mesh.rotation.y= Math.radians(i*60);
@@ -459,9 +459,9 @@ Maze.prototype.findPath = function(char1, char2)
 {
     if(!char2) { return []; }
     var origin = char1.container.position.clone();
-    origin.y=5;
+    origin.y = 5;
     var destination = char2.container.position.clone();
-    destination.y=5;
+    destination.y = 5;
 
     // Search the char1/char2 cell
     var char1Cell = null;
@@ -521,7 +521,7 @@ Maze.prototype.findPath = function(char1, char2)
 
 Maze.prototype.findPathCells = function(cell1, cell2, path, to_visit)
 {
-    var self=this;
+    var self = this;
     if(cell1===cell2 || cell2===undefined || !this.level.cells[cell1])
     {
         return path;
@@ -547,7 +547,7 @@ Maze.prototype.findPathCells = function(cell1, cell2, path, to_visit)
 
 Maze.prototype.create_separation_line= function(cell,params, i, callback)
 {
-    var self=this;
+    var self = this;
     var material = new THREE.MeshBasicMaterial( { color: 0x666699, transparent:true, visible:false } );
     if(game.opt.debug_level>1)
     {
@@ -666,7 +666,7 @@ Maze.prototype.getHovers = function()
 
 Maze.prototype.getCollisionCallbacks = function()
 {
-    var self=this;
+    var self = this;
     if(this.perso.current_cell!==null)
     {
         var cbs=[];
@@ -702,7 +702,7 @@ Maze.prototype.getCollisionCallbacks = function()
             var door_x = door[0];
             var door_z = door[1];
             var near_cell = self.cells[door_x*self.num_items_line+door_z];
-            cbs=cbs.concat(near_cell.separation_lines)
+            cbs = cbs.concat(near_cell.separation_lines)
         });
         return cbs;
     }
@@ -730,14 +730,14 @@ Maze.prototype.enter = function()
 {
     if(!this.entered)
     {
-        this.music.currentTime=0;
-        this.ambient.currentTime=0;
+        this.music.currentTime = 0;
+        this.ambient.currentTime = 0;
 
         game.fadeinmusic(this.music, 'music_volume');
         game.fadeinmusic(this.ambient,'ambient_volume');
         game.ambient_light.color = new THREE.Color(this.ambient_light_color);
         game.ambient_light.intensity = game.opt.debug_level>1 ? 1 : this.ambient_light_intensity;
-        this.entered=true;
+        this.entered = true;
         game.enterType(this);
         if(this.options.parent)
         {
@@ -771,7 +771,7 @@ Maze.prototype.leave = function()
     game.fadeoutmusic(this.music);
     game.fadeoutmusic(this.ambient);
     this.stop_step();
-    this.entered=false;
+    this.entered = false;
 };
 
 Maze.prototype.remove_interraction_item = function(item)
@@ -802,7 +802,7 @@ Maze.prototype.add_interraction_item = function(type,options, dropping)
     {
         item.dropped();
     }
-    item.name=type;
+    item.name = type;
     this.interraction_items.push(item);
     this.all_interraction_items.push(item);
     game.updateCollisionsCache();
@@ -851,7 +851,7 @@ Maze.prototype.stop_step = function()
 
 Maze.prototype.unload = function()
 {
-    this.options.parent=null;
+    this.options.parent = null;
     this.next_item.options.parent = null;
     this.all_interraction_items.forEach(function(item)
     {

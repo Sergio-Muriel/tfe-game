@@ -4,7 +4,7 @@ Game.prototype.gui =
 
     bind: function()
     {
-        var self=this;
+        var self = this;
 
         this.menu = document.querySelector('.menu');
         this.menu_list = document.querySelector('.menu ul');
@@ -110,7 +110,7 @@ Game.prototype.gui =
 
     create_menu_level: function(text, key, callback)
     {
-        var self=this;
+        var self = this;
         var li =  document.createElement('li');
         li.classList.add('menu_level');
 
@@ -137,7 +137,7 @@ Game.prototype.gui =
 
     create_menu_toggle: function(text, key, callback)
     {
-        var self=this;
+        var self = this;
         var li =  document.createElement('li');
         li.classList.add('menu_level');
 
@@ -171,7 +171,7 @@ Game.prototype.gui =
 
     create_menu_option : function(text, callback)
     {
-        var self=this;
+        var self = this;
         var li =  document.createElement('li');
         li.classList.add('menu_entry');
         li.innerText = game.labels.get(text);
@@ -197,7 +197,7 @@ Game.prototype.gui =
         {
             return false;
         }
-        var self=this;
+        var self = this;
         if(game.focus_perso.use_item(bone.getAttribute('data-type')))
         {
             this.bone_attachments.forEach(function(subbone)
@@ -225,7 +225,7 @@ Game.prototype.gui =
 
     init: function()
     {
-        var self=this;
+        var self = this;
         this.bind();
         
         this.gui_container.classList.remove('hidden');

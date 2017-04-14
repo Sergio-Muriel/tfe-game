@@ -7,11 +7,11 @@ var Game = function(opt)
     var camera;
     var renderer;
     var mazes= {};
-    var paused=false;
+    var paused = false;
 
     this.intervals = [];
 
-    this.started=true;
+    this.started = true;
     this.assets = opt.assets;
 
     var animations = [];
@@ -19,7 +19,7 @@ var Game = function(opt)
     this.max_camera_decal_y = 200;
     this.max_camera_distance = 50;
 
-    var drop_delay_multiple=50;
+    var drop_delay_multiple = 50;
     if(opt.debug_level>1)
     {
         this.max_camera_decal_y = 200;
@@ -41,7 +41,7 @@ var Game = function(opt)
 
     this.init = function(launch)
     {
-        var self=this;
+        var self = this;
         this.gui.init();
         this.gui.add_loading(this.labels.get('loading_assets'));
         this.level = launch.level;
@@ -58,17 +58,17 @@ var Game = function(opt)
     this.pause = function()
     {
         this.focus_perso.notmoveable();
-        paused=true;
+        paused = true;
     }
     this.resume = function()
     {
         this.focus_perso.moveable();
-        paused=false;
+        paused = false;
     }
 
     this.init_loaded= function()
     {
-        var self=this;
+        var self = this;
         this.opt = opt;
         window.setTimeout(this.gui.remove_loading.bind(this.gui), 500);
 
@@ -99,17 +99,17 @@ var Game = function(opt)
 
         this.ambient_light = new THREE.PointLight(0xd9cba2, 0.15, 0, 1);
         this.ambient_light.position.set(50, 150, 80);
-        this.ambient_light.castShadow=true;
+        this.ambient_light.castShadow = true;
         this.scene.add(this.ambient_light);
 
         this.perso_light = new THREE.PointLight(0xffffff, 1.0, this.opt.door_size*3.3, 1.0);
         if(this.opt.debug_level>1)
         {
-            this.ambient_light.intensity=1;
+            this.ambient_light.intensity = 1;
         }
 
         this.perso_light.position.set(50, 150, 80);
-        this.perso_light.castShadow=false;
+        this.perso_light.castShadow = false;
         this.scene.add(this.perso_light);
 
 
@@ -119,8 +119,8 @@ var Game = function(opt)
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true});
         this.renderer.setClearColor(opt.debug_level>1 ? 0x000000 : 0x000000, 1);
-        this.renderer.shadowMapEnabled=game.gui.get_value('shadow');
-        this.renderer.shadowMapSoft=game.gui.get_value('shadow');
+        this.renderer.shadowMapEnabled = game.gui.get_value('shadow');
+        this.renderer.shadowMapSoft = game.gui.get_value('shadow');
         this.renderer.shadowMapType = THREE.PCFSoftShadowMap;
 
 
@@ -169,9 +169,9 @@ var Game = function(opt)
 
     this.start = function()
     {
-        var self=this;
+        var self = this;
 
-        this.direction=0;
+        this.direction = 0;
 
         this.focus_perso = self.add_character({
             x: 10,
@@ -210,7 +210,7 @@ var Game = function(opt)
 
     this.reload = function()
     {
-        var self=this;
+        var self = this;
         this.intervals.forEach(function(interval)
         {
             self.clear_interval(interval);
@@ -243,12 +243,12 @@ var Game = function(opt)
             this.zoomCondition-=delta;
             if(this.zoomCondition<0)
             {
-                this.zoomOutDestination=0;
+                this.zoomOutDestination = 0;
                 if(this.zoomCallback)
                 {
                     this.zoomCallback();
                 }
-                this.zoomDestination=null;
+                this.zoomDestination = null;
             }
         }
         this.setFocus(this.focus_perso.container);
@@ -261,12 +261,12 @@ var Game = function(opt)
 
         if(!this.updating && !paused)
         {
-            this.updating=1;
+            this.updating = 1;
             var delta = clock.getDelta();
             if(delta>0.070)
             {
                 //console.warn('SLOW RENDERING DELTA: ',delta);
-                delta=0.070;
+                delta = 0.070;
             }
 
             this.update(delta);
@@ -278,7 +278,7 @@ var Game = function(opt)
 
             this.focus_perso.update(delta);
             this.current_item.update(delta);
-            this.updating=0;
+            this.updating = 0;
         }
         if(!this.ended)
         {
@@ -342,7 +342,7 @@ var Game = function(opt)
 
     this.updateCollisionsCache = function()
     {
-        this.hovers=this.current_item.getHovers();
+        this.hovers = this.current_item.getHovers();
         this.static_obstacles = this.current_item.getStaticObstacles();
         this.moving_obstacles = this.current_item.getMovingObstacles();
         this.friends = [].concat(this.focus_perso.container_mesh, this.current_item.getFriends());
@@ -388,11 +388,11 @@ var Game = function(opt)
 
         if(opt.callback)
         {
-            this.zoomCallback=opt.callback;
+            this.zoomCallback = opt.callback;
         }
         else
         {
-            this.zoomCallback=null;
+            this.zoomCallback = null;
         }
 
         this.current_radius = 0;
@@ -413,12 +413,12 @@ var Game = function(opt)
             {
                 if(p_parent_item = parent_item.options.parent)
                 {
-                    parent_item.options.parent=null;
+                    parent_item.options.parent = null;
                     p_parent_item.unload();
                 }
             }
             this.current_item.leave();
-            this.current_item=item;
+            this.current_item = item;
             this.current_item.enter();
             this.updateCollisionsCache();
         }
@@ -430,10 +430,10 @@ var Game = function(opt)
         {
             return false;
         }
-        var self=this;
+        var self = this;
         var items = params.drops;
-        var delay=0;
-        var distance=0;
+        var delay = 0;
+        var distance = 0;
         var min_distance = opt.door_size*0.1;
         var distance_step= opt.door_size*0.1;
 
@@ -473,7 +473,7 @@ var Game = function(opt)
 
     this.get_attack_value = function(attack_object, defense_object)
     {
-        var damage=0;
+        var damage = 0;
         var is_hit = Math.random() < attack_object.weapon_hit_chance;
         if(is_hit)
         {
@@ -490,7 +490,7 @@ var Game = function(opt)
         params.anim_callback = this.inc_scale_fadeout.bind(this, { move_y: 0.10, scale:  0, opacity: 0.02});
         params.bevelSize= 0.01;
 
-        params.delta_y=15;
+        params.delta_y = 15;
         params.size= this.config.text_hit_size;
         params.color= this.config.text_hit_color;
         params.anim_time = 1000;
@@ -504,7 +504,7 @@ var Game = function(opt)
         params.anim_callback = this.inc_scale_fadeout.bind(this, { move_y: 0.10, scale:  0, opacity: 0.01});
         params.bevelSize= 0;
 
-        params.delta_y=30;
+        params.delta_y = 30;
         params.size= this.config.text_friend_size;
         params.color= this.config.text_friend_color;
         params.anim_time = 1000;
@@ -571,7 +571,7 @@ var Game = function(opt)
         }
         if(params.opacity)
         {
-            mesh.material.transparent=true;
+            mesh.material.transparent = true;
             mesh.material.opacity-=params.opacity;
         }
     };
@@ -591,11 +591,11 @@ var Game = function(opt)
         {
             audio.setAttribute('volume_target_type', target);
             target = game.gui.get_value(target) * game.gui.get_value('global_volume') * audio.getAttribute('initial_volume');
-            audio.volume=0;
+            audio.volume = 0;
         }
         if(audio.volume<target)
         {
-            audio.volume=Math.min(target,audio.volume+0.004);
+            audio.volume = Math.min(target,audio.volume+0.004);
             this.fadeinmusic_timer = window.setTimeout(this.fadeinmusic.bind(this, audio,target, true), 10);
         }
         else
@@ -608,7 +608,7 @@ var Game = function(opt)
     {
         if(audio.volume>0)
         {
-            audio.volume=Math.max(0,audio.volume-0.004);
+            audio.volume = Math.max(0,audio.volume-0.004);
             this.fadeoutmusic_timer = window.setTimeout(this.fadeoutmusic.bind(this, audio), 10);
         }
         else

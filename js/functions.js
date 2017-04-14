@@ -35,7 +35,7 @@ function find_angle(A,B,C) {
 function  play_multiple(audio, delay)
 {
     var new_audio= new Audio(audio.getAttribute('src'));
-    new_audio.volume=audio.volume;
+    new_audio.volume = audio.volume;
     if(delay)
     {
         window.setTimeout(new_audio.play.bind(new_audio), delay);
@@ -56,7 +56,7 @@ function  play_multiple_random(audio, percent)
 
 function search_bone_name(name,childrens)
 {
-    var found=false;
+    var found = false;
     while(!found && childrens.length>0)
     {
         var child = childrens.pop();
@@ -70,7 +70,7 @@ function search_bone_name(name,childrens)
 
 get_attack_value = function(attack_object, defense_object)
 {
-    var damage=0;
+    var damage = 0;
     var is_hit = Math.random() < attack_object.weapon_hit_chance;
     if(is_hit)
     {
@@ -106,12 +106,12 @@ function throttle(fn, threshhold, scope) {
 
 function create_function_once(script)
 {
-    var used=0;
+    var used = 0;
     return function()
     {
         if(!used)
         {
-            used=1;
+            used = 1;
             eval(script);
         }
     };
