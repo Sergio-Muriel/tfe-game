@@ -1,0 +1,30 @@
+digraph G 
+{
+rankdir=LR
+node1 [shape=ellipse style=filled color="#729fcf" label="Mouse\nKeyboard"] 
+node2 [shape=ellipse style=filled color="#729fcf" label="My Game"] 
+node3 [shape=box style=filled color="#729fcf" label="Level"]
+node4 [shape=box style=filled color="#729fcf" label="Main character"]
+node5 [shape=ellipse style=filled color="#c5000b" label="characters"] 
+node6 [shape=ellipse style=filled color="#c5000b" label="interaction items"] 
+node7 [shape=ellipse style=filled color="#729fcf" label="Seal"] 
+node8 [shape=ellipse style=filled color="#729fcf" label="Pinga"] 
+node9 [shape=ellipse style=filled color="#729fcf" label="chest"] 
+node10 [shape=ellipse style=filled color="#729fcf" label="weapons"] 
+node11 [shape=ellipse style=filled color="#729fcf" label="keys"] 
+node12 [shape=ellipse style=filled color="#729fcf" label="..."] 
+
+node1 -> node2
+node2 -> node3
+node2 -> node4
+node3 -> node5
+node3 -> node6
+node5 -> node7
+node5 -> node8
+node6 -> node9
+node6 -> node10
+node6 -> node11
+node6 -> node12
+}
+
+
