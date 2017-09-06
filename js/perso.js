@@ -1,12 +1,12 @@
 var Perso = function(game, options)
 {
-    var self=this;
-    self.id=game.getNewId();
-    self.friend=true;
-    self.visible_from_ennemy=true;
+    var self = this;
+    self.id = game.getNewId();
+    self.friend = true;
+    self.visible_from_ennemy = true;
     self.type='perso';
     self.followers=[];
-    self.following_idx=1;
+    self.following_idx = 1;
 
     self.vision_distance = game.opt.door_size*3;
 
@@ -16,7 +16,7 @@ var Perso = function(game, options)
 
     self.open_range = 12;
 
-    self.weapon_speed=1.0;
+    self.weapon_speed = 1.0;
     self.weapon_range = 15;
     self.weapon_attack_damage = 0;
     self.weapon_hit_chance = 0;
@@ -27,16 +27,16 @@ var Perso = function(game, options)
     self.previous_weight_destination=[];
 
 
-    self.is_dying=false;
-    self.is_dead=false;
-    self.is_running=true;
+    self.is_dying = false;
+    self.is_dead = false;
+    self.is_running = true;
 
-    self.max_life=game.opt.debug_level>1 ? 10000 : 1;
-    self.life=self.max_life;
+    self.max_life = game.opt.debug_level>1 ? 10000 : 1;
+    self.life = self.max_life;
 
-    self.is_attacking=false;
-    self.is_opening=false;
-    self.is_moving=false;
+    self.is_attacking = false;
+    self.is_opening = false;
+    self.is_moving = false;
 
     var original_material_emissive=[];
     var hover_material_emissive=[];
@@ -44,7 +44,7 @@ var Perso = function(game, options)
     this.build = function()
     {
         this.game = game;
-        this.options=options;
+        this.options = options;
 
         this.bind();
         this.create();
@@ -67,7 +67,7 @@ var Perso = function(game, options)
 
     this.create =function()
     {
-        var self=this;
+        var self = this;
         this.container = new THREE.Object3D();
         this.game.scene.add(this.container);
 
@@ -77,7 +77,7 @@ var Perso = function(game, options)
         this.container_mesh = new THREE.Mesh(cube_geo, cube_material);
         this.container_mesh.rotation.x = Math.radians(90);
         this.container_mesh.rotation.z = Math.radians(45);
-        this.container_mesh.position.y=1;
+        this.container_mesh.position.y = 1;
         this.container_mesh.name='p';
         this.container_mesh.object = this;
         this.container.add(this.container_mesh);
@@ -108,10 +108,10 @@ var Perso = function(game, options)
         this.mesh = new THREE.SkinnedMesh( game.assets.perso_geo, new THREE.MultiMaterial(materials));
         this.weapon_bone = search_bone_name('Weapon',this.mesh.children.concat());
 
-        this.mesh.castShadow=true;
-        this.mesh.scale.x=15;
-        this.mesh.scale.y=15;
-        this.mesh.scale.z=15;
+        this.mesh.castShadow = true;
+        this.mesh.scale.x = 15;
+        this.mesh.scale.y = 15;
+        this.mesh.scale.z = 15;
         this.container.add(this.mesh);
         this.mesh.receiveShadow  = true;
 
@@ -172,7 +172,7 @@ var Perso = function(game, options)
         play_multiple(game.assets.weapon_switch_sound);
 
         this.weapon_type = type;
-        this.weapon_speed=item.weapon_speed;
+        this.weapon_speed = item.weapon_speed;
         this.weapon_range = item.weapon_range;
         this.weapon_attack_damage = item.weapon_attack_damage;
         this.weapon_hit_chance = item.weapon_hit_chance;
@@ -183,7 +183,7 @@ var Perso = function(game, options)
         if(this.weapon_mesh)
         {
             this.weapon_bone.remove(this.weapon_mesh);
-            this.weapon_mesh=null;
+            this.weapon_mesh = null;
         }
         if(game.assets[type+'_geo'])
         {
@@ -194,12 +194,12 @@ var Perso = function(game, options)
 
             var weapon  = new THREE.SkinnedMesh( game.assets[type+'_geo'], new THREE.MultiMaterial(materials));
             weapon.rotation.y = Math.radians(90);
-            weapon.position.x=0;
-            weapon.position.y=0;
-            weapon.position.z=0;
-            weapon.scale.x=1;
-            weapon.scale.y=1;
-            weapon.scale.z=1;
+            weapon.position.x = 0;
+            weapon.position.y = 0;
+            weapon.position.z = 0;
+            weapon.scale.x = 1;
+            weapon.scale.y = 1;
+            weapon.scale.z = 1;
             this.weapon_bone.add(weapon);
 
             this.weapon_mesh = weapon;
@@ -207,7 +207,7 @@ var Perso = function(game, options)
         return true;
     };
 
-    this.targeted=function(from)
+    this.targeted = function(from)
     {
         if(!this.is_dying)
         {
@@ -257,12 +257,12 @@ var Perso = function(game, options)
         }
     };
 
-    this.attack=function(target)
+    this.attack = function(target)
     {
         if(!this.is_attacking)
         {
-            this.is_moving=false;
-            this.is_attacking=true;
+            this.is_moving = false;
+            this.is_attacking = true;
             this.set_weight_destination([0,0,1,0]);
             this.attack_action.stop();
             this.attack_action.play();
@@ -292,12 +292,12 @@ var Perso = function(game, options)
         return false;
     };
 
-    this.open=function()
+    this.open = function()
     {
         if(!this.is_opening)
         {
-            this.is_moving=false;
-            this.is_opening=true;
+            this.is_moving = false;
+            this.is_opening = true;
             this.set_weight_destination([0,0,0,1]);
             this.open_action.stop();
             this.open_action.play();
@@ -306,7 +306,7 @@ var Perso = function(game, options)
 
     this.gameover = function()
     {
-        var self=this;
+        var self = this;
         game.zoomLevel({ level: 10,angle: 180,distance: 10,time: 2.5,callback: function()
         {
             game.gui.open_menu();
@@ -314,21 +314,21 @@ var Perso = function(game, options)
 
         window.setTimeout(function()
         {
-            self.is_dead=true;
+            self.is_dead = true;
             game.updateCollisionsCache();
         }, 700);
     };
 
     this.die = function()
     {
-        var self=this;
+        var self = this;
         // Already dead?
         if(this.is_dying)
         {
             return;
         }
         play_multiple(game.assets.perso_die_sound);
-        this.is_dying=true;
+        this.is_dying = true;
 
         self.move_action.setEffectiveWeight(0);
         self.idle_action.setEffectiveWeight(0);
@@ -341,12 +341,12 @@ var Perso = function(game, options)
         this.gameover();
     };
 
-    this.end_attack=function()
+    this.end_attack = function()
     {
         if(!this.is_dying)
         {
-            this.is_attacking=false;
-            this.is_opening=false;
+            this.is_attacking = false;
+            this.is_opening = false;
             this.set_weight_destination([1,0,0,0]);
             //this.update_weight(true);
         }
@@ -359,17 +359,17 @@ var Perso = function(game, options)
 
         if(this.click_target && this.mouse_clicked)
         {
-            this.mouse_clicked=false;
+            this.mouse_clicked = false;
             if(this.click_target.targeted(this))
             {
-                this.click_target=null;
+                this.click_target = null;
                 game.current_item.stop_step();
                 this.updateMovingStatus(null);
                 return false;
             }
             else
             {
-                //this.click_target=null;
+                //this.click_target = null;
             }
         }
 
@@ -403,7 +403,7 @@ var Perso = function(game, options)
                         if(this.last_hover_object)
                         {
                             this.last_hover_object.unhover();
-                            this.last_hover_object=null;
+                            this.last_hover_object = null;
                         }
                         intersects[0].object.object.hover();
                         this.last_hover_object = intersects[0].object.object;
@@ -416,7 +416,7 @@ var Perso = function(game, options)
                     if(this.last_hover_object)
                     {
                         this.last_hover_object.unhover();
-                        this.last_hover_object=null;
+                        this.last_hover_object = null;
                     }
                 }
 
@@ -432,7 +432,7 @@ var Perso = function(game, options)
             if(this.last_hover_object)
             {
                 this.last_hover_object.unhover();
-                this.last_hover_object=null;
+                this.last_hover_object = null;
             }
         }
         return null;
@@ -443,7 +443,7 @@ var Perso = function(game, options)
     {
         if(!this.is_opening)
         {
-            pos.y=0;
+            pos.y = 0;
             this.container.lookAt(pos);
         }
     }
@@ -492,19 +492,19 @@ var Perso = function(game, options)
     };
     this.set_weight_destination = function(destinations)
     {
-        var self=this;
-        var update=false;
+        var self = this;
+        var update = false;
         destinations.forEach(function(destination, i)
         {
             if(destination!== self.previous_weight_destination[i])
             {
-                update=true;
+                update = true;
             }
         });
         if(update)
         {
-            this.move_weight_destination=destinations;
-            this.previous_weight_destination=this.move_weight_destination.concat()
+            this.move_weight_destination = destinations;
+            this.previous_weight_destination = this.move_weight_destination.concat()
         }
     }
 
@@ -516,7 +516,7 @@ var Perso = function(game, options)
         var localVertex = pos.clone();
         var globalVertex = localVertex.sub(originPoint);
 
-        var collision=false;
+        var collision = false;
 
         var current_pos = this.container.position;
         if(current_pos.equals(pos))
@@ -543,7 +543,7 @@ var Perso = function(game, options)
         {
             if(this.click_target.targeted(this))
             {
-                this.click_target=null;
+                this.click_target = null;
                 game.current_item.stop_step();
                 this.updateMovingStatus(null);
                 return false;
@@ -557,7 +557,7 @@ var Perso = function(game, options)
         {
             game.current_item.play_step();
 
-            var moving=0;
+            var moving = 0;
 
             // Collision callbacks (keys / etc)
             var originPoint = this.container.position;
@@ -593,7 +593,7 @@ var Perso = function(game, options)
                 var new_distance= originPoint.clone().sub(this.move_destination).length();
                 if(new_distance<distance)
                 {
-                    var collision=false;
+                    var collision = false;
 
                     // Check collision with items that are moving and static ones
                     for (var vertexIndex = 0; vertexIndex < this.container_mesh.geometry.vertices.length; vertexIndex++)
@@ -606,7 +606,7 @@ var Perso = function(game, options)
                         var collisionResults = ray.intersectObjects(all_obstacles);
                         if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
                         {
-                            collision=true;
+                            collision = true;
                         }
                     }
                     if(collision)
@@ -630,7 +630,7 @@ var Perso = function(game, options)
                                 var collisionResults = ray.intersectObjects(all_obstacles);
                                 if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
                                 {
-                                    collision_alt1=true;
+                                    collision_alt1 = true;
                                 }
                             }
                             if(!collision_alt1)
@@ -640,7 +640,7 @@ var Perso = function(game, options)
                             }
                         }
 
-                        var collision_alt2=false;
+                        var collision_alt2 = false;
                         var originPoint = this.container.position.clone();
                         var move_vector_alt2 = this.move_vector_alt2.clone().multiplyScalar(delta);
                         originPoint.add(move_vector_alt2);
@@ -658,7 +658,7 @@ var Perso = function(game, options)
                                 var collisionResults = ray.intersectObjects(all_obstacles);
                                 if ( collisionResults.length > 0 && collisionResults[0].distance < directionVector.length() ) 
                                 {
-                                    collision_alt2=true;
+                                    collision_alt2 = true;
                                 }
                             }
                             if(!collision_alt2)
@@ -696,7 +696,7 @@ var Perso = function(game, options)
             var s4= this.update_weight_value(this.open_action, this.move_weight_destination[3]);
             if(s1 && s2 && s3 && s4)
             {
-                this.move_weight_destination=null;
+                this.move_weight_destination = null;
             }
         }
     };
@@ -721,8 +721,8 @@ var Perso = function(game, options)
 
     this.moveable = function()
     {
-        var self=this;
-        this.mouse_clicked=false;
+        var self = this;
+        this.mouse_clicked = false;
 
         // Moveable perso has a light
         document.addEventListener( 'mousemove', this.move_bind);
@@ -738,12 +738,12 @@ var Perso = function(game, options)
     }
 
     this.move = function(e) {
-        this.last_mouse_event=e;
+        this.last_mouse_event = e;
         self.mouseMoveCallback(e);
     };
     this.mouseup = function(e) {
-        this.last_mouse_event=e;
-        self.mouse_clicked=false;
+        this.last_mouse_event = e;
+        self.mouse_clicked = false;
         e.stopPropagation();
         return false;
     };
@@ -751,10 +751,10 @@ var Perso = function(game, options)
         if(this.click_target)
         {
             this.click_target.untargeted();
-            this.click_target=null;
+            this.click_target = null;
         }
-        this.last_mouse_event=e;
-        self.mouse_clicked=true;
+        this.last_mouse_event = e;
+        self.mouse_clicked = true;
         e.stopPropagation();
         self.mouseDownCallback(e);
         return false;
@@ -762,12 +762,12 @@ var Perso = function(game, options)
 
     this.walk = function()
     {
-        this.is_running=false;
+        this.is_running = false;
         this.move_speed = this.walk_speed;
     };
     this.run = function()
     {
-        this.is_running=true;
+        this.is_running = true;
         this.move_speed = this.run_speed;
     };
 
@@ -795,14 +795,14 @@ var Perso = function(game, options)
     };
     this.remove_follower = function(target)
     {
-        var self=this;
+        var self = this;
         game.clear_interval(this.following_timer);
         this.destination_positions = [];
         target.stop_follow(true);
 
         var idx = this.followers.indexOf(target);
         this.followers.splice(idx, 1);
-        var idx=1;
+        var idx = 1;
         this.followers.forEach(function(follower)
         {
             follower.start_follow(self, idx);
@@ -811,7 +811,7 @@ var Perso = function(game, options)
     };
     this.rescue = function()
     {
-        var self=this;
+        var self = this;
         this.followers.forEach(function(follower)
         {
             self.remove_follower(follower);
